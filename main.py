@@ -8,7 +8,7 @@ col1, col2 = st.columns([3, 1])
 with col1:
     st.title("Proyecto Final")
 with col2:
-    logo_path = "streamlit_sources/hab_logo.png"
+    logo_path = "./streamlit_sources/hab_logo.png"
     st.image(logo_path, width=100)
 
 # Barra lateral con submenús
@@ -24,19 +24,19 @@ if menu == "Presentación del Proyecto":
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.write("""[Joan Crescenti](https://www.linkedin.com/in/juancrescenti/)""")
-        joan = "streamlit_sources/joan.jpg"
+        joan = "./streamlit_sources/joan.jpg"
         st.image(joan, width=100)
     with col2:
         st.write("[Manuel Tornos](https://www.linkedin.com/in/mtornos/)")
-        manu = "streamlit_sources/manu.jpg"
+        manu = "./streamlit_sources/manu.jpg"
         st.image(manu, width=100)
     with col3:
         st.write("[Jordi Porcel](https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/)")
-        jordi = "streamlit_sources/jordi.png"
+        jordi = "./streamlit_sources/jordi.png"
         st.image(jordi, width=100)
     with col4:
         st.write("[Javier Montoto](https://www.linkedin.com/in/javier-montoto/)")
-        javi = "streamlit_sources/javier.jpg"
+        javi = "./streamlit_sources/javier.jpg"
         st.image(javi, width=100)
 
 # 2. Presentación del Estudio
@@ -59,7 +59,7 @@ elif menu == "Desarrollo del Estudio":
     postura = "Tadasana"
     
     DEFAULT_WIDTH = 30
-    VIDEO_DATA = "data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+    VIDEO_DATA = "./data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
     width = st.sidebar.slider(
         label= "Tamaño del Video:",
         min_value=15,
