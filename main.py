@@ -1,6 +1,8 @@
 import streamlit as st
+from inc.basic import *
 
 # Configuración de la página
+md_presentation = "./streamlit_sources/presentation.md"
 st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_state="collapsed")
 
 # Título principal
@@ -12,10 +14,11 @@ with col2:
     st.image(logo_path, width=100)
 
 # Barra lateral con submenús
+
+
 menu = st.sidebar.radio(
-    "¿Qué quieres visitar?:",
-    ("Presentación del Proyecto", "Presentación del Estudio", "Desarrollo del Estudio")
-)
+    "¿Qué quieres visitar?:", 
+    ("Presentación del Proyecto", "Presentación del Estudio", "Desarrollo del Estudio"))
 
 # 1. Presentación del Proyecto
 if menu == "Presentación del Proyecto":
@@ -38,6 +41,8 @@ if menu == "Presentación del Proyecto":
         st.write("[Javier Montoto](https://www.linkedin.com/in/javier-montoto/)")
         javi = "./streamlit_sources/javier.jpg"
         st.image(javi, width=100)
+    txt_presentation = read_markdown_file(md_presentation)
+    st.markdown(txt_presentation)
 
 # 2. Presentación del Estudio
 elif menu == "Presentación del Estudio":
