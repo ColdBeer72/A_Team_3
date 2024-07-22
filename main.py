@@ -48,27 +48,27 @@ elif menu == "Presentación del Estudio":
     # Añade más contenido aquí según lo que quieras presentar
 
 # 3. Desarrollo del Estudio
-elif menu == "Desarrollo del Estudio":
-    st.header("Desarrollo del Estudio")
-    st.write("""
-        Prueba
-    """)
-    # Aprox. = % continuo, Tonif. = Bien solo con +70%, Perf. = Bien solo con +90%
-    difficulty = st.selectbox("Escoja la exigencia:", ["Aproximación", "Tonificación", "Perfección"])
-    duration = st.slider("¿De cuánto tiempo dispones?", 5, 30)
-    postura = "Tadasana"
+# elif menu == "Desarrollo del Estudio":
+#     st.header("Desarrollo del Estudio")
+#     st.write("""
+#         Prueba
+#     """)
+#     # Aprox. = % continuo, Tonif. = Bien solo con +70%, Perf. = Bien solo con +90%
+#     difficulty = st.selectbox("Escoja la exigencia:", ["Aproximación", "Tonificación", "Perfección"])
+#     duration = st.slider("¿De cuánto tiempo dispones?", 5, 30)
+#     postura = "Tadasana"
     
-    DEFAULT_WIDTH = 30
-    VIDEO_DATA = "./data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
-    width = st.sidebar.slider(
-        label= "Tamaño del Video:",
-        min_value=15,
-        max_value=50,
-        value=DEFAULT_WIDTH,
-        format="%d%%")
-    width = max(width, 0.01)
-    side = max((100 - width) / 2, 0.01)
-    _, container, _ = st.columns([side, width, side])
-    container.subheader(f"Video ejemplo de la postura {postura}:")
-    container.video(data=VIDEO_DATA)
-    user_input = st.camera_input(f"Inicie la postura {postura}")
+#     DEFAULT_WIDTH = 30
+#     VIDEO_DATA = "./data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+#     width = st.sidebar.slider(
+#         label= "Tamaño del Video:",
+#         min_value=15,
+#         max_value=50,
+#         value=DEFAULT_WIDTH,
+#         format="%d%%")
+#     width = max(width, 0.01)
+#     side = max((100 - width) / 2, 0.01)
+#     _, container, _ = st.columns([side, width, side])
+#     container.subheader(f"Video ejemplo de la postura {postura}:")
+#     container.video(data=VIDEO_DATA)
+#     user_input = st.camera_input(f"Inicie la postura {postura}")
