@@ -7,9 +7,9 @@ st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_
 col1, col2 = st.columns([3, 1])
 with col1:
     st.title("Proyecto Final")
-with col2:
-    logo_path = "./streamlit_sources/hab_logo.png"
-    st.image(logo_path, width=100)
+# with col2:
+#     logo_path = "./streamlit_sources/hab_logo.png"
+#     st.image(logo_path, width=100)
 
 # Barra lateral con submenús
 menu = st.sidebar.radio(
