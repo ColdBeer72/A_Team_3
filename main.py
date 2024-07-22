@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Configuración de la página
-st.set_page_config(page_title="Proyecto Final Hack A Boss", layout="wide")
+st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_state="collapsed")
 
 # Título principal
 col1, col2 = st.columns([3, 1])
@@ -59,7 +59,7 @@ elif menu == "Desarrollo del Estudio":
     postura = "Tadasana"
     
     DEFAULT_WIDTH = 30
-    VIDEO_DATA = "data/1_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+    VIDEO_DATA = "data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
     width = st.sidebar.slider(
         label= "Tamaño del Video:",
         min_value=15,
@@ -71,5 +71,4 @@ elif menu == "Desarrollo del Estudio":
     _, container, _ = st.columns([side, width, side])
     container.subheader(f"Video ejemplo de la postura {postura}:")
     container.video(data=VIDEO_DATA)
-    # st.video(data = VIDEO_DATA, format= "video/quicktime", autoplay=True)
     user_input = st.camera_input(f"Inicie la postura {postura}")
