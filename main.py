@@ -41,15 +41,13 @@ if menu == "Presentación del Proyecto":
         st.write("[Javier Montoto](https://www.linkedin.com/in/javier-montoto/)")
         javi = "./streamlit_sources/javier.jpg"
         st.image(javi, width=100)
-    txt_presentation = read_markdown_file(md_presentation)
-    st.markdown(txt_presentation)
+
 
 # 2. Presentación del Estudio
 elif menu == "Presentación del Estudio":
     st.header("Presentación del Estudio")
-    st.write("""
-        Prueba
-    """)
+    txt_presentation = read_markdown_file(md_presentation)
+    st.markdown(txt_presentation)
     # Añade más contenido aquí según lo que quieras presentar
 
 # 3. Desarrollo del Estudio
