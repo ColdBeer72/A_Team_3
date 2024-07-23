@@ -3,7 +3,7 @@ import cv2
 import json
 
 # Ruta a la carpeta de datos y archivo de etiquetas
-data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/Raw'))
+data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data'))
 labels_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/labels.json'))
 output_frames_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/Processed'))
 
@@ -18,6 +18,7 @@ if not os.path.exists(output_frames_dir):
 # Procesar videos
 for video_path, label in labels.items():
     video_file = os.path.join(data_dir, video_path)
+    print(f'el video esta {video_file}')
     output_dir = os.path.join(output_frames_dir, label)
     
     # Crear directorio para frames si no existe
