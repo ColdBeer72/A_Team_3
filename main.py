@@ -1,16 +1,11 @@
 import streamlit as st
 import pandas as pd
-<<<<<<< HEAD
-
-# Configuración de la página
-=======
 
 # Versión Grupal
 from inc.basic import *
 
 # Configuración de la página
 md_presentation = "streamlit_sources/presentation.md"
->>>>>>> 5e5a7de (MODDED BY COLDBEER)
 st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_state="collapsed")
 
 # Título principal
@@ -33,11 +28,7 @@ if menu == "Presentación del Proyecto":
     st.subheader("Proyecto de:")
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-<<<<<<< HEAD
-        st.write("""[Juan Crescenti](https://www.linkedin.com/in/juancrescenti/)""")
-=======
         st.write("""[Joan Crescenti](https://www.linkedin.com/in/juancrescenti/)""")
->>>>>>> 5e5a7de (MODDED BY COLDBEER)
         joan = "streamlit_sources/joan.jpg"
         st.image(joan, width=100)
     with col2:
@@ -71,17 +62,12 @@ elif menu == "Desarrollo del Estudio":
     st.dataframe(df)
     # Aprox. = % continuo, Tonif. = Bien solo con +70%, Perf. = Bien solo con +90%
     difficulty = st.selectbox("Escoja la exigencia:", ["Aproximación", "Tonificación", "Perfección"])
-<<<<<<< HEAD
     
     level = st.selectbox("Escoja el nivel de tu clase:", ["Básico", "Medio", "Experto"])
 
     duration = st.slider("¿De cuánto tiempo dispones?", 30, 90)
 
     # Buscar manera de Encontrar Vid / Name_Postura
-=======
-    level = st.selectbox("Escoja el nivel de tu clase:", ["Básico", "Medio", "Experto"])
-    duration = st.slider("¿De cuánto tiempo dispones?", 30, 90)
->>>>>>> 5e5a7de (MODDED BY COLDBEER)
     postura = "Tadasana"
     
     DEFAULT_WIDTH = 30
