@@ -26,31 +26,13 @@ menu = st.sidebar.radio(
 if menu == "Presentación del Proyecto":
     st.header("Presentación del Proyecto")
     st.subheader("Proyecto de:")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.write("""[Joan Crescenti](https://www.linkedin.com/in/juancrescenti/)""")
-        joan = "streamlit_sources/joan.jpg"
-        st.image(joan, width=100)
-    with col2:
-        st.write("[Manuel Tornos](https://www.linkedin.com/in/mtornos/)")
-        manu = "streamlit_sources/manu.jpg"
-        st.image(manu, width=100)
-    with col3:
-        st.write("[Jordi Porcel](https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/)")
-        jordi = "streamlit_sources/jordi.png"
-        st.image(jordi, width=100)
-    with col4:
-        st.write("[Javier Montoto](https://www.linkedin.com/in/javier-montoto/)")
-        javi = "streamlit_sources/javier.jpg"
-        st.image(javi, width=100)
+    autores()
 
 # 2. Presentación del Estudio
 elif menu == "Presentación del Estudio":
     st.header("Presentación del Estudio")
-    st.write("""
-        Prueba
-    """)
-    # Añade más contenido aquí según lo que quieras presentar
+    txt_presentation = read_markdown_file(md_presentation)
+    st.markdown(txt_presentation)
 
 # 3. Desarrollo del Estudio
 elif menu == "Desarrollo del Estudio":
