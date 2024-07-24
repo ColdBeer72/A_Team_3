@@ -40,8 +40,8 @@ elif menu == "Desarrollo del Estudio":
     st.write("""
         Prueba
     """)
-    df = pd.read_csv("data/Yoga_figure_surya_namaskar_A - Hoja 1.csv")
-    st.dataframe(df)
+    # df = pd.read_csv("data/Yoga_figure_surya_namaskar_A - Hoja 1.csv")
+    # st.dataframe(df)
     # Aprox. = % continuo, Tonif. = Bien solo con +70%, Perf. = Bien solo con +90%
     difficulty = st.selectbox("Escoja la exigencia:", ["Aproximación", "Tonificación", "Perfección"])
     
@@ -53,7 +53,7 @@ elif menu == "Desarrollo del Estudio":
     postura = "Tadasana"
     
     DEFAULT_WIDTH = 30
-    VIDEO_DATA = "data/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+    VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
     width = st.sidebar.slider(
         label= "Tamaño del Video:",
         min_value=15,
