@@ -8,13 +8,12 @@ model = YOLO("yolov8n-pose.pt")
 print("Modelo cargado con éxito")
 
 video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
-<<<<<<< HEAD
+
 if not os.path.isfile(video_path):
     print(f"El archivo de video no se encuentra en: {video_path}")
 else:
     print(f"El archivo de video se encuentra en: {video_path}")
-=======
->>>>>>> a500c7493ed984d85e4d47545d72529a98050577
+    
 # Abrir el video
 cap = cv2.VideoCapture(video_path)
 
