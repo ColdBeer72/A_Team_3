@@ -7,7 +7,7 @@ import os
 model = YOLO("yolov8n-pose.pt")
 print("Modelo cargado con éxito")
 
-video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
 
 if not os.path.isfile(video_path):
     print(f"El archivo de video no se encuentra en: {video_path}")
