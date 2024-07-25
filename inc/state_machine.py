@@ -4,56 +4,91 @@ import math
 class UserPose:
     def __init__(self):
         self.name = ''
-        self.nariz: None
-        self.ojo_izdo: None
-        self.ojo_dcho: None
-        self.oreja_izda: None
-        self.oreja_dcha: None
-        self.hombro_izdo: None
-        self.hombro_dcho: None
-        self.codo_izdo: None
-        self.codo_dcho: None
-        self.muneca_izda: None
-        self.muneca_dcha: None
-        self.cadera_izda: None
-        self.cadera_dcha: None
-        self.rodilla_izda: None
-        self.rodilla_dcha: None
-        self.tobillo_izdo: None
-        self.tobillo_dcho: None
+        self.nariz = None
+        self.ojo_izdo = None
+        self.ojo_dcho = None
+        self.oreja_izda = None
+        self.oreja_dcha = None
+        self.hombro_izdo = None
+        self.hombro_dcho = None
+        self.codo_izdo = None
+        self.codo_dcho = None
+        self.muneca_izda = None
+        self.muneca_dcha = None
+        self.cadera_izda = None
+        self.cadera_dcha = None
+        self.rodilla_izda = None
+        self.rodilla_dcha = None
+        self.tobillo_izdo = None
+        self.tobillo_dcho = None
+        self.state = ''
+        self.cam = False
+        self.de_pie = False
+        self.tadasana_state = False
 
+    # Establecer postura
     def set_pose(self, pose):
         self.name = pose
 
-    def is_looking_to_camera(self):
-        self.cam = False
-        if :
-            self.cam = True
+    # Actualizar keypoints
+    def update_keypoints(self, keypoints):
+        for key, value in keypoints.items():
+            setattr(self, key, value)
 
+    # Determinar si user esta mirando a cam
+    def looking_to_camera(self):
+        self.cam = False
+        if self.ojo_izdo is not None and self.ojo_dcho is not None:
+            # Check de [1] "altura de ojos"
+            if abs(self.ojo_izdo[1] - self.ojo_dcho[1]) < 10:
+                self.cam = True
+    # Check de @looking_to_camera
     def check_camera(self):
         return self.cam
 
+    # Determinar si se esta de pie
     def de_pie(self):
         self.de_pie = False
-        if self.nariz[1] > self.cadera_dcha[1]:
-            self.de_pie = True
+        if self.nariz is not None and self.cadera_izda is not None:
+            if self.nariz[1] > self.cadera_izda[1]:
+                self.de_pie = True
     
+    # Check de @de_pie
     def check_de_pie(self):
         print(self.de_pie)
         return self.de_pie
 
+    # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
+    def limb_straight(self, limb1, limb2, limb3):
+        umbral = 1
+        if limb1 is not None and limb2 is not None and limb3 is not None:
+            x1, y1 = limb1
+            x2, y2 = limb2
+            x3, y3 = limb3
+            # Check recto vertical
+            if x1 == x2 == x3:
+                return True
+            # Check recto horizontal
+            if y1 == y2 == y3:
+                return True
+            # Evitar dividir por 0
+            if x2 == x1 or x3 == x2:
+                return False
+            # Calculo de pendiente entre p1-p2 y entre p2-p3
+            m1 = (y2 - y1) / (x2 - x1)
+            m2 = (y3 - y2) / (x3 - x2)
+            return abs(m1 - m2) < umbral
+        return False
+
     def tadasana(self):
         self.tadasana_state = False
-        self.tadasana_brazo_dcho = False
-        self.tadasana_brazo_izdo = False
-        self.tadasana_pies_hombros = False
-        if :
-            self.tadasana_brazo_dcho = True
-        if :
-            self.tadasana_brazo_izdo = True
-        if :
-            self.tadasana_pies_hombros = True
-        if self.tadasana_brazo_dcho == True & self.tadasana_brazo_izdo == True & self.tadasana_pies_hombros == True:
+        tadasana_brazo_dcho = False
+        tadasana_brazo_izdo = False
+        tadasana_pies_hombros = False
+        tadasana_brazo_dcho = self.limb_straight(self.hombro_dcho, self.codo_dcho, self.muneca_dcha)
+        tadasana_brazo_izdo = self.limb_straight(self.hombro_izdo, self.codo_izdo, self.muneca_izda)
+        tadasana_pies_hombros = abs(self.hombro_izdo[0] - self.tobillo_izdo[0]) < 20 and abs(self.hombro_dcho[0] - self.tobillo_dcho[0]) < 20
+        if tadasana_brazo_dcho & tadasana_brazo_izdo & tadasana_pies_hombros:
             self.tadasana_state = True
 
     def check_tadasana(self):
