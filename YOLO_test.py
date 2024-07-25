@@ -1,12 +1,23 @@
 import cv2
 from ultralytics import YOLO
+import os
+
 
 # Cargar el modelo
 model = YOLO("yolov8n-pose.pt")
+print("Modelo cargado con éxito")
 
-video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
+video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+if not os.path.isfile(video_path):
+    print(f"El archivo de video no se encuentra en: {video_path}")
+else:
+    print(f"El archivo de video se encuentra en: {video_path}")
 # Abrir el video
 cap = cv2.VideoCapture(video_path)
+
+if not cap.isOpened():
+    print("Error al abrir el video.")
+    exit()
 
 # Configurar variables para el control del video
 playing = True
@@ -18,23 +29,25 @@ window_height = 800
 
 def draw_kp(frame, kps):
     for part, coords in kps.items():
-        x, y = int(coords[0]), int(coords[1])
-        cv2.circle(frame, (x, y), 5, (0, 0, 255), 1)
+        for i in range(0, len(coords), 2):  # Cada par de coordenadas (x, y)
+            x, y = int(coords[i]), int(coords[i+1])
+            cv2.circle(frame, (x, y), 5, (0, 0, 255), 1)
 
 while cap.isOpened():
     if playing:
         ret, frame = cap.read()
         if not ret:
+            print("No se puede leer el frame del video.")
             break
 
         # Realizar detección de posturas
         results = model(frame)
+        print(f"Resultados: {results}")
 
-        # Los resultados suelen ser una lista de objetos de detección
         for result in results:
-            # print(f"\nResultados: {result}")
             keypoints = result.keypoints.xy
-            # print(f"Keypoints: {keypoints}")
+            print(f"Keypoints: {keypoints}")
+
             body_dict = {'nariz': [],
                          'ojo_izdo': [],
                          'ojo_dcho': [],
@@ -54,13 +67,12 @@ while cap.isOpened():
                          'tobillo_dcho': []
                          }
             for kp, body_part in zip(keypoints[0], body_dict):
-                # print(f"KPs: {kp}")
                 x, y = kp[0], kp[1]
                 body_dict[body_part].append(x)
                 body_dict[body_part].append(y)
-                print(body_dict)
+                print(f"{body_part}: {body_dict[body_part]}")
+
             draw_kp(frame, body_dict)
-            # annotated_frame = result.plot()
 
         # Redimensionar el frame
         resized_frame = cv2.resize(frame, (window_width, window_height))
