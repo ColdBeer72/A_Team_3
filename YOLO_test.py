@@ -4,7 +4,7 @@ from ultralytics import YOLO
 # Cargar el modelo
 model = YOLO("yolov8n-pose.pt")
 
-video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
+video_path = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
 # Abrir el video
 cap = cv2.VideoCapture(video_path)
 
