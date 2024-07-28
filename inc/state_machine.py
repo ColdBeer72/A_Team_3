@@ -50,10 +50,8 @@ class UserPose:
     # Setear el suelo para cada postura
     def update_floor_for_pose(self, pose_kps):
         if not pose_kps:
-            exit
-        if pose_kps:
-            for _, y in pose_kps():
-                setattr(self, self.suelo, y)
+            return
+        self.suelo = pose_kps[1]
 
     # Determinar si se esta de pie
     def update_body_status(self):
