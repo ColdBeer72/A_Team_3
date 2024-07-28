@@ -53,7 +53,7 @@ elif menu == "Desarrollo del Estudio":
     postura = "Tadasana"
     
     DEFAULT_WIDTH = 30
-    VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mov"
+    VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
     width = st.sidebar.slider(
         label= "Tamaño del Video:",
         min_value=15,

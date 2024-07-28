@@ -89,9 +89,10 @@ def main():
                 postura_usuario.update_keypoints(keypoints)
                 if postura == 'Tadasana':
                     postura_usuario.tadasana()
+                    
                 if postura_usuario.tadasana_state:
                     status_text.success("¡NAMASTE!")
-                else:
+                else: 
                     status_text.warning("Revisa tu alineación")
 
                 FRAME_WINDOW.image(processed_frame)
