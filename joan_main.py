@@ -1,6 +1,6 @@
 import streamlit as st
 from inc.basic import *
-from inc.joan_YOLO_process import process_frame, draw_kp
+from inc.joan_YOLO_process import process_frame
 from inc.state_machine import UserPose
 from inc.joan_video_stream import video_stream
 
@@ -87,10 +87,7 @@ def main():
                 postura_usuario = UserPose()
                 postura_usuario.set_pose(postura)
                 postura_usuario.update_keypoints(keypoints)
-                if postura == 'Tadasana':
-                    postura_usuario.tadasana()
-                    
-                if postura_usuario.tadasana_state:
+                if postura_usuario.postura(postura):
                     status_text.success("¡NAMASTE!")
                 else: 
                     status_text.warning("Revisa tu alineación")

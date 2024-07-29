@@ -1,32 +1,37 @@
 import numpy as np
 import math
+from basic import *
 
 class UserPose:
+    EYE_LEVEL = CAM_HEIGHT // 100
+    LIMB_STRAIGHT_ANGLE = 10
+
     def __init__(self):
         self.name = ''
-        self.nariz = None
-        self.ojo_izdo = None
-        self.ojo_dcho = None
-        self.oreja_izda = None
-        self.oreja_dcha = None
-        self.hombro_izdo = None
-        self.hombro_dcho = None
-        self.codo_izdo = None
-        self.codo_dcho = None
-        self.muneca_izda = None
-        self.muneca_dcha = None
-        self.cadera_izda = None
-        self.cadera_dcha = None
-        self.rodilla_izda = None
-        self.rodilla_dcha = None
-        self.tobillo_izdo = None
-        self.tobillo_dcho = None
+        self.keypoints = {
+            'nariz': None,
+            'ojo_izdo': None,
+            'ojo_dcho': None,
+            'oreja_izda': None,
+            'oreja_dcha': None,
+            'hombro_izdo': None,
+            'hombro_dcho': None,
+            'codo_izdo': None,
+            'codo_dcho': None,
+            'muneca_izda': None,
+            'muneca_dcha': None,
+            'cadera_izda': None,
+            'cadera_dcha': None,
+            'rodilla_izda': None,
+            'rodilla_dcha': None,
+            'tobillo_izdo': None,
+            'tobillo_dcho': None
+        }
         self.cam = False
         self.suelo = None
         self.enpie = False
         self.tumbado_boca_arriba = False
         self.tumbado_bocabajo = False
-        self.tadasana_state = False
         self.pino = False
 
     # Establecer postura
@@ -36,74 +41,124 @@ class UserPose:
     # Actualizar keypoints
     def update_keypoints(self, keypoints):
         for key, value in keypoints.items():
-            setattr(self, key, value)
+            try:
+                self.keypoints[key] = value
+            except:
+                continue
+    
+    # Calculo del angulo entre 3 puntos
+    def calcular_angulo(punto1, punto2, punto3):
+        """
+        Calcula el ángulo entre dos líneas en 2D definidas por tres puntos.
+        Args:
+            punto1: Tuple o lista con las coordenadas (x, y) del primer punto.
+            punto2: Tuple o lista con las coordenadas (x, y) del segundo punto.
+            punto3: Tuple o lista con las coordenadas (x, y) del tercer punto.
+
+        Returns:
+            El ángulo en grados entre las dos líneas.
+        """
+        # Calcular vectores
+        vector1 = (punto2[0] - punto1[0], punto2[1] - punto1[1])
+        vector2 = (punto3[0] - punto2[0], punto3[1] - punto2[1])
+        # Producto escalar
+        producto_escalar = vector1[0] * vector2[0] + vector1[1] * vector2[1]
+        # Magnitudes de los vectores
+        magnitud_vector1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
+        magnitud_vector2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
+        # Coseno del ángulo
+        coseno_angulo = producto_escalar / (magnitud_vector1 * magnitud_vector2)
+        # Ángulo en grados
+        angulo = math.acos(coseno_angulo) * 180 / math.pi
+        return angulo
+    
+    def casi_horizontal_casi_vertical(self, p1, p2, p3, threshold):
+        if abs(p1 - p2) == threshold and abs(p2 - p3) == threshold:
+            return True
+        return False
 
     # Determinar si user esta mirando a cam
-    def looking_to_camera(self):
+    def looking_2_camera(self):
         self.cam = False
-        if self.ojo_izdo and self.ojo_dcho:
+        ojo_izdo, ojo_dcho =\
+            self.keypoints['ojo_izdo'],\
+            self.keypoints['ojo_dcho']
+        if ojo_izdo and ojo_dcho:
             # Check de [1] "altura de ojos"
-            if abs(self.ojo_izdo[1] - self.ojo_dcho[1]) < 10:
+            if abs(ojo_izdo[1] - ojo_dcho[1]) < self.EYE_LEVEL:
                 self.cam = True
         return self.cam
 
-    # Setear el suelo para cada postura
+    # Setear el suelo
     def update_floor_for_pose(self, pose_kps):
         if not pose_kps:
             return
         self.suelo = pose_kps[1]
 
-    # Determinar si se esta de pie
-    def update_body_status(self):
-        self.enpie = False
-        self.tumbado_boca_arriba = False
-        self.tumbado_bocabajo = False
-        self.pino = False
-        if self.nariz and self.tobillo_izdo:
-            if self.nariz[1] < self.cadera_izda[1] < self.tobillo_izdo[1]:
-                print(self.tobillo_izdo[1])
-                self.update_floor_for_pose(self.tobillo_izdo)
-                self.enpie = True
-            if self.hombro_izdo[1] == self.cadera_izda[1] == self.tobillo_izdo[1] and self.nariz[1] < self.oreja_izda[1]:
-                self.update_floor_for_pose(self.tobillo_izdo)
-                self.tumbado_boca_arriba = True
-            if self.hombro_izdo[1] == self.cadera_izda[1] == self.tobillo_izdo[1] and self.nariz[1] > self.oreja_izda[1]:
-                self.update_floor_for_pose(self.nariz)
-                self.tumbado_bocabajo = True
-            if self.nariz[1] > self.cadera_izda[1] > self.tobillo_izdo[1]:
-                self.update_floor_for_pose(self.muneca_izda)
-                self.pino = True
-        
     # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
-    def limb_straight(self, limb1, limb2, limb3):
-        umbral = 3
+    def limb_straight(self, limb1, limb2, limb3, threshold):
         if limb1 and limb2 and limb3:
             x1, y1 = limb1
             x2, y2 = limb2
             x3, y3 = limb3
+            # Progresion limb1 > limb2 > limb3
             if (x1 > x2 > x3 or x1 < x2 < x3) and (y1 > y2 > y3 or y1 < y2 < y3):
                 # Check recto vertical/ horizontal
-                if x1 == x2 == x3 or y1 == y2 == y3:
+                if self.casi_horizontal_casi_vertical(x1, x2, x3, 5) or self.casi_horizontal_casi_vertical(y1, y2, y3, 5):
                     return True
                 try:
-                    # Calculo de pendiente entre p1-p2 y entre p2-p3
-                    m1 = abs((y2 - y1) / (x2 - x1))
-                    m2 = abs((y3 - y2) / (x3 - x2))
-                    return abs(m1 - m2) < umbral
+                    angulo = self.calcular_angulo(limb1, limb2, limb3)
+                    return angulo < threshold
                 except ZeroDivisionError:
                     return False
         return False
 
-    # Determinar si la postura de la montaña esta correcta
+    # Determinar como se encuentra el cuerpo
+    def update_body_status(self):
+        nariz, oreja_izda, hombro_izdo, cadera_izda, tobillo_izdo =\
+            self.keypoints['nariz'],\
+            self.keypoints['oreja_izda'],\
+            self.keypoints['hombro_izdo'],\
+            self.keypoints['cadera_izda'],\
+            self.keypoints['tobillo_izdo']
+        self.enpie = False
+        self.tumbado_boca_arriba = False
+        self.tumbado_bocabajo = False
+        self.pino = False
+        if nariz[1] < cadera_izda[1] < tobillo_izdo[1]:
+            self.enpie = True
+        if hombro_izdo[1] == cadera_izda[1] == tobillo_izdo[1] and nariz[1] < oreja_izda[1]:
+            self.tumbado_boca_arriba = True
+        if hombro_izdo[1] == cadera_izda[1] == tobillo_izdo[1] and nariz[1] > oreja_izda[1]:
+            self.tumbado_bocabajo = True
+        if nariz[1] > cadera_izda[1] > tobillo_izdo[1]:
+            self.pino = True
+
+    # Menu de posturas
+    def postura(self, postura):
+        pose_dict = {
+            'Tadasana': self.tadasana()
+            }
+        return pose_dict[postura]
+
+    # Determinar si la postura TADASANA esta correcta
     def tadasana(self):
-        self.tadasana_state = False
+        hombro_dcho, hombro_izdo, codo_dcho, codo_izdo, muneca_dcha, muneca_izda, tobillo_dcho, tobillo_izdo =\
+            self.keypoints['hombro_dcho'],\
+            self.keypoints['hombro_izdo'],\
+            self.keypoints['codo_dcho'],\
+            self.keypoints['codo_izdo'],\
+            self.keypoints['muneca_dcha'],\
+            self.keypoints['muneca_izda'],\
+            self.keypoints['tobillo_dcho'],\
+            self.keypoints['tobillo_izdo']
         self.update_body_status()
         if self.enpie:
-            tadasana_brazo_dcho = self.limb_straight(self.hombro_dcho, self.codo_dcho, self.muneca_dcha)
-            tadasana_brazo_izdo = self.limb_straight(self.hombro_izdo, self.codo_izdo, self.muneca_izda)
-            tadasana_pies_hombros = ((self.hombro_izdo[0] - self.tobillo_izdo[0]) > 0) and ((self.hombro_dcho[0] - self.tobillo_dcho[0]) < 0)
-            self.tadasana_state = tadasana_brazo_dcho and tadasana_brazo_izdo and tadasana_pies_hombros
-        return self.tadasana_state
+            tadasana_brazo_dcho = self.limb_straight(hombro_dcho, codo_dcho, muneca_dcha, self.LIMB_STRAIGHT_ANGLE)
+            tadasana_brazo_izdo = self.limb_straight(hombro_izdo, codo_izdo, muneca_izda, self.LIMB_STRAIGHT_ANGLE)
+            tadasana_pies_hombros = ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
+        return tadasana_brazo_dcho and tadasana_brazo_izdo and tadasana_pies_hombros
+
 
 # postura_usuario = UserPose()
 

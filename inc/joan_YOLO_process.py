@@ -1,20 +1,17 @@
 import cv2
 from ultralytics import YOLO
-import os
-
 
 # Cargar modelo
 model = YOLO("yolov8n-pose.pt")
 
 def draw_kp(frame, kps):
-    for part, coords in kps.items():
+    for _, coords in kps.items():
         for i in range(0, len(coords), 2):
             x, y = int(coords[i]), int(coords[i +1])
             cv2.circle(frame, (x, y), 5, (0, 0, 255), 1)
 
 def process_frame(frame):
     results = model(frame)
-    
     for result in results:
         keypoints = result.keypoints.xy
         body_dict = {'nariz': [],

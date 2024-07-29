@@ -1,6 +1,9 @@
 from pathlib import Path
 import streamlit as st
 
+CAM_WIDTH = 640
+CAM_HEIGHT = 480
+
 def read_markdown_file(markdown_file):
     """Devuelve el contenido de un archivo MarkDown.
 
@@ -14,14 +17,13 @@ def read_markdown_file(markdown_file):
 
 def autores():
     """Genera 4 columnas con los autores del Proyecto
-
     Args:
         None
 
     Returns:
         None
     """
-    lista = [["joan", "Joan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
+    lista = [["juan", "Juan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
              ["manu", "Manuel Tornos", "https://www.linkedin.com/in/mtornos/"],
              ["jordi", "Jordi Porcel", "https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/"],
              ["javi", "Javier Montoto", "https://www.linkedin.com/in/javier-montoto/"]]
