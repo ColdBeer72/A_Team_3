@@ -7,7 +7,8 @@ class UserPose:
     LIMB_STRAIGHT_ANGLE = 10
 
     def __init__(self):
-        self.name = ''
+        self.actual_state = ''
+        self.actual_sequence = ''
         self.keypoints = {
             'nariz': None,
             'ojo_izdo': None,
@@ -34,9 +35,13 @@ class UserPose:
         self.tumbado_bocabajo = False
         self.pino = False
 
+    # Establecer secuencia
+    def set_sequence(self, sequence):
+        self.actual_sequence = sequence
+
     # Establecer postura
     def set_pose(self, pose):
-        self.name = pose
+        self.actual_state = pose
 
     # Actualizar keypoints
     def update_keypoints(self, keypoints):
@@ -97,6 +102,7 @@ class UserPose:
 
     # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
     def limb_straight(self, limb1, limb2, limb3, threshold):
+        angulo_llano = 180
         if limb1 and limb2 and limb3:
             x1, y1 = limb1
             x2, y2 = limb2
@@ -108,7 +114,7 @@ class UserPose:
                     return True
                 try:
                     angulo = self.calcular_angulo(limb1, limb2, limb3)
-                    return angulo < threshold
+                    return (angulo > (angulo_llano - threshold)) or (angulo < (angulo_llano + threshold))
                 except ZeroDivisionError:
                     return False
         return False
@@ -137,7 +143,13 @@ class UserPose:
     # Menu de posturas
     def postura(self, postura):
         pose_dict = {
-            'Tadasana': self.tadasana()
+            'Tadasana': self.tadasana(),
+            'Urdhva Hastasana': self.urdhva_hastasana(),
+            'Uttanasana': self.uttanasana(),
+            'Ardha Uttanasana': self.ardha_uttanasana(),
+            'Chaturanga Dandasana': self.chaturanga_dandasana(),
+            'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana(),
+            'Adho Mukha Svanasana': self.adho_mukha_svanasana()
             }
         return pose_dict[postura]
 
@@ -159,6 +171,53 @@ class UserPose:
             tadasana_pies_hombros = ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
         return tadasana_brazo_dcho and tadasana_brazo_izdo and tadasana_pies_hombros
 
+    def urdhva_hastasana(self):
+        # brazos arriba > codos altura de hombros
+        # cadera hacia rodilla + hombros mas distancia de caderas
+        # muneca juntas
+        # inclinacion angulo oreja nariz > cabeza mirando hacia arriba
+        # pies dentro hombros == tadasana >> hacer FT
+        print("urdhva_hastasana")
+
+    def uttanasana(self):
+        # manos Y == tobillo
+        # brazos rectos
+        # rodilla - cadera - hombro > Angulo de amplio aspecto
+        # pies dentro hombros == tadasana >> hacer FT
+        # **** cabeza ombligo > ojo oreja por debajo nivel flotacion
+        print("uttanasana")
+
+    def ardha_uttanasana(self):
+        # comprobar angulo tobillo - cadera - hombro < 90 (+ umbral hasta 45)
+        # straight > cadera, hombro, oreja (izda)
+        # muneca en "area": "hombro" - "tobillo"
+        print("ardha_uttanasana")
+
+    def chaturanga_dandasana(self):
+        # muneca Y == tobillo
+        # hombro - codo - muneca > 90 grados
+        # hombro - cadera > Linea > codo pegado
+        # hombro - rodilla - tobillo > RECTAS
+        # oreja - nariz > mire hacia "delante"
+        print("chaturanga_dandasana")
+
+    def urdhva_mukha_svanasana(self):
+        # brazo recto
+        # muneca Y por debajo de Tobillo + hombro Y por encima de Tobillo
+        # oreja o nariz por encima de hombro
+        # oreja - nariz > mire hacia "arriba"
+        # eje X: por orden, nariz < hombro < cadera < rodilla < tobillo
+        print("urdhva_mukha_svanasana")
+
+    def adho_mukha_svanasana(self):
+        # cadera Y sea lo que esta mas arriba
+        # cadera - hombro - muneca > recta
+        # muneca Y por debajo de Tobillo
+        print("adho_mukha_svanasana")
+
+    def transicionar_a_nueva_postura(self, new_pose):
+        if new_pose in transiciones[self.actual_sequence][self.actual_state]:
+            self.actual_state = new_pose
 
 # postura_usuario = UserPose()
 

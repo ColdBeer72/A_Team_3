@@ -40,7 +40,10 @@ def main():
     elif menu == "Desarrollo del Estudio":
         st.title("Practica Posturas")
 
-        postura = st.selectbox("Escoja su postura:", ["Tadasana", "Perro Bocabajo"])
+        secuencia = st.selectbox("Escoja su Secuencia", ["Saludo al sol", "Postura concreta"])
+        if secuencia == "Postura concreta":
+            postura = st.selectbox("Escoja su postura a practicar:",
+                ["Tadasana", "Urdhva Hastasana", "Uttanasana", "Ardha Uttanasana", "Chaturanga Dandasana", "Urdhva Mukha Svanasana", "Adho Mukha Svanasana"])
 
         DEFAULT_WIDTH = 30
         VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
@@ -85,10 +88,11 @@ def main():
 
                 # Evaluar la postura utilizando la State Machine
                 postura_usuario = UserPose()
-                postura_usuario.set_pose(postura)
+                if secuencia is not 'Postura concreta':
+                    postura_usuario.set_pose(postura)
                 postura_usuario.update_keypoints(keypoints)
                 if postura_usuario.postura(postura):
-                    status_text.success("¡NAMASTE!")
+                    status_text.success("¡Bien hecho!")
                 else: 
                     status_text.warning("Revisa tu alineación")
 

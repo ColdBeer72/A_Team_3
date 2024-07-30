@@ -4,6 +4,18 @@ import streamlit as st
 CAM_WIDTH = 640
 CAM_HEIGHT = 480
 
+transiciones = {
+            'Saludo al sol': {
+                'Tadasana': 'Urdhva Hastasana',
+                'Urdhva Hastasana': 'Uttanasana',
+                'Uttanasana': 'Ardha Uttanasana', 
+                'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
+                'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
+                'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
+                'Adho Mukha Svanasana': 'Uttanasana'
+            }
+        }
+
 def read_markdown_file(markdown_file):
     """Devuelve el contenido de un archivo MarkDown.
 
