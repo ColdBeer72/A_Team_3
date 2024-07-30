@@ -1,0 +1,5 @@
+CREAR MODELO PROPIO(con capas convolucionales descargadas):
+1.-Conseguir imagenes(una persona) en las que se representen claramente los keypoints deseados pensar como automatizar.
+posible metodo usar web scraping que google y que las confirme por yolo, en ese caso la descargue.
+2.-Etiquetar esas images con CVAT o labelme (probar 1000, objetivo 5000, son muchas intentar buscar imagenes con keypoints incluidos)
+3.-Aumentado de Datos.
