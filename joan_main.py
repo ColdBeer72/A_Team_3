@@ -5,7 +5,8 @@ from inc.basic import *
 from inc.config import *
 from inc.joan_YOLO_process import process_frame
 from inc.state_machine import UserPose
-from inc.joan_video_stream import video_stream
+from inc.joan_video_stream import captura_video
+from inc.manu_manage_cameras import *
 
 def main():
     # Configuración de la página
@@ -41,6 +42,13 @@ def main():
     # 3. Desarrollo del Estudio
     elif menu == "Desarrollo del Estudio":
         st.title("Practica Posturas")
+        lista_camaras = select_camera()
+        user_camara = st.selectbox(
+            "Escoja la cámara con la que capturar:",
+            lista_camaras,
+            index=0,
+            placeholder="Escoja una cámara"
+        )
         secuencias = list(TRANSICIONES.keys()) + "Postura concreta"
         secuencia = st.selectbox("Escoja su Secuencia", secuencias)
         if secuencia == "Postura concreta":
@@ -79,7 +87,7 @@ def main():
 
         if st.session_state['run']:
             st.write("Iniciando captura de video...")
-            for frame in video_stream():
+            for frame in captura_video(camara=user_camara):
                 if not st.session_state:
                     st.write("Captura detenida.")
                     break

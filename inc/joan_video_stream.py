@@ -1,8 +1,8 @@
 import cv2
 from basic import *
 
-def video_stream():
-    cap = cv2.VideoCapture(0)
+def captura_video(camara=0):
+    cap = cv2.VideoCapture(camara)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAM_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAM_WIDTH)
     while cap.isOpened():
