@@ -1,20 +1,22 @@
 import streamlit as st
+
+# Versión Grupal
 from inc.basic import *
+from inc.config import *
 from inc.joan_YOLO_process import process_frame
 from inc.state_machine import UserPose
 from inc.joan_video_stream import video_stream
 
 def main():
     # Configuración de la página
-    st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_state="collapsed")
+    st.set_page_config(page_title=PAGE_TITLE, layout="wide", initial_sidebar_state="collapsed")
 
     # Título principal
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.title("Proyecto Final")
+        st.title(PROYECT_TITLE)
     with col2:
-        logo_path = "streamlit_sources/hab_logo.png"
-        st.image(logo_path, width=100)
+        st.image(LOGO_PATH, width=100)
 
     # Barra lateral con submenús
     st.sidebar.title("Corrige tu Postura de Yoga")
@@ -39,19 +41,17 @@ def main():
     # 3. Desarrollo del Estudio
     elif menu == "Desarrollo del Estudio":
         st.title("Practica Posturas")
-
-        secuencia = st.selectbox("Escoja su Secuencia", ["Saludo al sol", "Postura concreta"])
+        secuencias = list(TRANSICIONES.keys()) + "Postura concreta"
+        secuencia = st.selectbox("Escoja su Secuencia", secuencias)
         if secuencia == "Postura concreta":
-            postura = st.selectbox("Escoja su postura a practicar:",
-                ["Tadasana", "Urdhva Hastasana", "Uttanasana", "Ardha Uttanasana", "Chaturanga Dandasana", "Urdhva Mukha Svanasana", "Adho Mukha Svanasana"])
-
-        DEFAULT_WIDTH = 30
-        VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
+            posturas = sublista(TRANSICIONES, "Saludo al sol")
+            postura = st.selectbox("Escoja su postura a practicar:", posturas)
+        
         width = st.sidebar.slider(
             label= "Tamaño del Video:",
-            min_value=15,
-            max_value=50,
-            value=DEFAULT_WIDTH,
+            min_value=MIN_COLUMN_WIDTH,
+            max_value=MAX_COLUMN_WIDTH,
+            value=DEFAULT_COLUMN_WIDTH,
             format="%d%%")
         width = max(width, 0.01)
         side = max((100 - width) / 2, 0.01)

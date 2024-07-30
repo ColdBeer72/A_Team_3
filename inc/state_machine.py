@@ -1,10 +1,10 @@
 import numpy as np
 import math
 from basic import *
+from config import *
 
 class UserPose:
-    EYE_LEVEL = CAM_HEIGHT // 100
-    LIMB_STRAIGHT_ANGLE = 10
+    eye_level = CAM_HEIGHT // 100
 
     def __init__(self):
         self.actual_state = ''
@@ -90,7 +90,7 @@ class UserPose:
             self.keypoints['ojo_dcho']
         if ojo_izdo and ojo_dcho:
             # Check de [1] "altura de ojos"
-            if abs(ojo_izdo[1] - ojo_dcho[1]) < self.EYE_LEVEL:
+            if abs(ojo_izdo[1] - ojo_dcho[1]) < self.eye_level:
                 self.cam = True
         return self.cam
 
@@ -142,6 +142,10 @@ class UserPose:
 
     # Menu de posturas
     def postura(self, postura):
+    ### DEFINIR utilizando la función 'sublista' de basic.py
+    ### posturas = sublista(TRANSICIONES, "Saludo al sol")
+    ### Habrá que obtener en la entrada de la función la SECUENCIA
+    ### sobre la que trabajamos
         pose_dict = {
             'Tadasana': self.tadasana(),
             'Urdhva Hastasana': self.urdhva_hastasana(),
@@ -216,7 +220,7 @@ class UserPose:
         print("adho_mukha_svanasana")
 
     def transicionar_a_nueva_postura(self, new_pose):
-        if new_pose in transiciones[self.actual_sequence][self.actual_state]:
+        if new_pose in TRANSICIONES[self.actual_sequence][self.actual_state]:
             self.actual_state = new_pose
 
 # postura_usuario = UserPose()

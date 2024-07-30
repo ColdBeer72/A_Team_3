@@ -3,18 +3,18 @@ import pandas as pd
 
 # Versión Grupal
 from inc.basic import *
+from inc.config import *
 
 # Configuración de la página
 md_presentation = "streamlit_sources/presentation.md"
-st.set_page_config(page_title="DSB10RT Grupo A", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title=PAGE_TITLE, layout="wide", initial_sidebar_state="collapsed")
 
 # Título principal
 col1, col2 = st.columns([3, 1])
 with col1:
-    st.title("Proyecto Final")
+    st.title(PROYECT_TITLE)
 with col2:
-    logo_path = "streamlit_sources/hab_logo.png"
-    st.image(logo_path, width=100)
+    st.image(LOGO_PATH, width=100)
 
 # Barra lateral con submenús
 menu = st.sidebar.radio(
@@ -52,13 +52,11 @@ elif menu == "Desarrollo del Estudio":
     # Buscar manera de Encontrar Vid / Name_Postura
     postura = "Tadasana"
     
-    DEFAULT_WIDTH = 30
-    VIDEO_DATA = "data/Raw/01_Tadasana/Figura1_Tadasana_Postura de equilibro.mp4"
     width = st.sidebar.slider(
         label= "Tamaño del Video:",
-        min_value=15,
-        max_value=50,
-        value=DEFAULT_WIDTH,
+        min_value=MIN_COLUMN_WIDTH,
+        max_value=MAX_COLUMN_WIDTH,
+        value=DEFAULT_COLUMN_WIDTH,
         format="%d%%")
     width = max(width, 0.01)
     side = max((100 - width) / 2, 0.01)

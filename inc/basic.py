@@ -1,20 +1,6 @@
 from pathlib import Path
+from config import *
 import streamlit as st
-
-CAM_WIDTH = 640
-CAM_HEIGHT = 480
-
-transiciones = {
-            'Saludo al sol': {
-                'Tadasana': 'Urdhva Hastasana',
-                'Urdhva Hastasana': 'Uttanasana',
-                'Uttanasana': 'Ardha Uttanasana', 
-                'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
-                'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
-                'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
-                'Adho Mukha Svanasana': 'Uttanasana'
-            }
-        }
 
 def read_markdown_file(markdown_file):
     """Devuelve el contenido de un archivo MarkDown.
@@ -35,27 +21,41 @@ def autores():
     Returns:
         None
     """
-    lista = [["juan", "Juan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
-             ["manu", "Manuel Tornos", "https://www.linkedin.com/in/mtornos/"],
-             ["jordi", "Jordi Porcel", "https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/"],
-             ["javi", "Javier Montoto", "https://www.linkedin.com/in/javier-montoto/"]]
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.write(f"[{lista[0][1]}]({lista[0][2]})")
-        img = f"streamlit_sources/{lista[0][0]}.jpg"
+        st.write(f"[{LISTA_AUTORES[0][1]}]({LISTA_AUTORES[0][2]})")
+        img = f"streamlit_sources/{LISTA_AUTORES[0][0]}.jpg"
         st.image(img, width=100)
     with col2:
-        st.write(f"[{lista[1][1]}]({lista[1][2]})")
-        img = f"streamlit_sources/{lista[1][0]}.jpg"
+        st.write(f"[{LISTA_AUTORES[1][1]}]({LISTA_AUTORES[1][2]})")
+        img = f"streamlit_sources/{LISTA_AUTORES[1][0]}.jpg"
         st.image(img, width=100)
     with col3:
-        st.write(f"[{lista[2][1]}]({lista[2][2]})")
-        img = f"streamlit_sources/{lista[2][0]}.jpg"
+        st.write(f"[{LISTA_AUTORES[2][1]}]({LISTA_AUTORES[2][2]})")
+        img = f"streamlit_sources/{LISTA_AUTORES[2][0]}.jpg"
         st.image(img, width=100)
     with col4:
-        st.write(f"[{lista[3][1]}]({lista[3][2]})")
-        img = f"streamlit_sources/{lista[3][0]}.jpg"
+        st.write(f"[{LISTA_AUTORES[3][1]}]({LISTA_AUTORES[3][2]})")
+        img = f"streamlit_sources/{LISTA_AUTORES[3][0]}.jpg"
         st.image(img, width=100)
+
+def sublista(diccionario=TRANSICIONES, clave_superior="Saludo al sol"):
+  """
+  Esta función extrae todos los índices (posturas) de un subdiccionario dentro de un diccionario principal.
+
+  Args:
+      diccionario: Diccionario principal que contiene subdiccionarios.
+      clave_superior: Clave del subdiccionario del que se quieren extraer las posiciones (opcional, por defecto "Saludo al sol").
+
+  Returns:
+      Lista con todas las posiciones (posturas) del subdiccionario especificado.
+  """
+  if clave_superior in diccionario:
+    return list(diccionario[clave_superior].keys())
+  else:
+    return []
+
 
 def prueba_vacia():
     pass
