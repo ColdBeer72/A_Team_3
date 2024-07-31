@@ -1,5 +1,5 @@
 from pathlib import Path
-from config import *
+from inc.config import *
 import streamlit as st
 
 def read_markdown_file(markdown_file):
@@ -25,19 +25,19 @@ def autores():
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.write(f"[{LISTA_AUTORES[0][1]}]({LISTA_AUTORES[0][2]})")
-        img = f"streamlit_sources/{LISTA_AUTORES[0][0]}.jpg"
+        img = f"./streamlit_sources/{LISTA_AUTORES[0][0]}.jpg"
         st.image(img, width=100)
     with col2:
         st.write(f"[{LISTA_AUTORES[1][1]}]({LISTA_AUTORES[1][2]})")
-        img = f"streamlit_sources/{LISTA_AUTORES[1][0]}.jpg"
+        img = f"./streamlit_sources/{LISTA_AUTORES[1][0]}.jpg"
         st.image(img, width=100)
     with col3:
         st.write(f"[{LISTA_AUTORES[2][1]}]({LISTA_AUTORES[2][2]})")
-        img = f"streamlit_sources/{LISTA_AUTORES[2][0]}.jpg"
+        img = f"./streamlit_sources/{LISTA_AUTORES[2][0]}.jpg"
         st.image(img, width=100)
     with col4:
         st.write(f"[{LISTA_AUTORES[3][1]}]({LISTA_AUTORES[3][2]})")
-        img = f"streamlit_sources/{LISTA_AUTORES[3][0]}.jpg"
+        img = f"./streamlit_sources/{LISTA_AUTORES[3][0]}.jpg"
         st.image(img, width=100)
 
 def sublista(diccionario=TRANSICIONES, clave_superior="Saludo al sol"):
@@ -55,7 +55,6 @@ def sublista(diccionario=TRANSICIONES, clave_superior="Saludo al sol"):
     return list(diccionario[clave_superior].keys())
   else:
     return []
-
 
 def prueba_vacia():
     pass

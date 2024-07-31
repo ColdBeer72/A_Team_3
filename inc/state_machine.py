@@ -1,14 +1,14 @@
-import numpy as np
 import math
-from basic import *
-from config import *
+from inc.basic import *
+from inc.config import *
 
 class UserPose:
     eye_level = CAM_HEIGHT // 100
 
-    def __init__(self):
+    def __init__(self): # (self, keypoints)
         self.actual_state = ''
         self.actual_sequence = ''
+        # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
         self.keypoints = {
             'nariz': None,
             'ojo_izdo': None,
@@ -45,6 +45,8 @@ class UserPose:
 
     # Actualizar keypoints
     def update_keypoints(self, keypoints):
+        # Maybe ajustar a ->
+        # self.keypoints.update(keypoints)
         for key, value in keypoints.items():
             try:
                 self.keypoints[key] = value
@@ -52,7 +54,7 @@ class UserPose:
                 continue
     
     # Calculo del angulo entre 3 puntos
-    def calcular_angulo(punto1, punto2, punto3):
+    def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
         """
         Calcula el ángulo entre dos líneas en 2D definidas por tres puntos.
         Args:
@@ -77,13 +79,11 @@ class UserPose:
         angulo = math.acos(coseno_angulo) * 180 / math.pi
         return angulo
     
-    def casi_horizontal_casi_vertical(self, p1, p2, p3, threshold):
-        if abs(p1 - p2) == threshold and abs(p2 - p3) == threshold:
-            return True
-        return False
+    def casi_horizontal_casi_vertical(self, p1: int, p2: int, p3: int, threshold: int) -> bool:
+        return abs(p1 - p2) == threshold and abs(p2 - p3) == threshold
 
     # Determinar si user esta mirando a cam
-    def looking_2_camera(self):
+    def looking_2_camera(self) -> bool:
         self.cam = False
         ojo_izdo, ojo_dcho =\
             self.keypoints['ojo_izdo'],\
@@ -95,13 +95,13 @@ class UserPose:
         return self.cam
 
     # Setear el suelo
-    def update_floor_for_pose(self, pose_kps):
+    def update_floor_for_pose(self, pose_kps: list) -> None:
         if not pose_kps:
             return
         self.suelo = pose_kps[1]
 
     # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
-    def limb_straight(self, limb1, limb2, limb3, threshold):
+    def limb_straight(self, limb1: list, limb2: list, limb3: list, threshold: int) -> bool:
         angulo_llano = 180
         if limb1 and limb2 and limb3:
             x1, y1 = limb1
@@ -117,10 +117,11 @@ class UserPose:
                     return (angulo > (angulo_llano - threshold)) or (angulo < (angulo_llano + threshold))
                 except ZeroDivisionError:
                     return False
+            return False
         return False
 
     # Determinar como se encuentra el cuerpo
-    def update_body_status(self):
+    def update_body_status(self) -> None:
         nariz, oreja_izda, hombro_izdo, cadera_izda, tobillo_izdo =\
             self.keypoints['nariz'],\
             self.keypoints['oreja_izda'],\
@@ -131,6 +132,7 @@ class UserPose:
         self.tumbado_boca_arriba = False
         self.tumbado_bocabajo = False
         self.pino = False
+        print(nariz)
         if nariz[1] < cadera_izda[1] < tobillo_izdo[1]:
             self.enpie = True
         if hombro_izdo[1] == cadera_izda[1] == tobillo_izdo[1] and nariz[1] < oreja_izda[1]:
@@ -139,6 +141,9 @@ class UserPose:
             self.tumbado_bocabajo = True
         if nariz[1] > cadera_izda[1] > tobillo_izdo[1]:
             self.pino = True
+
+    def pies_dentro_hombros(hombro_dcho: list, hombro_izdo: list, tobillo_dcho: list, tobillo_izdo: list) -> bool:
+        return ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
 
     # Menu de posturas
     def postura(self, postura):
@@ -155,6 +160,7 @@ class UserPose:
             'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana(),
             'Adho Mukha Svanasana': self.adho_mukha_svanasana()
             }
+        print(pose_dict[postura])
         return pose_dict[postura]
 
     # Determinar si la postura TADASANA esta correcta
@@ -168,11 +174,14 @@ class UserPose:
             self.keypoints['muneca_izda'],\
             self.keypoints['tobillo_dcho'],\
             self.keypoints['tobillo_izdo']
+        tadasana_brazo_dcho = False
+        tadasana_brazo_izdo = False
+        tadasana_pies_hombros = False
         self.update_body_status()
         if self.enpie:
-            tadasana_brazo_dcho = self.limb_straight(hombro_dcho, codo_dcho, muneca_dcha, self.LIMB_STRAIGHT_ANGLE)
-            tadasana_brazo_izdo = self.limb_straight(hombro_izdo, codo_izdo, muneca_izda, self.LIMB_STRAIGHT_ANGLE)
-            tadasana_pies_hombros = ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
+            tadasana_brazo_dcho = self.limb_straight(hombro_dcho, codo_dcho, muneca_dcha, LIMB_STRAIGHT_ANGLE)
+            tadasana_brazo_izdo = self.limb_straight(hombro_izdo, codo_izdo, muneca_izda, LIMB_STRAIGHT_ANGLE)
+            tadasana_pies_hombros = self.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
         return tadasana_brazo_dcho and tadasana_brazo_izdo and tadasana_pies_hombros
 
     def urdhva_hastasana(self):
@@ -222,6 +231,10 @@ class UserPose:
     def transicionar_a_nueva_postura(self, new_pose):
         if new_pose in TRANSICIONES[self.actual_sequence][self.actual_state]:
             self.actual_state = new_pose
+
+################################################################################################################
+################################################################################################################
+################################################################################################################
 
 # postura_usuario = UserPose()
 

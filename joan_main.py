@@ -43,13 +43,13 @@ def main():
     elif menu == "Desarrollo del Estudio":
         st.title("Practica Posturas")
         lista_camaras = select_camera()
-        user_camara = st.selectbox(
+        user_camara = int(st.selectbox(
             "Escoja la cámara con la que capturar:",
             lista_camaras,
             index=0,
             placeholder="Escoja una cámara"
-        )
-        secuencias = list(TRANSICIONES.keys()) + "Postura concreta"
+        ))
+        secuencias = list(TRANSICIONES.keys()) + ["Postura concreta"]
         secuencia = st.selectbox("Escoja su Secuencia", secuencias)
         if secuencia == "Postura concreta":
             posturas = sublista(TRANSICIONES, "Saludo al sol")
@@ -81,21 +81,19 @@ def main():
         else:
             if st.button("Detener captura de video"):
                 st.session_state['run'] = False
-        
+
         status_text = st.empty()
         FRAME_WINDOW = st.image([])
 
         if st.session_state['run']:
             st.write("Iniciando captura de video...")
+            postura_usuario = UserPose() # Añadir por aqui funcion que pide KPS y los inserta como PARAM.
             for frame in captura_video(camara=user_camara):
                 if not st.session_state:
                     st.write("Captura detenida.")
                     break
-
                 keypoints, processed_frame = process_frame(frame)
-
                 # Evaluar la postura utilizando la State Machine
-                postura_usuario = UserPose()
                 if secuencia is not 'Postura concreta':
                     postura_usuario.set_pose(postura)
                 postura_usuario.update_keypoints(keypoints)

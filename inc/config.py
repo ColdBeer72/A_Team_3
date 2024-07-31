@@ -28,7 +28,7 @@ TRANSICIONES = {
                 'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
                 'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
                 'Adho Mukha Svanasana': 'Uttanasana'
-            }
+            } 
         }
 # Margen (sup. e inf.) para extremidad en posición "recta"
 LIMB_STRAIGHT_ANGLE = 10

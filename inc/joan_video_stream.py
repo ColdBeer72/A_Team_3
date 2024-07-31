@@ -1,5 +1,5 @@
 import cv2
-from basic import *
+from inc.basic import *
 
 def captura_video(camara=0):
     cap = cv2.VideoCapture(camara)
