@@ -1,9 +1,10 @@
+
 # Figura2 - Urdhva Hastasana - Postura de brazos elevados
 
         #brazos estirados hacia arriba. Los más extendidos posible. 
         #    (Aquí siempre habría una indicación, porque forma parte del ejercicio estirar al máximo)
         #Variación: pelvis hacia adelante y espalda hacia atrás
-        #Palmas de las manos, juntas, en forma de rezo.
+        # (indicación)Palmas de las manos, juntas, en forma de rezo.
         #Cabeza mirando hacia arriba, mirando las manos
         #Pies juntos, igual que Tadasana.
 
@@ -33,6 +34,7 @@
         #brazos flexionados a 90º 
         #Codos pegados al cuerpo
         #Pies apoyando el suelo con los dedos de los pies
+        #Variación principiante: Rodillas apoyadas en el suelo
         #Pies separados a la altura de las caderas.
         #Espalda y piernas rectas paralelas al suelo
         #cuello en linea con la espalda, mirando al suelo (o entrecejo(Drishti))
@@ -44,7 +46,7 @@
         #Hombros hacia atrás, abriendo pecho (indicación)
         #Cabeza mirando hacia arriba (drishti)
         #Pies tocando el suelo con el empeine del pie o de los dedos
-        #       Variación: Rodillas apoyadas en el suelo
+        #Variación principiante: Rodillas apoyadas en el suelo      
         #Espalda arqueada hacia atrás, extensión de la espalda
         #       Indicación: pelvis hacia el suelo, hombros se alejan de las orejas
 
