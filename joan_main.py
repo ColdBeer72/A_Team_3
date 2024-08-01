@@ -49,60 +49,18 @@ def main():
             index=0,
             placeholder="Escoja una cámara"
         ))
+        
         secuencias = list(TRANSICIONES.keys()) + ["Postura concreta"]
         secuencia = st.selectbox("Escoja su Secuencia", secuencias)
+
         if secuencia == "Postura concreta":
-            posturas = sublista(TRANSICIONES, "Saludo al sol")
+            subsecuencia = st.selectbox("Escoja secuencia para seleccionar postura concreta:", secuencias)
+            posturas = sublista(TRANSICIONES, subsecuencia)
             postura = st.selectbox("Escoja su postura a practicar:", posturas)
-        
-        width = st.sidebar.slider(
-            label= "Tamaño del Video:",
-            min_value=MIN_COLUMN_WIDTH,
-            max_value=MAX_COLUMN_WIDTH,
-            value=DEFAULT_COLUMN_WIDTH,
-            format="%d%%")
-        width = max(width, 0.01)
-        side = max((100 - width) / 2, 0.01)
-        # Creacion de 2 columnas side para centrar el Container del Vid
-        _, container, _ = st.columns([side, width, side])
-        container.subheader(f"Video ejemplo de la postura {postura}:")
-        container.video(data=VIDEO_DATA)
-
-        st.subheader(f"Captura de la postura {postura}:")
-        
-        # TEST CAPTURA VIDEO
-        if 'run' not in st.session_state:
-            st.session_state['run'] = False
-
-        # Control de botones
-        if not st.session_state['run']:
-            if st.button("Iniciar captura de video"):
-                st.session_state['run'] = True
+            func_video(secuencia, postura, user_camara)
         else:
-            if st.button("Detener captura de video"):
-                st.session_state['run'] = False
-
-        texto_postura_correcta = st.empty()
-        FRAME_WINDOW = st.image([])
-
-        if st.session_state['run']:
-            st.write("Iniciando captura de video...")
-            postura_usuario = UserPose() # Añadir por aqui funcion que pide KPS y los inserta como PARAM.
-            for frame in captura_video(camara=user_camara):
-                if not st.session_state:
-                    st.write("Captura detenida.")
-                    break
-                keypoints, processed_frame = process_frame(frame)
-                # Evaluar la postura utilizando la State Machine
-                if secuencia != 'Postura concreta':
-                    postura_usuario.set_pose(postura)
-                postura_usuario.update_keypoints(keypoints)
-                if postura_usuario.postura(postura):
-                    texto_postura_correcta.success("¡Bien hecho!")
-                else: 
-                    texto_postura_correcta.warning("Revisa tu alineación")
-
-                FRAME_WINDOW.image(processed_frame)
+            st.warning("La selección de SECUENCIA todavía no está disponible.")
+            # Se añadirá a postoriori
 
 if __name__ == "__main__":
     main()
