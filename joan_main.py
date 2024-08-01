@@ -3,9 +3,7 @@ import streamlit as st
 # Versión Grupal
 from inc.basic import *
 from inc.config import *
-from inc.joan_YOLO_process import process_frame
-from inc.state_machine import UserPose
-from inc.joan_video_stream import captura_video
+from inc.joan_video_stream import *
 from inc.manu_manage_cameras import *
 
 def main():
@@ -54,7 +52,7 @@ def main():
         secuencia = st.selectbox("Escoja su Secuencia", secuencias)
 
         if secuencia == "Postura concreta":
-            subsecuencia = st.selectbox("Escoja secuencia para seleccionar postura concreta:", secuencias)
+            subsecuencia = st.selectbox("Escoja secuencia para seleccionar postura concreta:", list(TRANSICIONES.keys()))
             posturas = sublista(TRANSICIONES, subsecuencia)
             postura = st.selectbox("Escoja su postura a practicar:", posturas)
             func_video(secuencia, postura, user_camara)

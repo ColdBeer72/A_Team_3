@@ -1,5 +1,7 @@
 import cv2
 from inc.basic import *
+from inc.state_machine import UserPose
+from inc.joan_YOLO_process import process_frame
 
 def captura_video(camara=0):
     cap = cv2.VideoCapture(camara)
