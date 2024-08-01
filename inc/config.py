@@ -32,3 +32,21 @@ TRANSICIONES = {
         }
 # Margen (sup. e inf.) para extremidad en posición "recta"
 LIMB_STRAIGHT_ANGLE = 10
+
+t_nariz: str = 'nariz'
+t_ojoi: str = 'ojo_izdo'
+t_ojod: str = 'ojo_dcho'
+t_orejai: str = 'oreja_izda'
+t_orejad: str = 'oreja_dcha'
+t_hombroi: str = 'hombro_izdo' 
+t_hombrod: str = 'hombro_dcho'
+t_codoi: str = 'codo_izdo'
+t_codod: str = 'codo_dcho'
+t_munecai: str = 'muneca_izda'
+t_munecad: str = 'muneca_dcha'
+t_caderai: str = 'cadera_izda'
+t_caderad: str = 'cadera_dcha'
+t_rodillai: str = 'rodilla_izda'
+t_rodillad: str = 'rodilla_dcha'
+t_tobilloi: str = 'tobillo_izdo'
+t_tobillod: str = 'tobillo_dcho'

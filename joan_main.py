@@ -82,7 +82,7 @@ def main():
             if st.button("Detener captura de video"):
                 st.session_state['run'] = False
 
-        status_text = st.empty()
+        texto_postura_correcta = st.empty()
         FRAME_WINDOW = st.image([])
 
         if st.session_state['run']:
@@ -94,13 +94,13 @@ def main():
                     break
                 keypoints, processed_frame = process_frame(frame)
                 # Evaluar la postura utilizando la State Machine
-                if secuencia is not 'Postura concreta':
+                if secuencia != 'Postura concreta':
                     postura_usuario.set_pose(postura)
                 postura_usuario.update_keypoints(keypoints)
                 if postura_usuario.postura(postura):
-                    status_text.success("¡Bien hecho!")
+                    texto_postura_correcta.success("¡Bien hecho!")
                 else: 
-                    status_text.warning("Revisa tu alineación")
+                    texto_postura_correcta.warning("Revisa tu alineación")
 
                 FRAME_WINDOW.image(processed_frame)
 

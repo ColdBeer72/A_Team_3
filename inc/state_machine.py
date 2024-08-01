@@ -2,13 +2,8 @@ import math
 from inc.basic import *
 from inc.config import *
 
-class UserPose:
-    eye_level = CAM_HEIGHT // 100
-
-    def __init__(self): # (self, keypoints)
-        self.actual_state = ''
-        self.actual_sequence = ''
-        # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
+class KeypointsHandler:
+    def __init__(self):
         self.keypoints = {
             'nariz': None,
             'ojo_izdo': None,
@@ -28,6 +23,53 @@ class UserPose:
             'tobillo_izdo': None,
             'tobillo_dcho': None
         }
+
+    # Actualizar keypoints
+    def update_keypoints(self, keypoints: dict) -> None:
+        for key, value in keypoints.items():
+            try:
+                self.keypoints[key] = value
+            except:
+                continue
+
+    # Metodo para obtener KPs
+    def get_keypoint(self, name: str) -> list:
+        return self.keypoints.get(name)
+
+class Pose_Calculator:
+    def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
+        try:
+            vector1 = (punto2[0] - punto1[0], punto2[1] - punto1[1])
+            vector2 = (punto3[0] - punto2[0], punto3[1] - punto2[1])
+            # Producto escalar
+            producto_escalar = vector1[0] * vector2[0] + vector1[1] * vector2[1]
+            # Magnitudes de los vectores
+            magnitud_vector1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
+            magnitud_vector2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
+            # Coseno del ángulo
+            coseno_angulo = producto_escalar / (magnitud_vector1 * magnitud_vector2)
+            # Ángulo en grados
+            angulo = math.acos(coseno_angulo) * 180 / math.pi
+            return angulo
+        except ZeroDivisionError:
+            return None
+
+    # Saber si 3 puntos estan rectos
+    def limb_straight(self, limb1: list, limb2: list, limb3: list, threshold: int) -> bool:
+        angulo_llano = 180
+        angulo = Pose_Calculator.calcular_angulo(limb1, limb2, limb3)
+        if angulo is None:
+            return False
+        return (angulo_llano - threshold) <= angulo <= (angulo_llano + threshold)
+
+class UserPose:
+    eye_level = CAM_HEIGHT // 100
+
+    def __init__(self): # (self, keypoints)
+        self.actual_state = ''
+        self.actual_sequence = ''
+        # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
+        self.kps = KeypointsHandler()
         self.cam = False
         self.suelo = None
         self.enpie = False
@@ -43,15 +85,9 @@ class UserPose:
     def set_pose(self, pose):
         self.actual_state = pose
 
-    # Actualizar keypoints
+    # Actualizar KPs
     def update_keypoints(self, keypoints):
-        # Maybe ajustar a ->
-        # self.keypoints.update(keypoints)
-        for key, value in keypoints.items():
-            try:
-                self.keypoints[key] = value
-            except:
-                continue
+        self.kps.update_keypoints(keypoints)
     
     # Calculo del angulo entre 3 puntos
     def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
@@ -79,19 +115,17 @@ class UserPose:
         angulo = math.acos(coseno_angulo) * 180 / math.pi
         return angulo
     
-    def casi_horizontal_casi_vertical(self, p1: int, p2: int, p3: int, threshold: int) -> bool:
-        return abs(p1 - p2) == threshold and abs(p2 - p3) == threshold
+    # Determinar si 3 puntos(X o Y) estan alineados horizontal/verticalmente
+    def casi_horizontal_casi_vertical(p1: int, p2: int, p3: int, threshold: int) -> bool:
+        return abs(p1 - p2) <= threshold and abs(p2 - p3) <= threshold
 
     # Determinar si user esta mirando a cam
     def looking_2_camera(self) -> bool:
         self.cam = False
-        ojo_izdo, ojo_dcho =\
-            self.keypoints['ojo_izdo'],\
-            self.keypoints['ojo_dcho']
-        if ojo_izdo and ojo_dcho:
-            # Check de [1] "altura de ojos"
-            if abs(ojo_izdo[1] - ojo_dcho[1]) < self.eye_level:
-                self.cam = True
+        ojo_dcho = self.kps.get_keypoint(t_ojod)
+        ojo_izdo = self.kps.get_keypoint(t_ojoi)
+        if ojo_izdo and ojo_dcho and abs(ojo_izdo[1] - ojo_dcho[1]) < self.eye_level:
+            self.cam = True
         return self.cam
 
     # Setear el suelo
@@ -101,33 +135,16 @@ class UserPose:
         self.suelo = pose_kps[1]
 
     # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
-    def limb_straight(self, limb1: list, limb2: list, limb3: list, threshold: int) -> bool:
-        angulo_llano = 180
-        if limb1 and limb2 and limb3:
-            x1, y1 = limb1
-            x2, y2 = limb2
-            x3, y3 = limb3
-            # Progresion limb1 > limb2 > limb3
-            if (x1 > x2 > x3 or x1 < x2 < x3) and (y1 > y2 > y3 or y1 < y2 < y3):
-                # Check recto vertical/ horizontal
-                if self.casi_horizontal_casi_vertical(x1, x2, x3, 5) or self.casi_horizontal_casi_vertical(y1, y2, y3, 5):
-                    return True
-                try:
-                    angulo = self.calcular_angulo(limb1, limb2, limb3)
-                    return (angulo > (angulo_llano - threshold)) or (angulo < (angulo_llano + threshold))
-                except ZeroDivisionError:
-                    return False
-            return False
-        return False
+ 
+
 
     # Determinar como se encuentra el cuerpo
     def update_body_status(self) -> None:
-        nariz, oreja_izda, hombro_izdo, cadera_izda, tobillo_izdo =\
-            self.keypoints['nariz'],\
-            self.keypoints['oreja_izda'],\
-            self.keypoints['hombro_izdo'],\
-            self.keypoints['cadera_izda'],\
-            self.keypoints['tobillo_izdo']
+        nariz = self.kps.get_keypoint(t_nariz)
+        oreja_izda = self.kps.get_keypoint(t_orejai)
+        hombro_izdo = self.kps.get_keypoint(t_hombroi)
+        cadera_izda = self.kps.get_keypoint(t_caderai)
+        tobillo_izdo = self.kps.get_keypoint(t_tobilloi)
         self.enpie = False
         self.tumbado_boca_arriba = False
         self.tumbado_bocabajo = False
@@ -160,20 +177,20 @@ class UserPose:
             'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana(),
             'Adho Mukha Svanasana': self.adho_mukha_svanasana()
             }
-        print(pose_dict[postura])
         return pose_dict[postura]
 
     # Determinar si la postura TADASANA esta correcta
     def tadasana(self):
-        hombro_dcho, hombro_izdo, codo_dcho, codo_izdo, muneca_dcha, muneca_izda, tobillo_dcho, tobillo_izdo =\
-            self.keypoints['hombro_dcho'],\
-            self.keypoints['hombro_izdo'],\
-            self.keypoints['codo_dcho'],\
-            self.keypoints['codo_izdo'],\
-            self.keypoints['muneca_dcha'],\
-            self.keypoints['muneca_izda'],\
-            self.keypoints['tobillo_dcho'],\
-            self.keypoints['tobillo_izdo']
+        # Definir partes clave para postura
+        hombro_dcho = self.kps.get_keypoint(t_hombrod)
+        hombro_izdo = self.kps.get_keypoint(t_hombroi)
+        codo_dcho = self.kps.get_keypoint(t_codod)
+        codo_izdo = self.kps.get_keypoint(t_codoi)
+        muneca_dcha = self.kps.get_keypoint(t_munecad)
+        muneca_izda = self.kps.get_keypoint(t_munecai)
+        tobillo_dcho = self.kps.get_keypoint(t_tobillod)
+        tobillo_izdo = self.kps.get_keypoint(t_tobilloi)
+        # Definir diferentes States Clave de postura
         tadasana_brazo_dcho = False
         tadasana_brazo_izdo = False
         tadasana_pies_hombros = False
