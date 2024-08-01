@@ -53,7 +53,7 @@ def main():
         secuencia = st.selectbox("Escoja su Secuencia", secuencias)
         if secuencia == "Postura concreta":
             posturas = sublista(TRANSICIONES, "Saludo al sol")
-            postura = st.selectbox("Escoja su postura a practicar:", posturas)
+            postura = st.slider("Escoja su postura a practicar:", posturas)
         
         width = st.sidebar.slider(
             label= "Tamaño del Video:",

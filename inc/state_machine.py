@@ -25,7 +25,7 @@ class KeypointsHandler:
         }
 
     # Actualizar keypoints
-    def update_keypoints(self, keypoints: dict) -> None:
+    def update_kps(self, keypoints: dict) -> None:
         for key, value in keypoints.items():
             try:
                 self.keypoints[key] = value
@@ -36,9 +36,13 @@ class KeypointsHandler:
     def get_keypoint(self, name: str) -> list:
         return self.keypoints.get(name)
 
+
+
 class Pose_Calculator:
+    @staticmethod
     def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
         try:
+            # Vectores a partir de los puntos
             vector1 = (punto2[0] - punto1[0], punto2[1] - punto1[1])
             vector2 = (punto3[0] - punto2[0], punto3[1] - punto2[1])
             # Producto escalar
@@ -46,21 +50,39 @@ class Pose_Calculator:
             # Magnitudes de los vectores
             magnitud_vector1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
             magnitud_vector2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
+            # Si cualquiera de las magnitudes es cero, los puntos no forman un ángulo definido.
+            if magnitud_vector1 == 0 or magnitud_vector2 == 0:
+                return None
             # Coseno del ángulo
             coseno_angulo = producto_escalar / (magnitud_vector1 * magnitud_vector2)
+            # Asegurarse de que el coseno esté en el rango [-1, 1]
+            coseno_angulo = max(-1, min(1, coseno_angulo))
             # Ángulo en grados
             angulo = math.acos(coseno_angulo) * 180 / math.pi
-            return angulo
+            # Asegurarse de que siempre retornemos el ángulo agudo
+            return round(180 - angulo, 2)
         except ZeroDivisionError:
             return None
 
+    @staticmethod
     # Saber si 3 puntos estan rectos
-    def limb_straight(self, limb1: list, limb2: list, limb3: list, threshold: int) -> bool:
+    def three_points_straight(limb1: list, limb2: list, limb3: list, threshold: int) -> bool:
         angulo_llano = 180
         angulo = Pose_Calculator.calcular_angulo(limb1, limb2, limb3)
         if angulo is None:
             return False
         return (angulo_llano - threshold) <= angulo <= (angulo_llano + threshold)
+
+    @staticmethod
+    # Determinar si 3 puntos(X o Y) estan alineados horizontal/verticalmente
+    def casi_horizontal_casi_vertical(p1: int, p2: int, p3: int, threshold: int) -> bool:
+        return abs(p1 - p2) <= threshold and abs(p2 - p3) <= threshold
+
+    @staticmethod
+    def pies_dentro_hombros(hombro_dcho: list, hombro_izdo: list, tobillo_dcho: list, tobillo_izdo: list) -> bool:
+        return ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
+
+
 
 class UserPose:
     eye_level = CAM_HEIGHT // 100
@@ -87,37 +109,7 @@ class UserPose:
 
     # Actualizar KPs
     def update_keypoints(self, keypoints):
-        self.kps.update_keypoints(keypoints)
-    
-    # Calculo del angulo entre 3 puntos
-    def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
-        """
-        Calcula el ángulo entre dos líneas en 2D definidas por tres puntos.
-        Args:
-            punto1: Tuple o lista con las coordenadas (x, y) del primer punto.
-            punto2: Tuple o lista con las coordenadas (x, y) del segundo punto.
-            punto3: Tuple o lista con las coordenadas (x, y) del tercer punto.
-
-        Returns:
-            El ángulo en grados entre las dos líneas.
-        """
-        # Calcular vectores
-        vector1 = (punto2[0] - punto1[0], punto2[1] - punto1[1])
-        vector2 = (punto3[0] - punto2[0], punto3[1] - punto2[1])
-        # Producto escalar
-        producto_escalar = vector1[0] * vector2[0] + vector1[1] * vector2[1]
-        # Magnitudes de los vectores
-        magnitud_vector1 = math.sqrt(vector1[0]**2 + vector1[1]**2)
-        magnitud_vector2 = math.sqrt(vector2[0]**2 + vector2[1]**2)
-        # Coseno del ángulo
-        coseno_angulo = producto_escalar / (magnitud_vector1 * magnitud_vector2)
-        # Ángulo en grados
-        angulo = math.acos(coseno_angulo) * 180 / math.pi
-        return angulo
-    
-    # Determinar si 3 puntos(X o Y) estan alineados horizontal/verticalmente
-    def casi_horizontal_casi_vertical(p1: int, p2: int, p3: int, threshold: int) -> bool:
-        return abs(p1 - p2) <= threshold and abs(p2 - p3) <= threshold
+        self.kps.update_kps(keypoints)
 
     # Determinar si user esta mirando a cam
     def looking_2_camera(self) -> bool:
@@ -133,10 +125,6 @@ class UserPose:
         if not pose_kps:
             return
         self.suelo = pose_kps[1]
-
-    # Determinar si Extremidad esta recta (limb1 inicio, limb2 medio, limb3 punto final)
- 
-
 
     # Determinar como se encuentra el cuerpo
     def update_body_status(self) -> None:
@@ -159,9 +147,6 @@ class UserPose:
         if nariz[1] > cadera_izda[1] > tobillo_izdo[1]:
             self.pino = True
 
-    def pies_dentro_hombros(hombro_dcho: list, hombro_izdo: list, tobillo_dcho: list, tobillo_izdo: list) -> bool:
-        return ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
-
     # Menu de posturas
     def postura(self, postura):
     ### DEFINIR utilizando la función 'sublista' de basic.py
@@ -169,15 +154,15 @@ class UserPose:
     ### Habrá que obtener en la entrada de la función la SECUENCIA
     ### sobre la que trabajamos
         pose_dict = {
-            'Tadasana': self.tadasana(),
-            'Urdhva Hastasana': self.urdhva_hastasana(),
-            'Uttanasana': self.uttanasana(),
-            'Ardha Uttanasana': self.ardha_uttanasana(),
-            'Chaturanga Dandasana': self.chaturanga_dandasana(),
-            'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana(),
-            'Adho Mukha Svanasana': self.adho_mukha_svanasana()
+            'Urdhva Hastasana': self.urdhva_hastasana,
+            'Uttanasana': self.uttanasana,
+            'Tadasana': self.tadasana,
+            'Ardha Uttanasana': self.ardha_uttanasana,
+            'Chaturanga Dandasana': self.chaturanga_dandasana,
+            'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana,
+            'Adho Mukha Svanasana': self.adho_mukha_svanasana
             }
-        return pose_dict[postura]
+        return pose_dict[postura]()
 
     # Determinar si la postura TADASANA esta correcta
     def tadasana(self):
@@ -196,9 +181,9 @@ class UserPose:
         tadasana_pies_hombros = False
         self.update_body_status()
         if self.enpie:
-            tadasana_brazo_dcho = self.limb_straight(hombro_dcho, codo_dcho, muneca_dcha, LIMB_STRAIGHT_ANGLE)
-            tadasana_brazo_izdo = self.limb_straight(hombro_izdo, codo_izdo, muneca_izda, LIMB_STRAIGHT_ANGLE)
-            tadasana_pies_hombros = self.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
+            tadasana_brazo_dcho = Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha, LIMB_STRAIGHT_ANGLE)
+            tadasana_brazo_izdo = Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda, LIMB_STRAIGHT_ANGLE)
+            tadasana_pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
         return tadasana_brazo_dcho and tadasana_brazo_izdo and tadasana_pies_hombros
 
     def urdhva_hastasana(self):
