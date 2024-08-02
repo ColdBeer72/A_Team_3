@@ -4,7 +4,9 @@ from inc.config import *
 from inc.joan_video_stream import *
 from inc.manu_manage_cameras import *
 
-st.title("Practica Posturas")
+st.header("Practica Posturas", anchor = False, divider="red")
+st.subheader("Sigue las indicaciones", anchor = False, divider="gray")
+
 lista_camaras = select_camera()
 user_camara = int(st.selectbox(
     "Escoja la cámara con la que capturar:",
