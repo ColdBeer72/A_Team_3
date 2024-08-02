@@ -62,3 +62,6 @@ from inc.state_machine import *
 #         print(f"Líneas: AB{A}-{B}, CD{C}-{D} -> Intersección: {result}")
 
 # test_line_intersections()
+
+
+print(UMBRALES.DIST_CODO_CHATURANGA[2])

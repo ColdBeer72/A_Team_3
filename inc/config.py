@@ -5,7 +5,10 @@ MAX_COLUMN_WIDTH = 50
 # Título de la Página
 PAGE_TITLE = "DSB10RT Grupo A"
 # Título del Proyecto
-PROYECT_TITLE = "Proyecto Final"
+PROYECT_TITLE = "Proyecto Yoga"
+# Logotipo de la Pagina
+PAGE_LOGO = "streamlit_sources/iconoyoga.png"
+PAGE_ICON = "streamlit_sources/iconoyoga_mini.png"
 # Path al Logotipo de HackaBoss
 LOGO_PATH = "streamlit_sources/hab_logo.png"
 # Autores y referencias
@@ -30,8 +33,15 @@ TRANSICIONES = {
                 'Adho Mukha Svanasana': 'Uttanasana'
             } 
         }
-# Margen (sup. e inf.) para extremidad en posición "recta"
-LIMB_STRAIGHT_ANGLE = 10
+
+class UMBRALES:
+    THREE_POINT_STRAIGHT = [190, 170]
+    INCLINACION_CABEZA_UTTANASANA = 10
+    ANGULO_CUERPO_ARDHA_UTTANASANA = 90
+    BRAZOS_90_CHATURANGA = [180, 160]
+    CHATURANGA_Y_CODO_MUNECA = 10
+    DIST_CODO_CHATURANGA = 25
+    ORIENTACION_CABEZA_URDHVA_MUKHA = 10
 
 t_nariz: str = 'nariz'
 t_ojoi: str = 'ojo_izdo'
