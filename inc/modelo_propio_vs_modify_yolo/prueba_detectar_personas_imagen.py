@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from ultralytics import YOLO
 import cv2
 import matplotlib.pyplot as plt
@@ -32,7 +31,6 @@ imagen_ruta = '../../../../mpii_human_pose_v1/images/000001163.jpg'
 # Contar personas y mostrar resultados
 num_personas = contar_personas_en_imagen(imagen_ruta)
 print(f"Número de personas detectadas: {num_personas}")
-=======
 from ultralytics import YOLO
 import cv2
 import matplotlib.pyplot as plt
@@ -66,4 +64,3 @@ imagen_ruta = '../../../../mpii_human_pose_v1/images/000001163.jpg'
 # Contar personas y mostrar resultados
 num_personas = contar_personas_en_imagen(imagen_ruta)
 print(f"Número de personas detectadas: {num_personas}")
->>>>>>> de170e30eea247a929ba6a4059126c69af25b756
