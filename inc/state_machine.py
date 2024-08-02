@@ -88,8 +88,70 @@ class Pose_Calculator:
         return (abs(muneca_dcha[0] - muneca_izda[0]) <= 20 and abs(muneca_dcha[1] - muneca_izda[1]) <= 10)
 
     @staticmethod
-    def situacion_brazos (muneca_izda: list, hombro_izdo: list) -> None:
-        
+    def calcular_distancia_punto_segmento(punto: list, linea_a: list, linea_b: list) -> float:
+        # Coordenadas del punto y del segmento
+        x0, y0 = punto
+        x1, y1 = linea_a
+        x2, y2 = linea_b
+        # Vector del segmento AB y del punto A al punto C
+        ABx, ABy = x2 - x1, y2 - y1
+        ACx, ACy = x0 - x1, y0 - y1
+        # Proyección escalar t
+        t = (ACx * ABx + ACy * ABy) / (ABx**2 + ABy**2)
+        if t < 0:
+            # El punto más cercano es A
+            nearest_x, nearest_y = x1, y1
+        elif t > 1:
+            # El punto más cercano es B
+            nearest_x, nearest_y = x2, y2
+        else:
+            # La proyección cae dentro del segmento
+            nearest_x = x1 + t * ABx
+            nearest_y = y1 + t * ABy
+        # Calcular la distancia desde C al punto más cercano en el segmento AB
+        distancia = math.sqrt((x0 - nearest_x) ** 2 + (y0 - nearest_y) ** 2)
+        distancia = round(distancia, 3)
+        return distancia
+
+    @staticmethod
+    def do_lines_intersect(proyeccion1: list, proyeccion2: list, linea_inicio: list, linea_fin: list) -> bool:
+        # Desempaquetar puntos
+        x1, y1 = proyeccion1
+        x2, y2 = proyeccion2
+        x3, y3 = linea_inicio
+        x4, y4 = linea_fin
+        # Coeficientes para la línea AB
+        dx1 = x2 - x1
+        dy1 = y2 - y1
+        # Coeficientes para la línea CD
+        dx2 = x4 - x3
+        dy2 = y4 - y3
+        # Determinante para las ecuaciones paramétricas
+        det = dx1 * dy2 - dy1 * dx2
+        # Si el determinante es cero, las líneas son paralelas
+        if det == 0:
+            return False
+        # Cálculo de los parámetros t y s
+        dx3 = x3 - x1
+        dy3 = y3 - y1
+        t = (dx3 * dy2 - dy3 * dx2) / det
+        s = (dx1 * dy3 - dy1 * dx3) / det
+        # Verificar si la intersección está en el rango de la línea infinita
+        if 0 <= t:
+            return True
+        return False
+    
+    @staticmethod
+    def mano_safe_zone(muneca: list, hombro_izdo: list, tobillo_izdo: list, rodilla_izda: list) -> bool:
+        mx, my = muneca
+        hx, _ = hombro_izdo
+        tx, _ = tobillo_izdo
+        _, ry = rodilla_izda
+        margen_izdo = hx
+        margen_dcho = tx
+        margen_sup = ry
+        return ((margen_izdo <= mx <= margen_dcho) and (margen_sup <= my))
+
 class UserPose:
     eye_level = CAM_HEIGHT // 100
 
@@ -186,6 +248,7 @@ class UserPose:
         tadasana_brazo_izdo = False
         tadasana_brazos_rectos = False
         tadasana_pies_hombros = False
+        # Check de States
         self.update_body_status()
         if self.enpie:
             tadasana_brazo_dcho = Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha, LIMB_STRAIGHT_ANGLE)
@@ -198,82 +261,51 @@ class UserPose:
     # Determinar si la postura URDHVA HASTASANA esta correcta
     def urdhva_hastasana(self):
         # Definir partes clave para postura
-<<<<<<< HEAD
-        hombro_dcho = self.kps.get_keypoint
-        hombro_izdo = self.kps.get_keypoint
-        codo_dcho = self.kps.get_keypoint
-        codo_izdo = self.kps.get_keypoint
-        muneca_dcha = self.kps.get_keypoint
-        muneca_izda = self.kps.get_keypoint
-        oreja_dcha = self.kps.get_keypoint
-        oreja_izda = self.kps.get_keypoint
-        nariz = self.kps.get_keypoint
-        tobillo_dcho = self.kps.get_keypoint
-        tobillo_izdo = self.kps.get_keypointself.kps.get_keypoint
-=======
-        hombro_dcho = None
-        hombro_izdo = None
-        codo_dcho = None
-        codo_izdo = None
-        muneca_dcha = None
-        muneca_izda = None
-        oreja_dcha = None
-        oreja_izda = None
-        nariz = None
-        tobillo_dcho = None
-        tobillo_izdo = None
->>>>>>> 03425421a5cbca53b61d58802bcdbcdf8c9cc96f
+        hombro_dcho = self.kps.get_keypoint(t_hombrod)
+        hombro_izdo = self.kps.get_keypoint(t_hombroi)
+        codo_dcho = self.kps.get_keypoint(t_codod)
+        codo_izdo = self.kps.get_keypoint(t_codoi)
+        muneca_dcha = self.kps.get_keypoint(t_munecad)
+        muneca_izda = self.kps.get_keypoint(t_munecai)
+        tobillo_dcho = self.kps.get_keypoint(t_tobillod)
+        tobillo_izdo = self.kps.get_keypoint(t_tobilloi)
         # Definir States Urdhva_Hastasana
         urdhva_hastasana_manos_juntas_arriba = False
-        urdhva_hastasana_cabeza_arriba = False
         urdhva_hastasana_pies_hombros = False
+        brazos_arriba = False
+        # Check de States
         self.update_body_status()
+        brazos_arriba = muneca_izda < codo_izdo < hombro_izdo and muneca_dcha < codo_dcho < hombro_dcho
         if self.enpie:
-<<<<<<< HEAD
-            urdhva_hastasana_manos_juntas_arriba = Pose_Calculator.manos_juntas(muneca_dcha, muneca_izda) and 
-            urdhva_hastasana_cabeza_arriba = 
-=======
-            urdhva_hastasana_manos_juntas_arriba = None
-            urdhva_hastasana_cabeza_arriba = None
->>>>>>> 03425421a5cbca53b61d58802bcdbcdf8c9cc96f
+            urdhva_hastasana_manos_juntas_arriba = Pose_Calculator.manos_juntas(muneca_dcha, muneca_izda) and brazos_arriba
             urdhva_hastasana_pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
-        return urdhva_hastasana_manos_juntas_arriba and urdhva_hastasana_cabeza_arriba and urdhva_hastasana_pies_hombros
-        # brazos arriba > codos altura de hombros + muneca juntas
-        # inclinacion angulo oreja nariz > cabeza mirando hacia arriba
-
+        return urdhva_hastasana_manos_juntas_arriba and urdhva_hastasana_pies_hombros
+        
     # Determinar si la postura UTTANASANA esta correcta
     def uttanasana(self):
         # Definir partes clave para postura
-<<<<<<< HEAD
-        muneca_dcha = self.kps.get_keypoint
-        muneca_izda = self.kps.get_keypoint
-        tobillo_dcho = self.kps.get_keypoint
-        tobillo_izdo = self.kps.get_keypoint
-        hombro_dcho = self.kps.get_keypoint
-        hombro_izdo = self.kps.get_keypoint
-        codo_dcho = self.kps.get_keypoint
-        codo_izdo = self.kps.get_keypoint
-=======
-        muneca_dcha = None
-        muneca_izda = None
-        tobillo_dcho = None
-        tobillo_izdo = None
-        hombro_dcho = None
-        hombro_izdo =None
-        codo_dcho = None
-        codo_izdo = None
->>>>>>> 03425421a5cbca53b61d58802bcdbcdf8c9cc96f
+        muneca_dcha = self.kps.get_keypoint(t_munecad)
+        muneca_izda = self.kps.get_keypoint(t_munecai)
+        tobillo_dcho = self.kps.get_keypoint(t_tobillod)
+        tobillo_izdo = self.kps.get_keypoint(t_tobilloi)
+        hombro_dcho = self.kps.get_keypoint(t_hombrod)
+        hombro_izdo = self.kps.get_keypoint(t_hombroi)
+        codo_dcho = self.kps.get_keypoint(t_codod)
+        codo_izdo = self.kps.get_keypoint(t_codoi)
+        ojo_izdo = self.kps.get_keypoint(t_ojoi)
+        oreja_izda = self.kps.get_keypoint(t_orejai)
         # Definir States Uttanasana
         uttanasana_manos_suelo = False
         uttanasana_brazos_rectos = False
         uttanasana_pies_hombros = False
         uttanasana_cabeza_ombligo = False
+        # Check de States
         self.update_body_status()
         if self.enpie:
-            uttanasana_manos_suelo = None
-            uttanasana_brazos_rectos = None
+            uttanasana_manos_suelo = muneca_izda[1] > tobillo_izdo[1] and muneca_dcha[1] > tobillo_dcho[1]
+            uttanasana_brazos_rectos = Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda) and Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha)
             uttanasana_pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
-            uttanasana_cabeza_ombligo = None
+            uttanasana_cabeza_ombligo = oreja_izda[0] < ojo_izdo[0] and abs(oreja_izda[1] - ojo_izdo[1]) < 10
         return uttanasana_manos_suelo and uttanasana_brazos_rectos and uttanasana_pies_hombros and uttanasana_cabeza_ombligo
     
     # Determinar si la postura ARDHA UTTANASANA esta correcta
@@ -285,31 +317,50 @@ class UserPose:
         oreja_izda = self.kps.get_keypoint(t_orejai)
         muneca_dcha = self.kps.get_keypoint(t_munecad)
         muneca_izda = self.kps.get_keypoint(t_munecai)
+        rodilla_izda = self.kps.get_keypoint(t_rodillai)
         # Definir States Ardha_Uttanasana
         ardha_uttanasana_angulo_cuerpo = False
         ardha_uttanasana_espalda_recta = False
         ardha_uttanasana_manos = False
         # Check de States
         ardha_uttanasana_angulo_cuerpo = Pose_Calculator.calcular_angulo(tobillo_izdo, cadera_izda, hombro_izdo) <= 90
-        ardha_uttanasana_espalda_recta = None # straight > cadera, hombro, oreja (izda)
-        ardha_uttanasana_manos = None # muneca en "area": "hombro" - "tobillo" y por debajo de Rodilla
+        ardha_uttanasana_espalda_recta = Pose_Calculator.three_points_straight(cadera_izda, hombro_izdo, oreja_izda)
+        ardha_uttanasana_manos =  (Pose_Calculator.mano_safe_zone(muneca_izda, hombro_izdo, tobillo_izdo, rodilla_izda) 
+                                   and Pose_Calculator.mano_safe_zone(muneca_dcha, hombro_izdo, tobillo_izdo, rodilla_izda))
         return ardha_uttanasana_angulo_cuerpo and ardha_uttanasana_espalda_recta and ardha_uttanasana_manos
 
     # Determinar si la postura CHATURANGA DANDASANA esta correcta
     def chaturanga_dandasana(self):
-        # muneca Y == tobillo
-        # hombro - codo - muneca > 90 grados
-        # hombro - cadera > Linea > codo pegado
-        # hombro - tobillo > RECTAS atraviesa linea hombroD - hombroI
-        return
+        # Definir partes clave para postura
+        muneca_izda = self.kps.get_keypoint(t_munecai)
+        tobillo_izdo = self.kps.get_keypoint(t_tobilloi)
+        hombro_dcho = self.kps.get_keypoint(t_hombrod)
+        hombro_izdo = self.kps.get_keypoint(t_hombroi)
+        codo_izdo = self.kps.get_keypoint(t_codoi)
+        cadera_izda = self.kps.get_keypoint(t_caderai)
+        # Definir States Chaturanga Dandasana
+        chaturanga_dandasana_manos_suelo = False
+        chaturanga_dandasana_brazos_90 = False
+        chaturanga_dandasana_codo_pegado = False
+        chaturanga_dandasana_espalda_recta = False
+        # Check de States
+        chaturanga_dandasana_manos_suelo = muneca_izda[1] >= tobillo_izdo[1]
+            # Checkear traspasar los 90º a la perspectiva
+        chaturanga_dandasana_brazos_90 = 100 > Pose_Calculator.calcular_angulo(hombro_izdo, codo_izdo, muneca_izda) > 80
+        chaturanga_dandasana_codo_pegado = Pose_Calculator.calcular_distancia_punto_segmento(codo_izdo, hombro_izdo, cadera_izda) <= 25
+        chaturanga_dandasana_espalda_recta = Pose_Calculator.do_lines_intersect(tobillo_izdo, cadera_izda, hombro_izdo, hombro_dcho)
+        return chaturanga_dandasana_manos_suelo and chaturanga_dandasana_brazos_90 and chaturanga_dandasana_codo_pegado and chaturanga_dandasana_espalda_recta
     
     # Determinar si la postura URDHVA MUKHA SVANASANA esta correcta
     def urdhva_mukha_svanasana(self):
+        # Definir partes clave para postura
+        # Definir States Chaturanga Dandasana
         urdhva_mukha_svanasana_brazos_rectos = False
         urdhva_mukha_svanasana_muneca_hombros = False
         urdhva_mukha_svanasana_cabeza_arriba = False
         urdhva_mukha_svanasana_orientacion_cabeza = False
         urdhva_mukha_svanasana_orden_cuerpo = False
+        # Check de States
         urdhva_mukha_svanasana_brazos_rectos = None # brazos recto
         urdhva_mukha_svanasana_muneca_hombros = None # muneca Y por debajo de Tobillo + hombro Y por encima de Tobillo
         urdhva_mukha_svanasana_cabeza_arriba = None # nariz por encima de hombro
