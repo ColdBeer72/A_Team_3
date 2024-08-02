@@ -82,12 +82,18 @@ class Pose_Calculator:
     def pies_dentro_hombros(hombro_dcho: list, hombro_izdo: list, tobillo_dcho: list, tobillo_izdo: list) -> bool:
         return ((hombro_izdo[0] - tobillo_izdo[0]) > 0) and ((hombro_dcho[0] - tobillo_dcho[0]) < 0)
 
+    @staticmethod
+    def manos_juntas(muneca_dcha: list, muneca_izda: list) -> bool:
+        # Checkear el 20X e 10Y si es correcto.
+        return (abs(muneca_dcha[0] - muneca_izda[0]) <= 20 and abs(muneca_dcha[1] - muneca_izda[1]) <= 10)
 
-
+    @staticmethod
+    def situacion_brazos (muneca_izda: list, hombro_izdo: list) -> None:
+        
 class UserPose:
     eye_level = CAM_HEIGHT // 100
 
-    def __init__(self): # (self, keypoints)
+    def __init__(self):
         self.actual_state = ''
         self.actual_sequence = ''
         # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
@@ -192,24 +198,24 @@ class UserPose:
     # Determinar si la postura URDHVA HASTASANA esta correcta
     def urdhva_hastasana(self):
         # Definir partes clave para postura
-        hombro_dcho = 
-        hombro_izdo = 
-        codo_dcho = 
-        codo_izdo = 
-        muneca_dcha = 
-        muneca_izda = 
-        oreja_dcha = 
-        oreja_izda = 
-        nariz = 
-        tobillo_dcho = 
-        tobillo_izdo = 
+        hombro_dcho = self.kps.get_keypoint
+        hombro_izdo = self.kps.get_keypoint
+        codo_dcho = self.kps.get_keypoint
+        codo_izdo = self.kps.get_keypoint
+        muneca_dcha = self.kps.get_keypoint
+        muneca_izda = self.kps.get_keypoint
+        oreja_dcha = self.kps.get_keypoint
+        oreja_izda = self.kps.get_keypoint
+        nariz = self.kps.get_keypoint
+        tobillo_dcho = self.kps.get_keypoint
+        tobillo_izdo = self.kps.get_keypointself.kps.get_keypoint
         # Definir States Urdhva_Hastasana
         urdhva_hastasana_manos_juntas_arriba = False
         urdhva_hastasana_cabeza_arriba = False
         urdhva_hastasana_pies_hombros = False
         self.update_body_status()
         if self.enpie:
-            urdhva_hastasana_manos_juntas_arriba = 
+            urdhva_hastasana_manos_juntas_arriba = Pose_Calculator.manos_juntas(muneca_dcha, muneca_izda) and 
             urdhva_hastasana_cabeza_arriba = 
             urdhva_hastasana_pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
         return urdhva_hastasana_manos_juntas_arriba and urdhva_hastasana_cabeza_arriba and urdhva_hastasana_pies_hombros
@@ -219,14 +225,14 @@ class UserPose:
     # Determinar si la postura UTTANASANA esta correcta
     def uttanasana(self):
         # Definir partes clave para postura
-        muneca_dcha = 
-        muneca_izda = 
-        tobillo_dcho = 
-        tobillo_izdo = 
-        hombro_dcho = 
-        hombro_izdo =
-        codo_dcho =
-        codo_izdo = 
+        muneca_dcha = self.kps.get_keypoint
+        muneca_izda = self.kps.get_keypoint
+        tobillo_dcho = self.kps.get_keypoint
+        tobillo_izdo = self.kps.get_keypoint
+        hombro_dcho = self.kps.get_keypoint
+        hombro_izdo = self.kps.get_keypoint
+        codo_dcho = self.kps.get_keypoint
+        codo_izdo = self.kps.get_keypoint
         # Definir States Uttanasana
         uttanasana_manos_suelo = False
         uttanasana_brazos_rectos = False
