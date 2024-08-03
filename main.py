@@ -3,8 +3,7 @@ import streamlit as st
 # Versión Grupal
 from inc.basic import *
 from inc.config import *
-from inc.joan_video_stream import *
-from inc.manu_manage_cameras import *
+from inc.video_stream import *
 
 def main():
 
