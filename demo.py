@@ -1,5 +1,6 @@
-from inc.config import *
-from inc.state_machine import *
+# from inc.config import *
+# from inc.state_machine import *
+
 # l1 = [0, 0]
 # l2 = [100, 100]
 # l3 = [200, 200]
@@ -64,4 +65,24 @@ from inc.state_machine import *
 # test_line_intersections()
 
 
-print(UMBRALES.DIST_CODO_CHATURANGA[2])
+# print(UMBRALES.DIST_CODO_CHATURANGA[2])
+
+
+# posturinha = 'Chaturanga Muchamanasana'
+# posturinha = "_".join(posturinha.split(" ")).lower()
+# print(posturinha)
+# secuencia = "Saludo al sol"
+# data = f"{VIDEO_PATH}/{secuencia}/{posturinha}.mp4"
+# print(data)
+
+
+#  print(type(Modelos))
+
+# import streamlit as st
+# body_dict = {
+#     'cabeza': [1, 145],
+#     'pelotas': [140, 340]
+# }
+# st.session_state["keypoints"] = body_dict
+# keypoints = st.session_state['keypoints']
+# print(keypoints)

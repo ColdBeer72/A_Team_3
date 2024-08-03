@@ -56,5 +56,9 @@ def sublista(diccionario=TRANSICIONES, clave_superior="Saludo al sol"):
   else:
     return []
 
-def prueba_vacia():
-    pass
+def class_2_dict(clase: type) -> dict:
+    new_dict = {}
+    for clave, valor in vars(clase).items():
+        if not clave.startswith('__'):
+            new_dict[clave] = valor
+    return new_dict
