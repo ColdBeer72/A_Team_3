@@ -54,10 +54,10 @@ if postura:
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
 if vercaja:
-    cajavideos = st.container(height = 550, border = True)
+    cajavideos = st.container(height = 600, border = True)
     if muestravid:
-        lcol = 30
-        rcol = 70
+        lcol = 20
+        rcol = 80
         col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
         with col1:
             col1.write("VideoDemo")
@@ -65,7 +65,7 @@ if vercaja:
         with col2:
             col2.write("Aquí irá el Vídeo de WebCam")
     else:
-        cajavideos.write("Aquí también irá el vídeo de WebCam más grande")
+        cajavideos.write("Aquí también irá el vídeo de WebCam en exclusiva")
 
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
