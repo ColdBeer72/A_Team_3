@@ -44,9 +44,9 @@ with scol1:
         vercaja = False
 scol2.write({secuencia_concreta})
 if secuencia_concreta == "postura_concreta":
-    scol2.markdown(f"Modalidad: {postura_concreta} **:orange[POSTURA CONCRETA]**")
+    scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
 else:
-    scol2.markdown(f"Modalidad: {postura_concreta} **:orange[SECUENCIA COMPLETA]**")
+    scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
 scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia}]**")
 if postura:
     scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
