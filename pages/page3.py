@@ -41,13 +41,13 @@ with scol1:
         seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
         # Se añadirá a postoriori
         vercaja = False
-with scol2:
-    if secuencia_concreta == "postura_concreta":
-        scol2.markdown("Modalidad: **:orange[POSTURA CONCRETA]**")
-    else:
-        scol2.markdown("Modalidad **:orange[SECUENCIA COMPLETA]**")
-    scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
-    scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
+
+if secuencia_concreta == "postura_concreta":
+    scol2.markdown("Modalidad: **:orange[POSTURA CONCRETA]**")
+else:
+    scol2.markdown("Modalidad: **:orange[SECUENCIA COMPLETA]**")
+scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
+scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
