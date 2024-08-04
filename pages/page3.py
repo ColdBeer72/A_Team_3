@@ -26,18 +26,24 @@ secuencia_concreta = "_".join(secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
 
-if secuencia_concreta == "postura_concreta":
-    secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
-    posturas = sublista(TRANSICIONES, secuencia_concreta)
-    postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
-    secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
-    postura_min = "_".join(postura.split(" ")).lower()
-    vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
-else:
-    seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
-    # Se añadirá a postoriori
-    vercaja = False
+cajaselect = st.container(height = 200, border = True)
+scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
+with scol1:
+    if secuencia_concreta == "postura_concreta":
+        secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
+        posturas = sublista(TRANSICIONES, secuencia_concreta)
+        postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
+        secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
+        postura_min = "_".join(postura.split(" ")).lower()
+        vercaja = True
+        video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
+    else:
+        seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
+        # Se añadirá a postoriori
+        vercaja = False
+with scol2:
+    scol2.text(f"Secuencia seleccionada: :blue[colors]{secuencia_concreta}")
+    scol2.text(f"Postura seleccionada: :red[colors]{postura}")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
@@ -55,11 +61,7 @@ if vercaja:
         with col2:
             col2.write("Aquí irá el Vídeo de WebCam")
     else:
-        lcol = 1
-        rcol = 99
-        col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
-        with col2:
-            col2.write("Aquí también irá el vídeo de WebCam más grande")
+        cajavideos.write("Aquí también irá el vídeo de WebCam más grande")
 
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
