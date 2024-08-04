@@ -24,13 +24,13 @@ cajaselect = st.container(height = 200, border = True)
 scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
 seleccion = scol1.popover("Selecciona tu ejercicio")
 secuencia = seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
-secuencia_concreta = "_".join(secuencia.split(" ")).lower()
+secuencia_min = "_".join(secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
 postura = False
 
 with scol1:
-    if secuencia_concreta == "postura_concreta":
+    if secuencia_min == "postura_concreta":
         secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
         posturas = sublista(TRANSICIONES, secuencia_concreta)
         postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
@@ -42,8 +42,8 @@ with scol1:
         seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
         # Se añadirá a postoriori
         vercaja = False
-scol2.write({secuencia_concreta})
-if secuencia_concreta == "postura_concreta":
+scol2.write({secuencia_min})
+if secuencia_min == "postura_concreta":
     scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
 else:
     scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
