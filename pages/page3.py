@@ -56,8 +56,8 @@ muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = Fals
 if vercaja:
     cajavideos = st.container(height = 600, border = True)
     if muestravid:
-        lcol = 20
-        rcol = 80
+        lcol = 15
+        rcol = 85
         col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
         with col1:
             col1.write("VideoDemo")
