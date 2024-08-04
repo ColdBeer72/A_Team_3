@@ -27,6 +27,7 @@ secuencia = seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(sec
 secuencia_concreta = "_".join(secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
+postura = False
 
 with scol1:
     if secuencia_concreta == "postura_concreta":
@@ -47,7 +48,7 @@ if secuencia_concreta == "postura_concreta":
 else:
     scol2.markdown("Modalidad: **:orange[SECUENCIA COMPLETA]**")
 scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia}]**")
-if postura != "":
+if postura:
     scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
