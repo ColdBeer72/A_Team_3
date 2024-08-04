@@ -15,12 +15,12 @@ def tips(postu):
 
 st.header("Practica Posturas", anchor = False, divider="red")
 
-st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
+# st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
 secuencias_red = list(TRANSICIONES.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
-cajaselect = st.container(height = 200, border = True)
+cajaselect = st.container(height = 160, border = True)
 scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
 seleccion = scol1.popover("Selecciona tu ejercicio")
 secuencia = seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
@@ -42,24 +42,22 @@ with scol1:
         seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
         # Se añadirá a postoriori
         vercaja = False
-scol2.write({secuencia_min})
+
 if secuencia_min == "postura_concreta":
     scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
 else:
     scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
-scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia}]**")
+scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
 if postura:
     scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
-st.divider()
-
 if vercaja:
     cajavideos = st.container(height = 550, border = True)
     if muestravid:
-        lcol = 40
-        rcol = 60
+        lcol = 30
+        rcol = 70
         col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
         with col1:
             col1.write("VideoDemo")
