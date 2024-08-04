@@ -20,14 +20,14 @@ st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 secuencia_min = list(TRANSICIONES.keys())
 secuencias = secuencia_min + ["Postura concreta"]
 
-seleccion = st.popover("Selecciona tu ejercicio")
+cajaselect = st.container(height = 200, border = True)
+scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
+seleccion = scol1.popover("Selecciona tu ejercicio")
 secuencia = seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
 secuencia_concreta = "_".join(secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
 
-cajaselect = st.container(height = 200, border = True)
-scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
 with scol1:
     if secuencia_concreta == "postura_concreta":
         secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
@@ -42,8 +42,8 @@ with scol1:
         # Se añadirá a postoriori
         vercaja = False
 with scol2:
-    scol2.text(f"Secuencia seleccionada: :blue[colors]{secuencia_concreta}")
-    scol2.text(f"Postura seleccionada: :red[colors]{postura}")
+    scol2.caption(f"Secuencia seleccionada: :blue[colors]{secuencia_concreta}")
+    scol2.caption(f"Postura seleccionada: :red[colors]{postura}")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
