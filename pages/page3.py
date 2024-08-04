@@ -18,7 +18,7 @@ st.header("Practica Posturas", anchor = False, divider="red")
 st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
 secuencias_red = list(TRANSICIONES.keys())
-secuencias = secuencia_min + ["Postura concreta"]
+secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 200, border = True)
 scol1, scol2 = cajaselect.columns(spec = [50, 50], gap = 'small', vertical_alignment = 'top')
