@@ -42,11 +42,17 @@ with scol1:
         seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
         # Se añadirá a postoriori
         vercaja = False
-
+scol2.write({secuencia_concreta})
 if secuencia_concreta == "postura_concreta":
+<<<<<<< HEAD
     scol2.markdown(f"Modalidad: {postura_concreta} **:orange[POSTURA CONCRETA]**")
 else:
     scol2.markdown(f"Modalidad: {postura_concreta} **:orange[SECUENCIA COMPLETA]**")
+=======
+    scol2.markdown("Modalidad: **:orange[POSTURA CONCRETA]**")
+else:
+    scol2.markdown("Modalidad: **:orange[SECUENCIA COMPLETA]**")
+>>>>>>> d200f34 (20240804-21:11-Test10)
 scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia}]**")
 if postura:
     scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
