@@ -5,24 +5,62 @@ from inc.state_machine import *
 from inc.video_stream import VideoProcessor
 from streamlit_webrtc import webrtc_streamer
 
+@st.experimental_dialog("Tips de Ayuda")
+def tips(postu):
+    st.write(f"A destacar en la postura {postu}")
+    reason = st.text_input("Because...")
+    if st.button("Submit"):
+        st.session_state.vote = {"item": item, "reason": reason}
+        st.rerun()
+
 st.header("Practica Posturas", anchor = False, divider="red")
 
-st.subheader("Sigue las indicaciones", anchor = False, divider="gray")
+st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
-secuencias = list(TRANSICIONES.keys()) + ["Postura concreta"]
-secuencia = st.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
-secuencia = "_".join(secuencia.split(" ")).lower()
+secuencia_min = list(TRANSICIONES.keys())
+secuencias = secuencia_min + ["Postura concreta"]
 
-if secuencia == "postura_concreta":
-    secuencia_concreta = st.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias)
+seleccion = st.popover("Selecciona tu ejercicio")
+secuencia = seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
+secuencia_concreta = "_".join(secuencia.split(" ")).lower()
+cajavideos = st.empty()
+vercaja = False
+
+if secuencia_concreta == "postura_concreta":
+    secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
     posturas = sublista(TRANSICIONES, secuencia_concreta)
-    postura:str = st.select_slider("Escoja su postura a practicar:", posturas)
-    postura = "_".join(postura.split(" ")).lower()
+    postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
+    secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
+    postura_min = "_".join(postura.split(" ")).lower()
+    vercaja = True
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
 else:
-    st.warning("La selección de SECUENCIA todavía no está disponible.")
+    seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
     # Se añadirá a postoriori
+    vercaja = False
 
-video_path = f"{VIDEO_DIR}/{secuencia}/{postura}.mp4"
+muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
+
+st.divider()
+
+if vercaja:
+    cajavideos = st.container(height = 550, border = True)
+    if muestravid:
+        lcol = 40
+        rcol = 60
+        col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
+        with col1:
+            col1.write("VideoDemo")
+            col1.video(data = video_path, loop = True, autoplay = True, muted = True)
+        with col2:
+            col2.write("Aquí irá el Vídeo de WebCam")
+    else:
+        lcol = 1
+        rcol = 99
+        col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
+        with col2:
+            col2.write("Aquí también irá el vídeo de WebCam más grande")
+
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
 #############################################################################################

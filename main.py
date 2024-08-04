@@ -14,7 +14,7 @@ def main():
 
 
     page1 = st.Page("pages/page1.py", title="Presentación", icon=":material/support_agent:", default=True)
-    page2 = st.Page("pages/page2.py", title="Sobre el Estudio", icon=":material/delete:")
+    page2 = st.Page("pages/page2.py", title="Sobre el Estudio", icon=":material/book:")
     page3 = st.Page("pages/page3.py", title="Practica Yoga", icon=":material/self_improvement:")
     
 
