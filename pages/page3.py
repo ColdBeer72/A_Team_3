@@ -42,8 +42,8 @@ with scol1:
         # Se añadirá a postoriori
         vercaja = False
 with scol2:
-    scol2.caption(f"Secuencia seleccionada: :blue[colors]{secuencia_concreta}")
-    scol2.caption(f"Postura seleccionada: :red[colors]{postura}")
+    scol2.caption(f"Secuencia seleccionada: :blue[{secuencia_concreta}]")
+    scol2.caption(f"Postura seleccionada: :red[{postura}]")
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
