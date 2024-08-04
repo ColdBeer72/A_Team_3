@@ -17,7 +17,7 @@ st.header("Practica Posturas", anchor = False, divider="red")
 
 st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
-secuencia_min = list(TRANSICIONES.keys())
+secuencias_red = list(TRANSICIONES.keys())
 secuencias = secuencia_min + ["Postura concreta"]
 
 cajaselect = st.container(height = 200, border = True)
@@ -31,7 +31,7 @@ postura = False
 
 with scol1:
     if secuencia_min == "postura_concreta":
-        secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencia_min)
+        secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
         posturas = sublista(TRANSICIONES, secuencia_concreta)
         postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
         secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
