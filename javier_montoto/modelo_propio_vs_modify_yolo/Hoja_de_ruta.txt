@@ -2,8 +2,8 @@ CREAR MODELO PROPIO(con capas convolucionales descargadas):
 1.- WEB SCRAPPING O ENCONTRAR DATASETS CON POSES QUE INCLUYAN KEYPOINTS DESEADOS ✔ (24.000 imagenes ya etiquetadas como -> joint id (0 - r ankle, 1 - r knee, 2 - r hip, 3 - l hip, 4 - l knee, 5 - l ankle, 6 - pelvis, 7 - thorax, 8 - upper neck, 9 - head top, 10 - r wrist, 11 - r elbow, 12 - r shoulder, 13 - l shoulder, 14 - l elbow, 15 - l wrist))
 2.1.- Filtrar esas 24000 imagenes por yolo viendo cuales de estas nos devuelven solo una persona ✔ (12.000 Imagenes restantes)
 2.2.- Si hay mas de mil etiquetar por las que encuentren mas keypoints en yolo o sino manualmente hasta quedarnos con 1000 ✔ (Filtrando por imagenes en las que almenos salga u pie y dividiendo el resultado resultan 1.032 imagenes)
-2.3.- Investigar el formato de los labels del archivo mat, pasarlo a JSON
-2.4.-Sacar un json del anterior con solo los labels de las fotos del filtrado final
+2.3.- Investigar el formato de los labels del archivo mat, pasarlo a JSON ✔
+2.4.-Sacar un json del anterior con solo los labels de las fotos del filtrado final ✔
 3.- Hacer Pipeline enfocado en aumentado de datos con tipos de aumentado que no trastoquen los labels (Brillo, Contraste, etc)
 4.- Cuando el codigo anterior este ok, podemos dar un paso atras, etiquetar manualmente los keypoints restantes (pulgar, meñique, talon, punta y ombligo)
 5......
