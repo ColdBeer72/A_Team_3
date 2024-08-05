@@ -5,7 +5,7 @@ import shutil
 # Configuración de rutas
 source_folder = '../../../../human_pose_images_filtrado_1_persona/images_almenos_un_pie'  # Carpeta con imágenes filtradas
 destination_folder = '../../../../human_pose_images_filtrado_1_persona/images_almenos_un_pie_FINAL'  # Carpeta donde se copiarán las imágenes seleccionadas
-fraction = 0.18  # Fracción de imágenes a seleccionar
+fraction = 0.20  # Fracción de imágenes a seleccionar
 
 # Crear la carpeta de destino si no existe
 os.makedirs(destination_folder, exist_ok=True)
