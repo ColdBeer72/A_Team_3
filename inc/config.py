@@ -1,3 +1,5 @@
+from ultralytics import YOLO
+
 # Ancho de Columna por defecto en StreamLit
 DEFAULT_COLUMN_WIDTH = 30
 MIN_COLUMN_WIDTH = 15
@@ -23,7 +25,7 @@ CAM_HEIGHT = 480
 VIDEO_DIR = "data/Secuencias"
 # Modelos
 class Modelos:
-    YOLO =      "../data/models/yolov8n-pose.pt"
+    YOLO =      YOLO("../data/models/yolov8n-pose.pt")
     PROPIO =    None
 
 # Lista de Transiciones con sus diferentes posturas

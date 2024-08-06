@@ -66,7 +66,8 @@ if vercaja:
 
     with col2:
         col2.write("Aquí irá el Vídeo de WebCam")
-        webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(Modelos.YOLO), sendback_audio=False)
+        postura_usuario = UserPose()
+        webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(Modelos.YOLO, postura_usuario), sendback_audio=False)
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
 #############################################################################################
