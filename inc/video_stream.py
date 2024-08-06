@@ -45,7 +45,7 @@ class VideoProcessor(VideoTransformerBase):
             # Guardar kps en estado de la app
             st.session_state["keypoints"] = body_dict
             # Dibujar keypoints en la imagen
-            self.draw_kps(img, body_dict)
+            # self.draw_kps(img, body_dict)
         return img
 
     def transform(self, frame: VideoFrame) -> ndarray:
