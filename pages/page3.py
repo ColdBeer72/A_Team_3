@@ -34,10 +34,10 @@ with scol1:
         secuencia_concreta = seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
         posturas = sublista(TRANSICIONES, secuencia_concreta)
         postura:str = seleccion.select_slider("Escoja su postura a practicar:", posturas)
-        secuencia_concreta = "_".join(secuencia_concreta.split(" ")).lower()
+        secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
         postura_min = "_".join(postura.split(" ")).lower()
         vercaja = True
-        video_path = f"{VIDEO_DIR}/{secuencia_concreta}/{postura_min}.mp4"
+        video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
     else:
         seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
         # Se añadirá a postoriori
