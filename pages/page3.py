@@ -47,27 +47,26 @@ if secuencia_min == "postura_concreta":
     scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
 else:
     scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
-scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
+    scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
 if postura:
     scol2.markdown(f"Postura seleccionada: **:red[{postura}]**")
 
-muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
-
-lcol = 15
-rcol = 85
-col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
+muestravid = cajavideos.toggle(label = "TIPS / VIDEO MUESTRA", value = False, )
 
 if vercaja:
     cajavideos = st.container(height = 600, border = True)
+    lcol = 15
+    rcol = 85
+    col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
     if muestravid:
         col1.write("VideoDemo")
         col1.video(data = video_path, loop = True, autoplay = True, muted = True)
     else:
         col1.write("Aquí vendrán los TIPS")
 
-with col2:
-    col2.write("Aquí irá el Vídeo de WebCam")
-    webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(Modelos.YOLO), sendback_audio=False)
+    with col2:
+        col2.write("Aquí irá el Vídeo de WebCam")
+        webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(Modelos.YOLO), sendback_audio=False)
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
 #############################################################################################
