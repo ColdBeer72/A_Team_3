@@ -3,7 +3,7 @@ from inc.basic import *
 from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import VideoProcessor
-from streamlit_webrtc import webrtc_streamer
+from streamlit_webrtc import webrtc_streamer, ClientSettings, WebRtcMode
 
 @st.experimental_dialog("Tips de Ayuda")
 def tips(postu):
@@ -62,41 +62,22 @@ if vercaja:
         col1.write("VideoDemo")
         col1.video(data = video_path, loop = True, autoplay = True, muted = True)
     else:
-        col1.write("Aquí vendrán los TIPS")
+        col1.write("Aquí vendrán los TIPS") 
 
     with col2:
         col2.write("Aquí irá el Vídeo de WebCam")
-        postura_usuario = UserPose()
-        webrtc_streamer(key="streamer",
-                        video_processor_factory=lambda: VideoProcessor(Modelos.YOLO, None),
-                        media_stream_constraints={"video": True, "audio": False},
-                        )
-#############################################################################################
-# ACTUALIZACION IN PROGRESS
-#############################################################################################
-
-# width = st.sidebar.slider(
-#     label= "Tamaño del Video:",
-#     min_value=MIN_COLUMN_WIDTH,
-#     max_value=MAX_COLUMN_WIDTH,
-#     value=DEFAULT_COLUMN_WIDTH,
-#     format="%d%%")
-# width = max(width, 0.01)
-# side = max((100 - width) / 2, 0.01)
-
-# # Creacion de 2 columnas side para centrar el Container del Vid
-# _, container, _ = st.columns([side, width, side])
-# container.subheader(f"Video ejemplo de la postura {postura}:")
-# container.video(data = video_path)
-
-# st.subheader(f"Captura de la postura {postura}:")
-
-# user_pose = UserPose()
-
-# keypoints en > session_state("keypoints")
-# keypoints = st.session_state("keypoints") # keypoints es el DICCIONARIO >>> 'nariz': [x, y]
-
-# user_pose.update_keypoints(keypoints)
-
-# model_input = Modelos.YOLO
-# webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(model_input), sendback_audio=False)
+        model_input = Modelos.YOLO
+        user_pose = UserPose()
+        client_settings = ClientSettings(
+                                        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+                                        media_stream_constraints={"video": True, "audio": False}
+                                        )
+        webrtc_stream = webrtc_streamer(
+                            key = "streamer",
+                            mode = WebRtcMode.SENDRECV,
+                            video_processor_factory = lambda: VideoProcessor(model_input, user_pose),
+                            client_settings = client_settings
+                            )
+        if webrtc_stream.video_processor:
+            keypoints = st.session_state.get("keypoints", {})
+            user_pose.update_keypoints(keypoints)

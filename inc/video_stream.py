@@ -4,6 +4,8 @@ import streamlit as st
 from streamlit_webrtc import VideoTransformerBase
 import cv2
 
+
+
 class VideoProcessor(VideoTransformerBase):
     def __init__(self, model_input, user_pose):
         self.model = model_input
@@ -45,7 +47,7 @@ class VideoProcessor(VideoTransformerBase):
             # Guardar kps en estado de la app
             st.session_state["keypoints"] = body_dict
             # Dibujar keypoints en la imagen
-            # self.draw_kps(img, body_dict)
+            self.draw_kps(img, body_dict)
         return img
 
     def transform(self, frame: VideoFrame) -> ndarray:
