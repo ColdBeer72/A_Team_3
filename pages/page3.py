@@ -53,20 +53,21 @@ if postura:
 
 muestravid = cajavideos.toggle(label = "Mostrar Vídeo de Muestra", value = False, )
 
+lcol = 15
+rcol = 85
+col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
+
 if vercaja:
     cajavideos = st.container(height = 600, border = True)
     if muestravid:
-        lcol = 15
-        rcol = 85
-        col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
-        with col1:
-            col1.write("VideoDemo")
-            col1.video(data = video_path, loop = True, autoplay = True, muted = True)
-        with col2:
-            col2.write("Aquí irá el Vídeo de WebCam")
+        col1.write("VideoDemo")
+        col1.video(data = video_path, loop = True, autoplay = True, muted = True)
     else:
-        cajavideos.write("Aquí también irá el vídeo de WebCam en exclusiva")
+        col1.write("Aquí vendrán los TIPS")
 
+with col2:
+    col2.write("Aquí irá el Vídeo de WebCam")
+    webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(Modelos.YOLO), sendback_audio=False)
 #############################################################################################
 # ACTUALIZACION IN PROGRESS
 #############################################################################################
