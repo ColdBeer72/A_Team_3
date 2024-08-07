@@ -13,7 +13,7 @@ def tips(postu):
         st.session_state.vote = {"item": item, "reason": reason}
         st.rerun()
 
-st.header("Practica Posturas", anchor = False, divider="red")
+st.subheader("Practica Posturas", anchor = False, divider="red")
 
 # st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
