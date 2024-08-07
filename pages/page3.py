@@ -21,7 +21,7 @@ secuencias_red = list(TRANSICIONES.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 160, border = True)
-scol1, scol2, scol3, scol4 = cajaselect.columns(spec = [25, 25, 25, 25],
+scol1, scol2, scol3, scol4 = cajaselect.columns(spec = [15, 25, 25, 15],
                                 gap = 'small', vertical_alignment = 'top')
 
 scol1_seleccion = scol1.popover("Selecciona tu ejercicio")
