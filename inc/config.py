@@ -11,6 +11,9 @@ PROYECT_TITLE = "Proyecto Yoga"
 # Logotipo de la Pagina
 PAGE_LOGO = "streamlit_sources/iconoyoga.png"
 PAGE_ICON = "streamlit_sources/iconoyoga_mini.png"
+# Semáforo
+SEM_GREEN = "streamlit_sources/semaphore_green.png"
+SEM_RED = "streamlit_sources/semaphore_red.png"
 # Path al Logotipo de HackaBoss
 LOGO_PATH = "streamlit_sources/hab_logo.png"
 # Autores y referencias
