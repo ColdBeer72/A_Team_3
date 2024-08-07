@@ -4,7 +4,8 @@ from inc.basic import *
 # Título principal
 col1, col2 = st.columns([3, 1])
 with col1:
-    st.title(PROYECT_TITLE, anchor = False)
+#    st.title(PROYECT_TITLE, anchor = False)
+    st.image(PAGE_LOGO, use_column_width="auto")
 with col2:
     st.image(LOGO_PATH, width=100)
 
