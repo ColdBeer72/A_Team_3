@@ -46,7 +46,9 @@ if secuencia_min == "postura_concreta":
     vercaja = True
     video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
     scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
+    scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
 else:
+    secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
     scol1_seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
     # Se añadirá a postoriori
     vercaja = False
