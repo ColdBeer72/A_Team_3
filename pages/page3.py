@@ -29,13 +29,12 @@ scol1_secuencia = scol1_seleccion.selectbox("Escoja su Secuencia", secuencias, i
 scol1_cajavisos = scol1.empty()
 scol3_muestravid = scol3.toggle(label = "TIPS / VIDEO MUESTRA", value = False, )
 scol3_postura = scol3.empty()
-scol4_semaforo = scol4.image(SEM_RED, caption = "MAL",
-                             use_column_width="auto")
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
 postura = False
+estado_usuario = False
 
 if secuencia_min == "postura_concreta":
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
@@ -59,6 +58,14 @@ if postura:
     scol3_postura = scol3.markdown(f"Postura seleccionada: **:red[{postura}]**")
 else:
     scol3_postura = scol3.empty()
+
+if estado_usuario == False:
+    scol4_semaforo = scol4.image(SEM_RED,
+                             use_column_width="auto")
+else:
+    scol4_semaforo = scol4.image(SEM_GREEN,
+                             use_column_width="auto")
+
 
 if vercaja:
     cajavideos = st.container(height = 600, border = True)
