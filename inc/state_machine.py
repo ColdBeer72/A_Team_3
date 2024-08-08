@@ -153,10 +153,10 @@ class Pose_Calculator:
 class UserPose:
     eye_level = CAM_HEIGHT // 100
 
-    def __init__(self):
-        self.actual_state = ''
-        self.actual_sequence = ''
-        self.pos_check = None
+    def __init__(self, pose, seq):
+        self.actual_state = self.set_pose(pose)
+        self.actual_sequence = self.set_sequence(seq)
+        self.user_state = False
         # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
         self.kps = KeypointsHandler()
         self.cam = False
@@ -167,8 +167,8 @@ class UserPose:
         self.pino = False
 
     # Establecer posicion "semaforo"
-    def set_pos_semaforo(self, pos_sem):
-        self.pos_check = pos_sem
+    def update_state(self, state):
+        self.user_state = state
 
     # Establecer secuencia
     def set_sequence(self, sequence):
@@ -250,12 +250,10 @@ class UserPose:
         if all(puntos_clave):
             # Desempaquetar los puntos clave
             nariz, oreja_dcha = puntos_clave
-            print(nariz)
             # Asegurarse de que los keypoints no sean None antes de usarlos
             if nariz is not None and oreja_dcha is not None:
                 if nariz[1] < oreja_dcha[1]:
                     pose_ok = True
-            print(pose_ok)
         return pose_ok
 
     # Determinar si la postura TADASANA esta correcta

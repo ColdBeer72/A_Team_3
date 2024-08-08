@@ -1,6 +1,8 @@
 from pathlib import Path
 from inc.config import *
 import streamlit as st
+from inc.state_machine import UserPose
+from inc.video_stream import VideoProcessor
 
 def read_markdown_file(markdown_file):
     """Devuelve el contenido de un archivo MarkDown.
@@ -63,6 +65,7 @@ def class_2_dict(clase: type) -> dict:
             new_dict[clave] = valor
     return new_dict
 
+# Updatear estado del semaforo
 def update_semaforo(state, sitio):
     if state:
         sitio.image(SEM_GREEN, use_column_width="auto")

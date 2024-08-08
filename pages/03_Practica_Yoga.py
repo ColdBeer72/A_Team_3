@@ -1,17 +1,29 @@
 import streamlit as st
-from inc.basic import sublista
+from inc.basic import sublista, update_semaforo
 from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import *
-from streamlit_webrtc import webrtc_streamer, ClientSettings, WebRtcMode
 
-@st.experimental_dialog("Tips de Ayuda")
-def tips(postu):
-    st.write(f"A destacar en la postura {postu}")
-    reason = st.text_input("Because...")
-    if st.button("Submit"):
-        st.session_state.vote = {"item": item, "reason": reason}
-        st.rerun()
+# @st.experimental_dialog("Tips de Ayuda")
+# def tips(postu):
+#     st.write(f"A destacar en la postura {postu}")
+#     reason = st.text_input("Because...")
+#     if st.button("Submit"):
+#         st.session_state.vote = {"item": item, "reason": reason}
+#         st.rerun()
+
+postura = ""
+secuencia_concreta = ""
+
+def video_processor_factory():
+    if not postura or not secuencia_concreta:
+        st.error("No se ha definido la postura o la secuencia concreta. Asegúrate de que ambos valores estén seleccionados.")
+        return None
+    model_input = Modelos.YOLO
+    user_pose = UserPose(postura, secuencia_concreta)
+    user_pose.set_sequence(secuencia_concreta)
+    user_pose.set_pose(postura)
+    return VideoProcessor(model_input, user_pose)
 
 st.subheader("Practica Posturas", anchor = False, divider="red")
 
@@ -33,7 +45,6 @@ scol3_postura = scol3.empty()
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 cajavideos = st.empty()
 vercaja = False
-postura = False
 estado_usuario = False
 
 if secuencia_min == "postura_concreta":
@@ -60,7 +71,6 @@ else:
     scol3_postura = scol3.empty()
 
 scol4_semaforo = scol4.empty()
-
 update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:
@@ -75,18 +85,30 @@ if vercaja:
         col1.write("Aquí vendrán los TIPS") 
 
     with col2:
-        model_input = YOLO("../data/models/yolov8n-pose.pt")
-        user_pose = UserPose()
-        user_pose.set_sequence(secuencia_concreta)
-        user_pose.set_pose(postura)
-        user_pose.set_pos_semaforo(scol4_semaforo)
-        client_settings = ClientSettings(
-                                        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-                                        media_stream_constraints={"video": True, "audio": False}
-                                        )
-        webrtc_stream = webrtc_streamer(
-                            key = "streamer",
-                            mode = WebRtcMode.SENDRECV,
-                            video_processor_factory = lambda: VideoProcessor(model_input, user_pose),
-                            client_settings = client_settings
-                            )
+        # Preparacion webrtc_streamer
+        rtc_configuration = {
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        }
+        media_stream_constraints = {
+            "video": True,
+            "audio": False
+        }
+        webrtc_ctx = webrtc_streamer(
+            key="streamer",
+            mode=WebRtcMode.SENDRECV,
+            video_frame_callback= video_processor_factory,
+            rtc_configuration=rtc_configuration,
+            media_stream_constraints=media_stream_constraints,
+            async_processing=True
+        )
+        if webrtc_ctx.state.playing:
+            message_box = st.empty()
+            while True:
+                try:
+                    keypoints_result = result_queue.get(timeout=1)
+                    if keypoints_result:
+                        message_box.write(f"Últimos keypoints: {keypoints_result.keypoints}")
+                except queue.Empty:
+                    message_box.write("Esperando datos...")
+                except Exception as e:
+                    st.error(f"Error al recibir datos de la cola: {e}")
