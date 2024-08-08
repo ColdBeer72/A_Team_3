@@ -107,7 +107,7 @@ def get_joint_name(joint_id):
 
 
 # Uso de la función
-mat_file_path = './Dataset2_anotations/mpii_human_pose_v1_u12_2/mpii_human_pose_v1_u12_1FINAL.mat'
+mat_file_path = './Dataset2_anotations/mpii_human_pose_v1_u12_2/mpii_human_pose_v1_u12_1.mat'
 json_file_path = './labels.json'
 image_folder_path = '../../../../human_pose_images_filtrado_1_persona//images_almenos_un_pie_FINAL'
 mat_to_json_filtered_sorted(mat_file_path, json_file_path, image_folder_path)
