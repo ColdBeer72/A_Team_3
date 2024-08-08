@@ -16,6 +16,7 @@ def main():
     page1 = st.Page("pages/01_Presentation.py", title="Presentación", icon=":material/support_agent:", default=True)
     page2 = st.Page("pages/02_Sobre_el_Estudio.py", title="Sobre el Estudio", icon=":material/book:")
     page3 = st.Page("pages/03_Practica_Yoga.py", title="Practica Yoga", icon=":material/self_improvement:")
+    page4 = st.Page("pages/04_Mas_sobre_el_Yoga.py", title="Mas sobre el Yoga", icon=":material/self_improvement:")
     
 
     pg = st.navigation([page1, page2, page3])
