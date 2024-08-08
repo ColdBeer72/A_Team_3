@@ -1,7 +1,8 @@
 from pathlib import Path
 from inc.config import *
 import streamlit as st
-from inc.state_machine import UserPose
+from multiprocessing import Queue
+import queue
 from inc.video_stream import VideoProcessor
 
 def read_markdown_file(markdown_file):
@@ -71,3 +72,16 @@ def update_semaforo(state, sitio):
         sitio.image(SEM_GREEN, use_column_width="auto")
     else:
         sitio.image(SEM_RED, use_column_width="auto")
+
+def update_keypoints(keypoint_queue, user_pose):
+    while True:
+        try:
+            keypoints = keypoint_queue.get(timeout=1)
+            if keypoints is None:
+                break
+            user_pose.update_keypoints(keypoints)
+        except queue.Empty:
+            continue
+
+def get_current_body_dict():
+    return VideoProcessor.get_body_dict()

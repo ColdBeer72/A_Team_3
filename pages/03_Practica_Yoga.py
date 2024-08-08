@@ -1,8 +1,12 @@
+
 import streamlit as st
-from inc.basic import sublista, update_semaforo
+from inc.basic import sublista, update_semaforo, update_keypoints
 from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import *
+from streamlit_webrtc import webrtc_streamer, WebRtcMode
+import multiprocessing
+import time
 
 # @st.experimental_dialog("Tips de Ayuda")
 # def tips(postu):
@@ -14,13 +18,13 @@ from inc.video_stream import *
 
 postura = ""
 secuencia_concreta = ""
+keypoint_queue = None
 
-def video_processor_factory():
+def video_processor_factory(user_pose):
     if not postura or not secuencia_concreta:
         st.error("No se ha definido la postura o la secuencia concreta. Asegúrate de que ambos valores estén seleccionados.")
         return None
     model_input = Modelos.YOLO
-    user_pose = UserPose(postura, secuencia_concreta)
     user_pose.set_sequence(secuencia_concreta)
     user_pose.set_pose(postura)
     return VideoProcessor(model_input, user_pose)
@@ -85,7 +89,9 @@ if vercaja:
         col1.write("Aquí vendrán los TIPS") 
 
     with col2:
+        user_pose = UserPose(postura, secuencia_concreta)
         # Preparacion webrtc_streamer
+        video_processor = video_processor_factory(user_pose)
         rtc_configuration = {
             "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
         }
@@ -96,19 +102,11 @@ if vercaja:
         webrtc_ctx = webrtc_streamer(
             key="streamer",
             mode=WebRtcMode.SENDRECV,
-            video_frame_callback= video_processor_factory,
+            video_frame_callback= video_processor.recv,
             rtc_configuration=rtc_configuration,
             media_stream_constraints=media_stream_constraints,
             async_processing=True
         )
-        if webrtc_ctx.state.playing:
-            message_box = st.empty()
-            while True:
-                try:
-                    keypoints_result = result_queue.get(timeout=1)
-                    if keypoints_result:
-                        message_box.write(f"Últimos keypoints: {keypoints_result.keypoints}")
-                except queue.Empty:
-                    message_box.write("Esperando datos...")
-                except Exception as e:
-                    st.error(f"Error al recibir datos de la cola: {e}")
+
+        time.sleep(1)
+        st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")

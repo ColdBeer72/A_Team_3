@@ -251,9 +251,10 @@ class UserPose:
             # Desempaquetar los puntos clave
             nariz, oreja_dcha = puntos_clave
             # Asegurarse de que los keypoints no sean None antes de usarlos
-            if nariz is not None and oreja_dcha is not None:
+            if nariz and oreja_dcha:
                 if nariz[1] < oreja_dcha[1]:
                     pose_ok = True
+        print(f"esto sale? {pose_ok}")
         return pose_ok
 
     # Determinar si la postura TADASANA esta correcta
@@ -274,6 +275,7 @@ class UserPose:
                 brazos_rectos = (Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha) and 
                             Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda))
                 pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
+        print(brazos_rectos and pies_hombros)
         return brazos_rectos and pies_hombros
 
     # Determinar si la postura URDHVA HASTASANA esta correcta
@@ -297,6 +299,7 @@ class UserPose:
                 manos_juntas_arriba = Pose_Calculator.manos_juntas(muneca_dcha, muneca_izda)\
                                     and brazos_arriba
                 pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
+        print(manos_juntas_arriba and pies_hombros)
         return manos_juntas_arriba and pies_hombros
 
     # Determinar si la postura UTTANASANA esta correcta
@@ -323,6 +326,7 @@ class UserPose:
                 pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
                 cabeza_ombligo = oreja_izda[1] < ojo_izdo[1]\
                             and abs(oreja_izda[1] - ojo_izdo[1]) < UMBRALES.INCLINACION_CABEZA_UTTANASANA
+        print(manos_suelo and brazos_rectos and pies_hombros and cabeza_ombligo)
         return manos_suelo and brazos_rectos and pies_hombros and cabeza_ombligo
     
     # Determinar si la postura ARDHA UTTANASANA esta correcta
@@ -343,6 +347,7 @@ class UserPose:
             espalda_recta = Pose_Calculator.three_points_straight(cadera_izda, hombro_izdo, oreja_izda)
             manos =  Pose_Calculator.mano_safe_zone(muneca_izda, hombro_izdo, tobillo_izdo, rodilla_izda)\
                 and Pose_Calculator.mano_safe_zone(muneca_dcha, hombro_izdo, tobillo_izdo, rodilla_izda)
+        print(angulo_cuerpo and espalda_recta and manos)
         return angulo_cuerpo and espalda_recta and manos
 
     # Determinar si la postura CHATURANGA DANDASANA esta correcta
@@ -365,6 +370,7 @@ class UserPose:
                         and (abs(codo_izdo[1] - muneca_izda[1]) <= UMBRALES.CHATURANGA_Y_CODO_MUNECA)
             codo_pegado = Pose_Calculator.calcular_distancia_punto_segmento(codo_izdo, hombro_izdo, cadera_izda) <= UMBRALES.DIST_CODO_CHATURANGA
             espalda_recta = Pose_Calculator.do_lines_intersect(tobillo_izdo, cadera_izda, hombro_izdo, hombro_dcho)
+        print(manos_suelo and brazos_90 and codo_pegado and espalda_recta)
         return manos_suelo and brazos_90 and codo_pegado and espalda_recta
     
     # Determinar si la postura URDHVA MUKHA SVANASANA esta correcta
@@ -389,6 +395,7 @@ class UserPose:
             cabeza_arriba = nariz[1] < hombro_izdo[1]
             orientacion_cabeza =  (abs(nariz[1] - ojo_izdo[1]) < UMBRALES.ORIENTACION_CABEZA_URDHVA_MUKHA)
             orden_cuerpo = nariz[0] < hombro_izdo[0] < cadera_izda[0] < rodilla_izda[0] < tobillo_izdo[0]
+        print(brazos_rectos and muneca_hombros and cabeza_arriba and orientacion_cabeza and orden_cuerpo)
         return brazos_rectos and muneca_hombros and cabeza_arriba and orientacion_cabeza and orden_cuerpo
 
     # Determinar si la postura ADHO MUKHA SVANASANA esta correcta
@@ -406,6 +413,7 @@ class UserPose:
             # Check de States
             cadera_arriba_y_manos_suelo = cadera_izda[1] < tobillo_izdo[1] < muneca_izda[1]
             espalda_recta =  Pose_Calculator.three_points_straight(cadera_izda, hombro_izdo, muneca_izda)
+        print(cadera_arriba_y_manos_suelo and espalda_recta)
         return cadera_arriba_y_manos_suelo and espalda_recta
 
     def transicionar_a_nueva_postura(self, new_pose):

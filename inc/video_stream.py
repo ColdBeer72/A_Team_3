@@ -3,18 +3,16 @@ from streamlit_webrtc import VideoTransformerBase
 from av.video.frame import VideoFrame
 import cv2
 from inc.basic import *
-from typing import Dict, NamedTuple
-import queue
+from multiprocessing import Queue
 
-class Keypoints(NamedTuple):
-    keypoints: Dict[str, list]
+keypoint_queue = Queue()
 
-result_queue: queue.Queue = queue.Queue()
-
+@st.cache_resource
 class VideoProcessor(VideoTransformerBase):
-    def __init__(self, model_input, user_pose):
-        self.model = model_input
-        self.user_pose = user_pose
+    def __init__(self, _model_input, _user_pose):
+        self.model = _model_input
+        self.user_pose = _user_pose
+        self.body_dict = {}
 
     def draw_kps(self, img, keypoints):
         for _, coords in keypoints.items():
@@ -52,9 +50,15 @@ class VideoProcessor(VideoTransformerBase):
                     x, y = kp[0], kp[1]
                     body_dict[body_part].extend([x, y])
                 # Guardar kps
-                result_queue.put(Keypoints(keypoints=body_dict))
+                self.body_dict = body_dict
                 # Dibujar keypoints en la imagen
                 self.draw_kps(img, body_dict)
+                self.user_pose.update_keypoints(body_dict)
+                self.user_pose.set_pose('Adho Mukha Svanasana')
+                self.user_pose.postura()
         except Exception as e:
             st.error(f"Error procesando el frame: {e}")
         return VideoFrame.from_ndarray(img, format="bgr24")
+    
+    def get_body_dict(self):
+        return self.body_dict
