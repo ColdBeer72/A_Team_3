@@ -1,8 +1,8 @@
 import streamlit as st
-from inc.basic import *
+from inc.basic import sublista
 from inc.config import *
 from inc.state_machine import *
-from inc.video_stream import VideoProcessor
+from inc.video_stream import *
 from streamlit_webrtc import webrtc_streamer, ClientSettings, WebRtcMode
 
 @st.experimental_dialog("Tips de Ayuda")
@@ -59,18 +59,14 @@ if postura:
 else:
     scol3_postura = scol3.empty()
 
-if estado_usuario == False:
-    scol4_semaforo = scol4.image(SEM_RED,
-                             use_column_width="auto")
-else:
-    scol4_semaforo = scol4.image(SEM_GREEN,
-                             use_column_width="auto")
+scol4_semaforo = scol4.empty()
 
+update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:
-    cajavideos = st.container(height = 600, border = True)
-    lcol = 15
-    rcol = 85
+    cajavideos = st.container(height = 500, border = True)
+    lcol = 25
+    rcol = 60
     col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
     if scol3_muestravid:
         col1.write("VideoDemo")
@@ -79,9 +75,11 @@ if vercaja:
         col1.write("Aquí vendrán los TIPS") 
 
     with col2:
-        col2.write("Aquí irá el Vídeo de WebCam")
-        model_input = Modelos.YOLO
+        model_input = YOLO("../data/models/yolov8n-pose.pt")
         user_pose = UserPose()
+        user_pose.set_sequence(secuencia_concreta)
+        user_pose.set_pose(postura)
+        user_pose.set_pos_semaforo(scol4_semaforo)
         client_settings = ClientSettings(
                                         rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
                                         media_stream_constraints={"video": True, "audio": False}
@@ -92,6 +90,3 @@ if vercaja:
                             video_processor_factory = lambda: VideoProcessor(model_input, user_pose),
                             client_settings = client_settings
                             )
-        if webrtc_stream.video_processor:
-            keypoints = st.session_state.get("keypoints", {})
-            user_pose.update_keypoints(keypoints)

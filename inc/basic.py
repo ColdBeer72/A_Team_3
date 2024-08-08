@@ -62,3 +62,9 @@ def class_2_dict(clase: type) -> dict:
         if not clave.startswith('__'):
             new_dict[clave] = valor
     return new_dict
+
+def update_semaforo(state, sitio):
+    if state:
+        sitio.image(SEM_GREEN, use_column_width="auto")
+    else:
+        sitio.image(SEM_RED, use_column_width="auto")

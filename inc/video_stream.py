@@ -3,13 +3,13 @@ from numpy import ndarray
 import streamlit as st
 from streamlit_webrtc import VideoTransformerBase
 import cv2
-
-
+from inc.basic import *
 
 class VideoProcessor(VideoTransformerBase):
     def __init__(self, model_input, user_pose):
         self.model = model_input
         self.user_pose = user_pose
+        self.estado_usuario = False
 
     def draw_kps(self, img, keypoints):
         for _, coords in keypoints.items():
@@ -45,9 +45,14 @@ class VideoProcessor(VideoTransformerBase):
                 x, y = kp[0], kp[1]
                 body_dict[body_part].extend([x, y])
             # Guardar kps en estado de la app
-            st.session_state["keypoints"] = body_dict
+            print("1r print")
+            self.user_pose.update_keypoints(body_dict)
+            print("2o print")
+            self.estado_usuario = self.user_pose.postura()
+            print(f"3r print {self.estado_usuario}")
             # Dibujar keypoints en la imagen
             self.draw_kps(img, body_dict)
+            print("4o print")
         return img
 
     def transform(self, frame: VideoFrame) -> ndarray:
@@ -57,11 +62,3 @@ class VideoProcessor(VideoTransformerBase):
         processed_frame = self.process_frame(img)
         # Devolver el frame procesado
         return processed_frame
-
-######################################################################################
-# EJEMPLO DE USO
-######################################################################################
-# # Cargar el modelo YOLO para pose estimation
-# model_input = YOLO("../data/models/yolov8n-pose.pt")
-# # Iniciar el streamer de webrtc usando el VideoProcessor con el modelo cargado
-# webrtc_streamer(key="streamer", video_processor_factory=lambda: VideoProcessor(model_input), sendback_audio=False)
