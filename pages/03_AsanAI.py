@@ -111,6 +111,7 @@ if vercaja:
         # Mientras este el PLAY >>> Hacemos cositas aqui
         st.warning(webrtc_ctx.state.playing)
         st.error(falso_frame_count)
+        st.warning(user_pose.actual_state)
         while webrtc_ctx.state.playing:
             keypoints = keypoint_queue.get()
             st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")

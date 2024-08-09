@@ -54,7 +54,7 @@ class VideoProcessor(VideoTransformerBase):
                 self.body_dict = body_dict
                 # Dibujar keypoints en la imagen
                 self.draw_kps(img, body_dict)
-                keypoint_queue.put(body_dict)
+                keypoint_queue.put(self.body_dict)
         except Exception as e:
             st.error(f"Error procesando el frame: {e}")
         return VideoFrame.from_ndarray(img, format="bgr24")
