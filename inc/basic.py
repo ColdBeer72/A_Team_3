@@ -7,7 +7,7 @@ from inc.video_stream import VideoProcessor
 
 from typing import Annotated
 
-hide_img_fs = '''
+HIDE_IMG_FS = '''
 <style>
 button[title="View fullscreen"]{
     visibility: hidden;}

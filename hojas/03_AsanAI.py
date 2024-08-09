@@ -7,7 +7,7 @@ from inc.video_stream import VideoProcessor, keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 # import time
 
-st.markdown(hide_img_fs, unsafe_allow_html=True)
+st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
 postura = ""
 secuencia_concreta = ""

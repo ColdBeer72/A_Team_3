@@ -5,8 +5,6 @@ from inc.basic import *
 from inc.config import *
 from inc.video_stream import *
 
-st.markdown(hide_img_fs, unsafe_allow_html=True)
-
 def main():
 
     # Configuración de la página
@@ -14,6 +12,7 @@ def main():
                        page_icon=":material/self_improvement:")
     st.logo(PAGE_LOGO, icon_image = PAGE_ICON, link = None)
 
+    st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
     page1 = st.Page("hojas/01_Presentation.py", title="Presentación", icon=":material/support_agent:", default=True)
     page2 = st.Page("hojas/02_Sobre_el_Estudio.py", title="Sobre el Estudio", icon=":material/book:")

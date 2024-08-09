@@ -1,7 +1,7 @@
 import streamlit as st
 from inc.basic import *
 
-st.markdown(hide_img_fs, unsafe_allow_html=True)
+st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
 # Título principal
 col1, col2 = st.columns([3, 1])
