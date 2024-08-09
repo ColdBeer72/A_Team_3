@@ -2,7 +2,7 @@ import streamlit as st
 from inc.basic import sublista, update_semaforo
 from inc.config import *
 from inc.state_machine import *
-from inc.video_stream import *
+from inc.video_stream import VideoProcessor, keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 # import time
 
@@ -112,18 +112,20 @@ if vercaja:
         while webrtc_ctx.state.playing:
             st.write("Entramos en WHILE!")
             keypoints = keypoint_queue.get()
-            st.success(f"Últimos keypoints: {keypoints}")
-            # falso_frame_count =+ 1
-            st.success(falso_frame_count)
-        #     if falso_frame_count == 100:
-        #         if falso_frame_count % 10 == 0:
-        #             user_pose.update_keypoints(keypoints)
-        #             st.write(user_pose.kps)
-        #             user_pose.set_pose(postura)
-        #             st.write(user_pose.actual_state)
-        #             estado_usuario = user_pose.postura()
-        #             st.write(estado_usuario)
-        #             update_semaforo(estado_usuario, scol4_semaforo)
-        #         falso_frame_count = 0
-        # else:
-        #     video_processor.keypoint_queue.empty()
+            st.write(f"Últimos keypoints: {keypoints}")
+            st.error(falso_frame_count)
+            if falso_frame_count % 10 == 0:
+                falso_frame_count += 1
+                user_pose.update_keypoints(keypoints)
+                st.warning(user_pose.kps)
+                user_pose.set_pose(postura)
+                st.warning(user_pose.actual_state)
+                estado_usuario = user_pose.postura()
+                st.warning(estado_usuario)
+                update_semaforo(estado_usuario, scol4_semaforo)
+                if falso_frame_count == 1000:
+                    falso_frame_count = 0
+            else:
+                falso_frame_count += 1
+        else:
+            keypoint_queue.empty()

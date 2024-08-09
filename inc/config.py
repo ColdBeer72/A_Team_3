@@ -35,7 +35,7 @@ CAM_HEIGHT = 480
 # Origen del vídeo
 VIDEO_DIR = "data/Secuencias"
 # Modelos
-class Modelos(Enum):
+class Modelos():
     YOLO =      YOLO("../data/models/yolov8n-pose.pt")
     PROPIO =    None
 # Lista de Transiciones con sus diferentes posturas
@@ -51,7 +51,7 @@ TRANSICIONES = {
         } 
     }
 # Umbrales del State Machine
-class UMBRALES(Enum):
+class UMBRALES():
     THREE_POINT_STRAIGHT =              [190, 170]
     INCLINACION_CABEZA_UTTANASANA =     10
     ANGULO_CUERPO_ARDHA_UTTANASANA =    90
