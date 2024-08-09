@@ -80,9 +80,7 @@ if vercaja:
         # Preparacion webrtc_streamer
         video_processor = video_processor_factory(user_pose)
         rtc_configuration = RTCConfiguration({
-            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}],
-            "iceTransportPolicy": "relay"
-            })
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]            })
         media_stream_constraints = {
             "video": {
                 "width": {"ideal": CAM_WIDTH / 2},

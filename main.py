@@ -18,7 +18,7 @@ def main():
     page3 = st.Page("pages/03_AsanAI.py", title="AsanAI", icon=":material/self_improvement:")
     page4 = st.Page("pages/04_Sabiduria_y_asanas.py", title='Sabiduría y Asanas', icon= '🙏🏻')
 
-    pg = st.navigation([page1, page2, page3])
+    pg = st.navigation([page1, page2, page3, page4])
 
     pg.run()
 
