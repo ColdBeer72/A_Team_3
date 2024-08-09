@@ -5,6 +5,8 @@ from inc.basic import *
 from inc.config import *
 from inc.video_stream import *
 
+st.markdown(hide_img_fs, unsafe_allow_html=True)
+
 def main():
 
     # Configuración de la página
