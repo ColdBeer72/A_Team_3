@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title('Roots of Ashtangapp')
+st.title('Sabiduría y Asanas')
 
 st.markdown("Aquí descubrirás los Yoga Sutras, un conjunto de aforismos que forman la base filosófica del yoga, y te guiarán hacia una práctica más consciente y significativa. Además, te ofrecemos una explicación detallada de las asanas (posturas), donde cada postura es desglosada con sus beneficios, alineaciones y variaciones, para que puedas enriquecer tu práctica física y espiritual. Esta sección está diseñada para que tanto principiantes como practicantes avanzados puedan encontrar inspiración y conocimiento en su camino de yoga. :rainbow[Tu camino hacia la iluminación empieza aquí]")
 
