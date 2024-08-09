@@ -1,10 +1,10 @@
 
 import streamlit as st
-from inc.basic import sublista, update_semaforo, update_keypoints
+from inc.basic import sublista, update_semaforo
 from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import *
-from streamlit_webrtc import webrtc_streamer, WebRtcMode
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 import multiprocessing
 import time
 
@@ -92,11 +92,16 @@ if vercaja:
         user_pose = UserPose(postura, secuencia_concreta)
         # Preparacion webrtc_streamer
         video_processor = video_processor_factory(user_pose)
-        rtc_configuration = {
-            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-        }
+        rtc_configuration = RTCConfiguration({
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}],
+            "iceTransportPolicy": "relay"
+            })
         media_stream_constraints = {
-            "video": True,
+            "video": {
+                "width": {"ideal": CAM_WIDTH / 2},
+                "height": {"ideal": CAM_HEIGHT / 2},
+                "frameRate": {"ideal": 15, "max": 30}
+            },
             "audio": False
         }
         webrtc_ctx = webrtc_streamer(
@@ -105,8 +110,7 @@ if vercaja:
             video_frame_callback= video_processor.recv,
             rtc_configuration=rtc_configuration,
             media_stream_constraints=media_stream_constraints,
-            async_processing=True
-        )
+            async_processing=True        )
 
         time.sleep(1)
         st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
