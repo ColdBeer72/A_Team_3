@@ -15,10 +15,10 @@ def main():
     st.logo(PAGE_LOGO, icon_image = PAGE_ICON, link = None)
 
 
-    page1 = st.Page("pages/01_Presentation.py", title="Presentación", icon=":material/support_agent:", default=True)
-    page2 = st.Page("pages/02_Sobre_el_Estudio.py", title="Sobre el Estudio", icon=":material/book:")
-    page3 = st.Page("pages/03_AsanAI.py", title="AsanAI", icon=":material/self_improvement:")
-    page4 = st.Page("pages/04_Sabiduria_y_asanas.py", title='Sabiduría y Asanas', icon= '🙏🏻')
+    page1 = st.Page("hojas/01_Presentation.py", title="Presentación", icon=":material/support_agent:", default=True)
+    page2 = st.Page("hojas/02_Sobre_el_Estudio.py", title="Sobre el Estudio", icon=":material/book:")
+    page3 = st.Page("hojas/03_AsanAI.py", title="AsanAI", icon=":material/self_improvement:")
+    page4 = st.Page("hojas/04_Sabiduria_y_asanas.py", title='Sabiduría y Asanas', icon= '🙏🏻')
 
     pg = st.navigation([page1, page2, page3, page4])
 
