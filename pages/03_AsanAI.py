@@ -110,7 +110,7 @@ if vercaja:
         st.write(falso_frame_count)
         st.write(user_pose.actual_state)
         while webrtc_ctx.state.playing:
-            st.write("PENEEEEEEEE!")
+            st.write("Entramos en WHILE!")
             keypoints = keypoint_queue.get()
             st.success(f"Últimos keypoints: {keypoints}")
             # falso_frame_count =+ 1
