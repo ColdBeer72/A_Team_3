@@ -1,4 +1,3 @@
-
 import streamlit as st
 from inc.basic import sublista, update_semaforo
 from inc.config import *
@@ -7,14 +6,6 @@ from inc.video_stream import *
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 import multiprocessing
 import time
-
-# @st.experimental_dialog("Tips de Ayuda")
-# def tips(postu):
-#     st.write(f"A destacar en la postura {postu}")
-#     reason = st.text_input("Because...")
-#     if st.button("Submit"):
-#         st.session_state.vote = {"item": item, "reason": reason}
-#         st.rerun()
 
 postura = ""
 secuencia_concreta = ""
@@ -68,11 +59,7 @@ else:
     vercaja = False
     scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
     scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
-
-if postura:
-    scol3_postura = scol3.markdown(f"Postura seleccionada: **:red[{postura}]**")
-else:
-    scol3_postura = scol3.empty()
+scol3_postura = scol3.markdown(f"Postura seleccionada: **:red[{postura}]**") if postura else scol3.empty()
 
 scol4_semaforo = scol4.empty()
 update_semaforo(estado_usuario, scol4_semaforo)

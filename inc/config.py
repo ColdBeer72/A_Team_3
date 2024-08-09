@@ -1,5 +1,9 @@
 from ultralytics import YOLO
 
+
+#Activar/Desactivar modo Debug
+DEBUG = True
+
 # Ancho de Columna por defecto en StreamLit
 DEFAULT_COLUMN_WIDTH = 30
 MIN_COLUMN_WIDTH = 15
