@@ -1,4 +1,7 @@
 import streamlit as st
+from inc.basic import *
+
+st.markdown(hide_img_fs, unsafe_allow_html=True)
 
 st.title('Sabiduría y Asanas')
 
