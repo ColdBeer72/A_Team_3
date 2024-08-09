@@ -5,11 +5,11 @@ from multiprocessing import Queue
 import queue
 from inc.video_stream import VideoProcessor
 
-def read_markdown_file(markdown_file):
-    """Devuelve el contenido de un archivo MarkDown.
+from typing import Annotated
 
-    Args:
-        markdown_file (string): Ruta y nombre del Archivo
+
+def read_markdown_file(markdown_file : Annotated[str, "md_file: Ruta y nombre del Archivo"]):
+    """Devuelve el contenido de un archivo MarkDown.
 
     Returns:
         mdtext: Devuelve el contenido del archivo

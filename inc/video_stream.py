@@ -5,7 +5,6 @@ import cv2
 from inc.basic import *
 from multiprocessing import Queue
 
-keypoint_queue = Queue()
 
 @st.cache_resource
 class VideoProcessor(VideoTransformerBase):
@@ -13,6 +12,7 @@ class VideoProcessor(VideoTransformerBase):
         self.model = _model_input
         self.user_pose = _user_pose
         self.body_dict = {}
+        self.keypoint_queue = Queue()
 
     def draw_kps(self, img, keypoints):
         for _, coords in keypoints.items():
@@ -21,6 +21,7 @@ class VideoProcessor(VideoTransformerBase):
                 cv2.circle(img, (x, y), 5, (0, 0, 255), -1)
 
     def recv(self, frame: VideoFrame) -> VideoFrame:
+        # global keypoint_queue
         img = frame.to_ndarray(format="bgr24")
         try:
             results = self.model(img)
@@ -53,9 +54,7 @@ class VideoProcessor(VideoTransformerBase):
                 self.body_dict = body_dict
                 # Dibujar keypoints en la imagen
                 self.draw_kps(img, body_dict)
-                self.user_pose.update_keypoints(body_dict)
-                self.user_pose.set_pose('Adho Mukha Svanasana')
-                self.user_pose.postura()
+                self.keypoint_queue.put(body_dict)
         except Exception as e:
             st.error(f"Error procesando el frame: {e}")
         return VideoFrame.from_ndarray(img, format="bgr24")

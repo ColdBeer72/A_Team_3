@@ -4,12 +4,10 @@ from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import *
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-import multiprocessing
 import time
 
 postura = ""
 secuencia_concreta = ""
-keypoint_queue = None
 
 def video_processor_factory(user_pose):
     if not postura or not secuencia_concreta:
@@ -80,7 +78,8 @@ if vercaja:
         # Preparacion webrtc_streamer
         video_processor = video_processor_factory(user_pose)
         rtc_configuration = RTCConfiguration({
-            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]            })
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        })
         media_stream_constraints = {
             "video": {
                 "width": {"ideal": CAM_WIDTH / 2},
@@ -95,7 +94,19 @@ if vercaja:
             video_frame_callback= video_processor.recv,
             rtc_configuration=rtc_configuration,
             media_stream_constraints=media_stream_constraints,
-            async_processing=True        )
+            async_processing=True
+        )
 
-        time.sleep(1)
-        st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
+        falso_frame_count = 0
+        # Mientras este el PLAY >>> Hacemos cositas aqui
+        while webrtc_ctx.state.playing:
+            keypoints = video_processor.keypoint_queue.get()
+            user_pose.update_keypoints(keypoints)
+            user_pose.set_pose(postura)
+            user_pose.postura()
+            # st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
+            falso_frame_count =+ 1
+            if falso_frame_count == 10:
+                falso_frame_count = 0
+        else:
+            video_processor.keypoint_queue.empty()
