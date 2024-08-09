@@ -1,0 +1,56 @@
+KEYPOINTS ACTUALMENTE ANOTADOS POR ID 
+0 : Tobillo_derecho,
+1 : Rodilla_derecha,
+3 : Cadera_derecha,
+4 : Rodilla_izquierda,
+5 : Tobillo_izquierdo,
+6 : Pelvis,
+7 : Thorax,
+8 : Cuello_superior,
+9 : Cabeza_superior,
+10 : Muñeca_derecha,
+11 : Codo_derecho,
+12 : Hombro_derecho,
+13 : Hombro_izquierdo,
+14 : Codo_izquierdo,
+15 : Muñeca_izquierda
+
+KEYPOINTS EN YOLO que no esten en modelo propio
+'nariz': [],
+'ojo_izdo': [],
+'ojo_dcho': [],
+'oreja_izda': [],
+'oreja_dcha': [],
+'hombro_izdo': [], ✔
+'hombro_dcho': [], ✔
+'codo_izdo': [], ✔
+'codo_dcho': [], ✔
+'muneca_izda': [], ✔
+'muneca_dcha': [], ✔
+'cadera_izda': [], ✔
+'cadera_dcha': [], ✔
+'rodilla_izda': [], ✔
+'rodilla_dcha': [], ✔
+'tobillo_izdo': [], ✔
+'tobillo_dcho': [] ✔
+
+IMPORTANTE!
+Si observais el labels.json vereis la etiqueta de head_rect,
+esa etiqueta despues en la conversion a labelsDEF.json pasan a ocupar las dos primeras posiciones del array.
+
+ESTRUCTURA JSON
+id , punto x, punto y, booleano de si el punto es visible o no.
+
+CONCLUSION FINAL:
+TENEMOS QUE AÑADIR A CADA FOTO
+'nariz': [],
+'ojo_izdo': [],
+'ojo_dcho': [],
+'oreja_izda': [],
+'oreja_dcha': [],
+pulgar: [],
+meñique: [],
+talon : [],
+punta: [],
+ombligo: []
+
