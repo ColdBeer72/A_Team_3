@@ -8,6 +8,14 @@ with col1:
     st.image(PAGE_LOGO, use_column_width="auto")
 with col2:
     st.image(LOGO_PATH, width=100)
+hide_img_fs = '''
+<style>
+button[title="View fullscreen"]{
+    visibility: hidden;}
+</style>
+'''
+
+st.markdown(hide_img_fs, unsafe_allow_html=True)
 
 st.header("Presentación del Proyecto", anchor = False, divider="red")
 st.subheader("Proyecto de:", anchor = False, divider="gray")
