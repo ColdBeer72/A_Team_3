@@ -106,22 +106,13 @@ if vercaja:
             async_processing=True
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
-        st.write(webrtc_ctx.state.playing)
-        st.write(falso_frame_count)
-        st.write(user_pose.actual_state)
         while webrtc_ctx.state.playing:
-            st.write("Entramos en WHILE!")
             keypoints = keypoint_queue.get()
-            st.write(f"Últimos keypoints: {keypoints}")
-            st.error(falso_frame_count)
             if falso_frame_count % 10 == 0:
                 falso_frame_count += 1
                 user_pose.update_keypoints(keypoints)
-                st.warning(user_pose.kps)
                 user_pose.set_pose(postura)
-                st.warning(user_pose.actual_state)
                 estado_usuario = user_pose.postura()
-                st.warning(estado_usuario)
                 update_semaforo(estado_usuario, scol4_semaforo)
                 if falso_frame_count == 1000:
                     falso_frame_count = 0
