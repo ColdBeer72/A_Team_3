@@ -275,7 +275,9 @@ class UserPose:
                 brazos_rectos = (Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha) and 
                             Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda))
                 pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
-        print(brazos_rectos and pies_hombros)
+        print(f"brazos_rectos: {brazos_rectos}")
+        print(f"pies_hombros: {pies_hombros}")
+        print(f"Postura correcta? {brazos_rectos and pies_hombros}")
         return brazos_rectos and pies_hombros
 
     # Determinar si la postura URDHVA HASTASANA esta correcta
@@ -328,7 +330,7 @@ class UserPose:
                             and abs(oreja_izda[1] - ojo_izdo[1]) < UMBRALES.INCLINACION_CABEZA_UTTANASANA
         print(manos_suelo and brazos_rectos and pies_hombros and cabeza_ombligo)
         return manos_suelo and brazos_rectos and pies_hombros and cabeza_ombligo
-    
+
     # Determinar si la postura ARDHA UTTANASANA esta correcta
     def ardha_uttanasana(self) -> bool:
         # Definir States Ardha_Uttanasana

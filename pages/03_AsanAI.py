@@ -9,7 +9,7 @@ import time
 postura = ""
 secuencia_concreta = ""
 
-def video_processor_factory(user_pose):
+def video_processor_factory(user_pose: type):
     if not postura or not secuencia_concreta:
         st.error("No se ha definido la postura o la secuencia concreta. Asegúrate de que ambos valores estén seleccionados.")
         return None
@@ -26,13 +26,19 @@ secuencias_red = list(TRANSICIONES.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 160, border = True)
-scol1, scol2, scol3, scol4 = cajaselect.columns(spec = [15, 25, 25, 15],
-                                gap = 'small', vertical_alignment = 'top')
-
+scol1, scol2, scol3, scol4 = cajaselect.columns(spec=[15, 25, 25, 15],
+                                gap='small',
+                                vertical_alignment='top'
+                                )
 scol1_seleccion = scol1.popover("Selecciona tu ejercicio")
-scol1_secuencia = scol1_seleccion.selectbox("Escoja su Secuencia", secuencias, index=len(secuencias)-1)
+scol1_secuencia = scol1_seleccion.selectbox("Escoja su Secuencia",
+                                            secuencias,
+                                            index=len(secuencias)-1
+                                            )
 scol1_cajavisos = scol1.empty()
-scol3_muestravid = scol3.toggle(label = "TIPS / VIDEO MUESTRA", value = False, )
+scol3_muestravid = scol3.toggle(label="TIPS / VIDEO MUESTRA",
+                                value=False
+                                )
 scol3_postura = scol3.empty()
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
@@ -66,47 +72,59 @@ if vercaja:
     cajavideos = st.container(height = 500, border = True)
     lcol = 25
     rcol = 60
-    col1, col2 = cajavideos.columns(spec = [lcol, rcol], gap = 'small', vertical_alignment = 'top')
+    col1, col2 = cajavideos.columns(spec=[lcol, rcol],
+                                    gap='small',
+                                    vertical_alignment='top'
+                                    )
     if scol3_muestravid:
         col1.write("VideoDemo")
-        col1.video(data = video_path, loop = True, autoplay = True, muted = True)
+        col1.video(data=video_path,
+                   loop=True,
+                   autoplay=True,
+                   muted=True
+                   )
     else:
         col1.write("Aquí vendrán los TIPS") 
-
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
-        # Preparacion webrtc_streamer
         video_processor = video_processor_factory(user_pose)
         rtc_configuration = RTCConfiguration({
             "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
         })
         media_stream_constraints = {
             "video": {
-                "width": {"ideal": CAM_WIDTH / 2},
-                "height": {"ideal": CAM_HEIGHT / 2},
-                "frameRate": {"ideal": 15, "max": 30}
+                "width": {"ideal": CAM_WIDTH},
+                "height": {"ideal": CAM_HEIGHT},
+                "frameRate": {"ideal": 20, "max": 40}
             },
             "audio": False
         }
         webrtc_ctx = webrtc_streamer(
             key="streamer",
             mode=WebRtcMode.SENDRECV,
-            video_frame_callback= video_processor.recv,
+            video_frame_callback=video_processor.recv,
             rtc_configuration=rtc_configuration,
             media_stream_constraints=media_stream_constraints,
             async_processing=True
         )
-
         falso_frame_count = 0
         # Mientras este el PLAY >>> Hacemos cositas aqui
+        st.warning(webrtc_ctx.state.playing)
+        st.error(falso_frame_count)
         while webrtc_ctx.state.playing:
-            keypoints = video_processor.keypoint_queue.get()
-            user_pose.update_keypoints(keypoints)
-            user_pose.set_pose(postura)
-            user_pose.postura()
-            # st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
+            keypoints = keypoint_queue.get()
+            st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
             falso_frame_count =+ 1
-            if falso_frame_count == 10:
-                falso_frame_count = 0
-        else:
-            video_processor.keypoint_queue.empty()
+            st.write(falso_frame_count)
+        #     if falso_frame_count == 100:
+        #         if falso_frame_count % 10 == 0:
+        #             user_pose.update_keypoints(keypoints)
+        #             st.write(user_pose.kps)
+        #             user_pose.set_pose(postura)
+        #             st.write(user_pose.actual_state)
+        #             estado_usuario = user_pose.postura()
+        #             st.write(estado_usuario)
+        #             update_semaforo(estado_usuario, scol4_semaforo)
+        #         falso_frame_count = 0
+        # else:
+        #     video_processor.keypoint_queue.empty()

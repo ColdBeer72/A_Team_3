@@ -1,5 +1,7 @@
 from ultralytics import YOLO
 
+from enum import Enum
+
 
 #Activar/Desactivar modo Debug
 DEBUG = True
@@ -21,34 +23,35 @@ SEM_RED = "streamlit_sources/semaphore_red.png"
 # Path al Logotipo de HackaBoss
 LOGO_PATH = "streamlit_sources/hab_logo.png"
 # Autores y referencias
-LISTA_AUTORES = [["juan", "Juan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
-            ["manu", "Manuel Tornos", "https://www.linkedin.com/in/mtornos/"],
-            ["jordi", "Jordi Porcel", "https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/"],
-            ["javi", "Javier Montoto", "https://www.linkedin.com/in/javier-montoto/"]]
+LISTA_AUTORES = [
+        ["juan", "Juan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
+        ["manu", "Manuel Tornos", "https://www.linkedin.com/in/mtornos/"],
+        ["jordi", "Jordi Porcel", "https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/"],
+        ["javi", "Javier Montoto", "https://www.linkedin.com/in/javier-montoto/"]
+    ]
 #Formato de CAPTURA de vídeo
 CAM_WIDTH = 640
 CAM_HEIGHT = 480
 # Origen del vídeo
 VIDEO_DIR = "data/Secuencias"
 # Modelos
-class Modelos:
+class Modelos(Enum):
     YOLO =      YOLO("../data/models/yolov8n-pose.pt")
     PROPIO =    None
-
 # Lista de Transiciones con sus diferentes posturas
 TRANSICIONES = {
-            'Saludo al sol': {
-                'Tadasana': 'Urdhva Hastasana',
-                'Urdhva Hastasana': 'Uttanasana',
-                'Uttanasana': 'Ardha Uttanasana', 
-                'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
-                'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
-                'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
-                'Adho Mukha Svanasana': 'Uttanasana'
-            } 
-        }
+        'Saludo al sol': {
+            'Tadasana': 'Urdhva Hastasana',
+            'Urdhva Hastasana': 'Uttanasana',
+            'Uttanasana': 'Ardha Uttanasana', 
+            'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
+            'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
+            'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
+            'Adho Mukha Svanasana': 'Uttanasana'
+        } 
+    }
 # Umbrales del State Machine
-class UMBRALES:
+class UMBRALES(Enum):
     THREE_POINT_STRAIGHT =              [190, 170]
     INCLINACION_CABEZA_UTTANASANA =     10
     ANGULO_CUERPO_ARDHA_UTTANASANA =    90
