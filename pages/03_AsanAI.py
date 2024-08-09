@@ -4,19 +4,15 @@ from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import *
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-import time
+# import time
 
 postura = ""
 secuencia_concreta = ""
+falso_frame_count = 0
 
-def video_processor_factory(user_pose: type):
-    if not postura or not secuencia_concreta:
-        st.error("No se ha definido la postura o la secuencia concreta. Asegúrate de que ambos valores estén seleccionados.")
-        return None
+def video_processor_factory():
     model_input = Modelos.YOLO
-    user_pose.set_sequence(secuencia_concreta)
-    user_pose.set_pose(postura)
-    return VideoProcessor(model_input, user_pose)
+    return VideoProcessor(model_input)
 
 st.subheader("Practica Posturas", anchor = False, divider="red")
 
@@ -87,7 +83,9 @@ if vercaja:
         col1.write("Aquí vendrán los TIPS") 
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
-        video_processor = video_processor_factory(user_pose)
+        video_processor = video_processor_factory()
+        user_pose.set_sequence(secuencia_concreta)
+        user_pose.set_pose(postura)
         rtc_configuration = RTCConfiguration({
             "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
         })
@@ -107,16 +105,16 @@ if vercaja:
             media_stream_constraints=media_stream_constraints,
             async_processing=True
         )
-        falso_frame_count = 0
         # Mientras este el PLAY >>> Hacemos cositas aqui
-        st.warning(webrtc_ctx.state.playing)
-        st.error(falso_frame_count)
-        st.warning(user_pose.actual_state)
+        st.write(webrtc_ctx.state.playing)
+        st.write(falso_frame_count)
+        st.write(user_pose.actual_state)
         while webrtc_ctx.state.playing:
+            st.write("PENEEEEEEEE!")
             keypoints = keypoint_queue.get()
-            st.write(f"Últimos keypoints: {video_processor.get_body_dict()}")
-            falso_frame_count =+ 1
-            st.write(falso_frame_count)
+            st.success(f"Últimos keypoints: {keypoints}")
+            # falso_frame_count =+ 1
+            st.success(falso_frame_count)
         #     if falso_frame_count == 100:
         #         if falso_frame_count % 10 == 0:
         #             user_pose.update_keypoints(keypoints)

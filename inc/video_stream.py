@@ -9,11 +9,8 @@ keypoint_queue = Queue()
 
 @st.cache_resource
 class VideoProcessor(VideoTransformerBase):
-    def __init__(self, _model_input, _user_pose):
+    def __init__(self, _model_input):
         self.model = _model_input
-        self.user_pose = _user_pose
-        self.body_dict = {}
-        # self.keypoint_queue = Queue()
 
     def draw_kps(self, img, keypoints):
         for _, coords in keypoints.items():
@@ -50,14 +47,9 @@ class VideoProcessor(VideoTransformerBase):
                 for kp, body_part in zip(keypoints[0], body_dict):
                     x, y = kp[0], kp[1]
                     body_dict[body_part].extend([x, y])
-                # Guardar kps
-                self.body_dict = body_dict
                 # Dibujar keypoints en la imagen
                 self.draw_kps(img, body_dict)
-                keypoint_queue.put(self.body_dict)
+                keypoint_queue.put(body_dict)
         except Exception as e:
             st.error(f"Error procesando el frame: {e}")
         return VideoFrame.from_ndarray(img, format="bgr24")
-    
-    def get_body_dict(self):
-        return self.body_dict

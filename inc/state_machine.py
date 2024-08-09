@@ -157,7 +157,6 @@ class UserPose:
         self.actual_state = self.set_pose(pose)
         self.actual_sequence = self.set_sequence(seq)
         self.user_state = False
-        # Obtener KPS por algun metodo que haga de Traductor > Modelo : KPs
         self.kps = KeypointsHandler()
         self.cam = False
         self.suelo = None
@@ -170,14 +169,14 @@ class UserPose:
     def update_state(self, state):
         self.user_state = state
 
-    # Establecer secuencia
-    def set_sequence(self, sequence):
-        self.actual_sequence = sequence
-
     # Establecer postura
     def set_pose(self, pose):
         self.actual_state = pose
 
+    # Establecer secuencia
+    def set_sequence(self, sequence):
+        self.actual_sequence = sequence
+    
     # Actualizar KPs
     def update_keypoints(self, keypoints):
         self.kps.update_kps(keypoints)
@@ -275,8 +274,6 @@ class UserPose:
                 brazos_rectos = (Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha) and 
                             Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda))
                 pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
-        print(f"brazos_rectos: {brazos_rectos}")
-        print(f"pies_hombros: {pies_hombros}")
         print(f"Postura correcta? {brazos_rectos and pies_hombros}")
         return brazos_rectos and pies_hombros
 
