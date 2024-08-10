@@ -26,7 +26,7 @@ button[title="View fullscreen"]{
         height: auto !important;
     }
     .webrtc-container {
-        max-width: 800px;  /* Ajusta el tamaño máximo aquí */
+        max-width: 400px;  /* Ajusta el tamaño máximo aquí */
         margin: 0 auto;    /* Centra el video en el contenedor */
     }
 </style>
