@@ -86,9 +86,9 @@ if vercaja:
                    muted=True
                    )
     else:
-        col1.write("Aquí vendrán los TIPS")
-        for count, tip in enumerate(TRANSICIONESTIPS[secuencia_concreta][postura]):
-            col1.write(f"- {tip"})
+        # col1.write("Aquí vendrán los TIPS")
+        for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
+            col1.markdown(f"- {tip}")
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
