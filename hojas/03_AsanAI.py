@@ -1,10 +1,13 @@
 import streamlit as st
-from inc.basic import sublista, update_semaforo
+#from inc.basic import sublista, update_semaforo
+from inc.basic import *
 from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import VideoProcessor, keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 # import time
+
+st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
 postura = ""
 secuencia_concreta = ""

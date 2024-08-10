@@ -7,6 +7,12 @@ from inc.video_stream import VideoProcessor
 
 from typing import Annotated
 
+HIDE_IMG_FS = '''
+<style>
+button[title="View fullscreen"]{
+    visibility: hidden;}
+</style>
+'''
 
 def read_markdown_file(markdown_file : Annotated[str, "md_file: Ruta y nombre del Archivo"]):
     """Devuelve el contenido de un archivo MarkDown.
