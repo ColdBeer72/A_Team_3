@@ -20,6 +20,16 @@ button[title="View fullscreen"]{
                     padding-right: 5rem;
                 }
 </style>
+<style>
+    .webrtc-container video {
+        width: 100% !important;
+        height: auto !important;
+    }
+    .webrtc-container {
+        max-width: 400px;  /* Ajusta el tamaño máximo aquí */
+        margin: 0 auto;    /* Centra el video en el contenedor */
+    }
+</style>
 '''
 
 def read_markdown_file(markdown_file : Annotated[str, "md_file: Ruta y nombre del Archivo"]):
