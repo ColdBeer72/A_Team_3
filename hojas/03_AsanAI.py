@@ -103,7 +103,7 @@ if vercaja:
             "video": {
                 "width": {"ideal": CAM_WIDTH},
                 "height": {"ideal": CAM_HEIGHT},
-                "frameRate": {"ideal": 20, "max": 40}
+                "frameRate": {"exact": 15} #"min":20, "max": 40}
             },
             "audio": False
         }
