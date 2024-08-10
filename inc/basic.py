@@ -12,6 +12,14 @@ HIDE_IMG_FS = '''
 button[title="View fullscreen"]{
     visibility: hidden;}
 </style>
+<style>
+               .block-container {
+                    padding-top: 1rem;
+                    padding-bottom: 0rem;
+                    padding-left: 5rem;
+                    padding-right: 5rem;
+                }
+</style>
 '''
 
 def read_markdown_file(markdown_file : Annotated[str, "md_file: Ruta y nombre del Archivo"]):
