@@ -73,7 +73,7 @@ update_semaforo(estado_usuario, scol4_semaforo)
 if vercaja:
     cajavideos = st.container(height = 500, border = True)
     lcol = 15
-    rcol = 85
+    rcol = 60
     col1, col2 = cajavideos.columns(spec=[lcol, rcol],
                                     gap='small',
                                     vertical_alignment='top'
@@ -92,7 +92,10 @@ if vercaja:
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
-        draw_kps = st.checkbox("¿Quieres ver los Keypoints en el video?")
+        draw_kps = st.checkbox(
+            "¿Quieres ver los Keypoints en el video?",
+            value=True
+            )
         video_processor.set_draw(draw_kps)
         user_pose.set_sequence(secuencia_concreta)
         user_pose.set_pose(postura)
