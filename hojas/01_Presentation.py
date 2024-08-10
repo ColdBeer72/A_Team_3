@@ -19,6 +19,7 @@ with st.expander("Tecnologías Utilizadas:"):
     techs_md_path = "streamlit_sources/page1/techs.md"
     techs_md = read_markdown_file(techs_md_path)
     st.markdown(techs_md)
+st.markdown("AI + ML + UXUI:")
 with st.expander("AI - Inteligencia Artificial"):
     ia_md_path = "streamlit_sources/page1/ia.md"
     ia_md = read_markdown_file(ia_md_path)
