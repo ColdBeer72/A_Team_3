@@ -21,7 +21,7 @@ PAGE_ICON = "streamlit_sources/iconoyoga_mini.png"
 SEM_GREEN = "streamlit_sources/semaphore_green.png"
 SEM_RED = "streamlit_sources/semaphore_red.png"
 # Path al Logotipo de HackaBoss
-LOGO_PATH = "streamlit_sources/hab_logo.png"
+HAB_LOGO_PATH = "streamlit_sources/hab_logo.png"
 # Autores y referencias
 LISTA_AUTORES = [
         ["juan", "Juan Crescenti", "https://www.linkedin.com/in/juancrescenti/"],
