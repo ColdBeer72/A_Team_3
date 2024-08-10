@@ -25,18 +25,22 @@ with st.expander("**Tecnologías Utilizadas:**"):
     techs_md = read_markdown_file(techs_md_path)
     st.markdown(techs_md)
 st.markdown("#### AI + ML + UXUI:")
-with st.expander("**AI - Inteligencia Artificial**"):
-    ia_md_path = "streamlit_sources/page1/ia.md"
-    ia_md = read_markdown_file(ia_md_path)
-    st.markdown(ia_md)
-with st.expander("**ML - Machine Learning**"):
-    ml_md_path = "streamlit_sources/page1/ml.md"
-    ml_md = read_markdown_file(ml_md_path)
-    st.markdown(ml_md)
-with st.expander("**UX/UI - Experiencia de Usuario / Interfaz de Usuario**"):
-    uxui_md_path = "streamlit_sources/page1/uxui.md"
-    uxui_md = read_markdown_file(uxui_md_path)
-    st.markdown(uxui_md)
+col1, col2, col3 = st.columns(3)
+with col1:
+    with st.expander("**AI - Inteligencia Artificial**"):
+        ia_md_path = "streamlit_sources/page1/ia.md"
+        ia_md = read_markdown_file(ia_md_path)
+        st.markdown(ia_md)
+with col2:
+    with st.expander("**ML - Machine Learning**"):
+        ml_md_path = "streamlit_sources/page1/ml.md"
+        ml_md = read_markdown_file(ml_md_path)
+        st.markdown(ml_md)
+with col3:
+    with st.expander("**UX/UI - Experiencia de Usuario / Interfaz de Usuario**"):
+        uxui_md_path = "streamlit_sources/page1/uxui.md"
+        uxui_md = read_markdown_file(uxui_md_path)
+        st.markdown(uxui_md)
 
 # Firma
 st.subheader("Proyecto de:", anchor = False, divider="gray")
