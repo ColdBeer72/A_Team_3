@@ -72,8 +72,8 @@ update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:
     cajavideos = st.container(height = 500, border = True)
-    lcol = 25
-    rcol = 60
+    lcol = 15
+    rcol = 85
     col1, col2 = cajavideos.columns(spec=[lcol, rcol],
                                     gap='small',
                                     vertical_alignment='top'
