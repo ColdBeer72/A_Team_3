@@ -22,19 +22,22 @@ secuencias_red = list(TRANSICIONES.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 160, border = True)
-scol1, scol2, scol3, scol4 = cajaselect.columns(spec=[15, 25, 25, 15],
-                                gap='small',
-                                vertical_alignment='top'
-                                )
+scol1, scol2, scol3, scol4 = cajaselect.columns(
+        spec=[15, 25, 25, 15],
+        gap='small',
+        vertical_alignment='top'
+    )
 scol1_seleccion = scol1.popover("Selecciona tu ejercicio")
-scol1_secuencia = scol1_seleccion.selectbox("Escoja su Secuencia",
-                                            secuencias,
-                                            index=len(secuencias)-1
-                                            )
+scol1_secuencia = scol1_seleccion.selectbox(
+        "Escoja su Secuencia",
+        secuencias,
+        index=len(secuencias)-1
+    )
 scol1_cajavisos = scol1.empty()
-scol3_muestravid = scol3.toggle(label="TIPS / VIDEO MUESTRA",
-                                value=False
-                                )
+scol3_muestravid = scol3.toggle(
+        label="TIPS / VIDEO MUESTRA",
+        value=False
+    )
 scol3_postura = scol3.empty()
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
@@ -84,6 +87,8 @@ if vercaja:
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
+        draw_kps = st.checkbox("¿Quieres ver los Keypoints en el video?")
+        video_processor.set_draw(draw_kps)
         user_pose.set_sequence(secuencia_concreta)
         user_pose.set_pose(postura)
         rtc_configuration = RTCConfiguration({
