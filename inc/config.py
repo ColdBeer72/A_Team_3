@@ -80,7 +80,7 @@ t_tobillod: str =   'tobillo_dcho'
 
 TRANSICIONESTIPS = {
         'Saludo al sol': {
-            'Tadasana':         ['Equilibra el peso en ambos pies' 
+            'Tadasana':         ['Equilibra el peso en ambos pies',
                                 'Abre las manos hacia delante.', 
                                 'Activa piernas, glúteos y abdomen'],
             'Urdhva Hastasana': ['Palmas en forma de rezo', 
