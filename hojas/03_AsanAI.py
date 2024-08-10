@@ -21,7 +21,7 @@ st.subheader("Practica Posturas", anchor = False, divider="red")
 
 # st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
-secuencias_red = list(TRANSICIONES.keys())
+secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 160, border = True)
@@ -50,7 +50,7 @@ estado_usuario = False
 
 if secuencia_min == "postura_concreta":
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
-    posturas = sublista(TRANSICIONES, secuencia_concreta)
+    posturas = sublista(TRANSICIONESTIPS, secuencia_concreta)
     postura:str = scol1_seleccion.select_slider("Escoja su postura a practicar:", posturas)
     secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
     postura_min = "_".join(postura.split(" ")).lower()
@@ -86,7 +86,9 @@ if vercaja:
                    muted=True
                    )
     else:
-        col1.write("Aquí vendrán los TIPS") 
+        col1.write("Aquí vendrán los TIPS")
+        for count, tip in enumerate(TRANSICIONESTIPS[secuencia_concreta][postura]):
+            col1.write(f"- {tip"})
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
