@@ -71,16 +71,16 @@ scol4_semaforo = scol4.empty()
 update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:
-    cajavideos = st.container(height = 500, border = True)
+    cajavideos = st.container(height = 550, border = True)
     lcol = 15
     rcol = 60
     col1, col2 = cajavideos.columns(spec=[lcol, rcol],
                                     gap='small',
                                     vertical_alignment='top'
                                     )
+    videotip = col1.container(height=None, border= False)
     if scol3_muestravid:
-        col1.write("VideoDemo")
-        col1.video(data=video_path,
+        videotip.video(data=video_path,
                    loop=True,
                    autoplay=True,
                    muted=True
@@ -88,7 +88,7 @@ if vercaja:
     else:
         # col1.write("Aquí vendrán los TIPS")
         for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
-            col1.markdown(f"- {tip}")
+            videotip.markdown(f"- {tip}")
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
