@@ -9,7 +9,7 @@ def main():
 
     # Configuración de la página
     st.set_page_config(page_title=PAGE_TITLE, layout="wide", initial_sidebar_state="collapsed",
-                       page_icon=":material/self_improvement:")
+                       page_icon=FAVICON)
     st.logo(PAGE_LOGO, icon_image = PAGE_ICON, link = None)
 
     st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
