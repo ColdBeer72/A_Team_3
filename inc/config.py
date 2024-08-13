@@ -1,8 +1,5 @@
 from ultralytics import YOLO
 
-from enum import Enum
-
-
 #Activar/Desactivar modo Debug
 DEBUG = True
 

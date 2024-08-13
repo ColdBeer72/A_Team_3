@@ -1,7 +1,6 @@
 from pathlib import Path
 from inc.config import *
 import streamlit as st
-from multiprocessing import Queue
 import queue
 from inc.video_stream import VideoProcessor
 import time
