@@ -102,10 +102,10 @@ TRANSICIONESTIPS = {
                                 'Mirada hacia delante'],
             'Urdhva Mukha Svanasana': ['Empuja el suelo, junta las escápulas',
                                 'Hombros alejados de las orejas y relajados',
-                                'Apoya ligeramente los pies con el empeine'],
+                                'Apoya ligeramente los pies con el empeine',],
             'Adho Mukha Svanasana': ['Recoloca los pies adelante',
                                 'Talones intentan tocar el suelo',
                                 'Mirada al ombligo, cuello relajado',
-                                'Intención de tocar el suelo con caderas']
+                                 'Intención de tocar el cielo con los glúteos']
                         } 
                     }
