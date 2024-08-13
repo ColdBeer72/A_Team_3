@@ -5,7 +5,6 @@ from inc.config import *
 from inc.state_machine import *
 from inc.video_stream import VideoProcessor, keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
-# import time
 
 st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
@@ -25,8 +24,8 @@ secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
 cajaselect = st.container(height = 100, border = True)
-scol1, scol2, scol3 = cajaselect.columns(
-        spec=[40, 40, 20],
+scol1, scol2, scol3, scol4 = cajaselect.columns(
+        spec=[20, 45, 30, 5],
         gap='small',
         vertical_alignment='top'
     )
@@ -38,7 +37,10 @@ scol1_secuencia = scol1_seleccion.selectbox(
     )
 scol1_cajavisos = scol1.empty()
 scol2_modsec = scol2.empty()
-# scol1_postura = scol1.empty()                                                                                                                                                                                                                                                                                                                                                                                                                 
+scol2_text = ""
+
+progress_text = "Postura detectada, un momento..."
+scol3_scroll = scol3.empty()
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 cajavideos = st.empty()
@@ -62,12 +64,18 @@ else:
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
     scol1_seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
     # Se añadirá a postoriori
+    scol2_text = ""
     vercaja = False
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
-scol3_semaforo = scol3.empty()
-update_semaforo(estado_usuario, scol3_semaforo)
+scol3_bar = scol3.progress(0, text=progress_text)
+counterto100(scol3_bar, progress_text)
+# scol3_bar = scol3.button("Activa")
+scol3.button("Activa")
+
+scol4_semaforo = scol4.empty()
+update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:
     cajavideos = st.container(height = 650, border = True)
@@ -133,7 +141,7 @@ if vercaja:
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
                 estado_usuario = user_pose.postura()
-                update_semaforo(estado_usuario, scol3_semaforo)
+                update_semaforo(estado_usuario, scol4_semaforo)
                 if falso_frame_count == 1000:
                     falso_frame_count = 0
             else:

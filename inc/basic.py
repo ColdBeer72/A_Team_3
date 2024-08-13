@@ -4,6 +4,7 @@ import streamlit as st
 from multiprocessing import Queue
 import queue
 from inc.video_stream import VideoProcessor
+import time
 
 from typing import Annotated
 
@@ -99,3 +100,10 @@ def update_keypoints(keypoint_queue, user_pose):
 
 def get_current_body_dict():
     return VideoProcessor.get_body_dict()
+
+def counterto100(funcion, progress_text):
+    for percent_complete in range(100):
+        time.sleep(0.01)
+        funcion.progress(percent_complete + 1, text=progress_text)
+    time.sleep(0.5)
+    funcion.empty()
