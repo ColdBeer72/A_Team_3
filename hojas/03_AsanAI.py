@@ -87,14 +87,14 @@ if vercaja:
                                     gap='small',
                                     vertical_alignment='top'
                                     )
+    col1_kps = col1.toggle(
+        "Ver KeyPoints",
+        value=True
+        )
     col1_muestravid = col1.toggle(
         label="TIPS / VIDEO MUESTRA",
         value=False
     )
-    col1_kps = col1.checkbox(
-        "¿Quieres ver los Keypoints en el video?",
-        value=True
-        )
     videotip = col1.container(height=None, border= False)
 
     if col1_muestravid:
