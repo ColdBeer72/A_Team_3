@@ -54,12 +54,15 @@ TRANSICIONES = {
 # Umbrales del State Machine
 class UMBRALES():
     THREE_POINT_STRAIGHT =              [190, 170]
+    MANOS_JUNTAS =                      [40, 15]
     INCLINACION_CABEZA_UTTANASANA =     10
     ANGULO_CUERPO_ARDHA_UTTANASANA =    90
-    BRAZOS_90_CHATURANGA =              [180, 160]
+    HOMBRO_DCHO_TAPADO_CARA_ARDHA =     30
+    BRAZOS_90_CHATURANGA =              [110, 70]
     CHATURANGA_Y_CODO_MUNECA =          10
-    DIST_CODO_CHATURANGA =              25
+    DIST_CODO_CHATURANGA =              45
     ORIENTACION_CABEZA_URDHVA_MUKHA =   10
+
 # Partes formato string
 t_nariz: str =      'nariz'
 t_ojoi: str =       'ojo_izdo'
