@@ -6,7 +6,7 @@ Trabajo fin de Bootcamp Grupo A
 
 Clonar el repositorio:
 ```
-git clone git@github.com:ColdBeer72/A_Team_3.git
+git clone git@github.com:GroupA-dsb10rt/A_Team_3.git
 ```
 Crear entorno virtual:
 ```
