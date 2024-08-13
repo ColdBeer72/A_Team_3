@@ -273,7 +273,9 @@ class UserPose:
             if self.enpie:
                 brazos_rectos = (Pose_Calculator.three_points_straight(hombro_dcho, codo_dcho, muneca_dcha) and 
                             Pose_Calculator.three_points_straight(hombro_izdo, codo_izdo, muneca_izda))
-                pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_izdo, hombro_dcho, tobillo_izdo, tobillo_dcho)
+                pies_hombros = Pose_Calculator.pies_dentro_hombros(hombro_dcho, hombro_izdo, tobillo_dcho, tobillo_izdo)
+        print(brazos_rectos)
+        print(pies_hombros)
         return brazos_rectos and pies_hombros
 
     # Determinar si la postura URDHVA HASTASANA esta correcta
