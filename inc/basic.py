@@ -1,5 +1,5 @@
 from pathlib import Path
-from inc.config import *
+#from inc.config import *
 import streamlit as st
 import queue
 from inc.video_stream import VideoProcessor
