@@ -17,6 +17,7 @@ PROYECT_TITLE = "Proyecto Yoga"
 # Logotipo de la Pagina
 PAGE_LOGO = "streamlit_sources/iconoyoga.png"
 PAGE_ICON = "streamlit_sources/iconoyoga_mini.png"
+FAVICON = "streamlit_sources/favicon.png"
 # Semáforo
 SEM_GREEN = "streamlit_sources/semaphore_green.png"
 SEM_RED = "streamlit_sources/semaphore_red.png"
