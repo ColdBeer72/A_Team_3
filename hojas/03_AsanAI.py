@@ -24,9 +24,9 @@ st.subheader("Practica Posturas", anchor = False, divider="red")
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 
-cajaselect = st.container(height = 160, border = True)
-scol1, scol2, scol3, scol4 = cajaselect.columns(
-        spec=[15, 25, 25, 15],
+cajaselect = st.container(height = 100, border = True)
+scol1, scol2, scol3 = cajaselect.columns(
+        spec=[40, 40, 20],
         gap='small',
         vertical_alignment='top'
     )
@@ -37,11 +37,8 @@ scol1_secuencia = scol1_seleccion.selectbox(
         index=len(secuencias)-1
     )
 scol1_cajavisos = scol1.empty()
-scol3_muestravid = scol3.toggle(
-        label="TIPS / VIDEO MUESTRA",
-        value=False
-    )
-scol3_postura = scol3.empty()
+scol2_modsec = scol2.empty()
+# scol1_postura = scol1.empty()                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 cajavideos = st.empty()
@@ -56,30 +53,43 @@ if secuencia_min == "postura_concreta":
     postura_min = "_".join(postura.split(" ")).lower()
     vercaja = True
     video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
-    scol2.markdown(f"Modalidad: **:orange[POSTURA CONCRETA]**")
-    scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
+    scol2_text = f'''
+                    Modalidad: **:orange[POSTURA CONCRETA]**<br>
+                    Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
+                    Postura seleccionada: **:red[{postura}]**
+                    '''
 else:
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
     scol1_seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
     # Se añadirá a postoriori
     vercaja = False
-    scol2.markdown(f"Modalidad: **:orange[SECUENCIA COMPLETA]**")
-    scol2.markdown(f"Secuencia seleccionada: **:blue[{secuencia_concreta}]**")
-scol3_postura = scol3.markdown(f"Postura seleccionada: **:red[{postura}]**") if postura else scol3.empty()
 
-scol4_semaforo = scol4.empty()
-update_semaforo(estado_usuario, scol4_semaforo)
+scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+
+scol3_semaforo = scol3.empty()
+update_semaforo(estado_usuario, scol3_semaforo)
 
 if vercaja:
-    cajavideos = st.container(height = 550, border = True)
-    lcol = 15
-    rcol = 60
-    col1, col2 = cajavideos.columns(spec=[lcol, rcol],
+    cajavideos = st.container(height = 650, border = True)
+    lcol = 20
+    w1 = 25
+    rcol = 45
+    w2 = 10
+    col1, _, col2, _ = cajavideos.columns(spec=[lcol, w1, rcol, w2],
                                     gap='small',
                                     vertical_alignment='top'
                                     )
+    col1_muestravid = col1.toggle(
+        label="TIPS / VIDEO MUESTRA",
+        value=False
+    )
+    col1_kps = col1.checkbox(
+        "¿Quieres ver los Keypoints en el video?",
+        value=True
+        )
     videotip = col1.container(height=None, border= False)
-    if scol3_muestravid:
+
+    if col1_muestravid:
         videotip.video(data=video_path,
                    loop=True,
                    autoplay=True,
@@ -88,15 +98,12 @@ if vercaja:
     else:
         # col1.write("Aquí vendrán los TIPS")
         for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
-            videotip.markdown(f"- {tip}")
+            videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
+
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
-        draw_kps = st.checkbox(
-            "¿Quieres ver los Keypoints en el video?",
-            value=True
-            )
-        video_processor.set_draw(draw_kps)
+        video_processor.set_draw(col1_kps)
         user_pose.set_sequence(secuencia_concreta)
         user_pose.set_pose(postura)
         rtc_configuration = RTCConfiguration({
@@ -126,7 +133,7 @@ if vercaja:
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
                 estado_usuario = user_pose.postura()
-                update_semaforo(estado_usuario, scol4_semaforo)
+                update_semaforo(estado_usuario, scol3_semaforo)
                 if falso_frame_count == 1000:
                     falso_frame_count = 0
             else:
