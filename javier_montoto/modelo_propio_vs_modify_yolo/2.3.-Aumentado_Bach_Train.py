@@ -1,13 +1,9 @@
-from keras import layers
+from keras import layers, models
 import keras
 import tensorflow as tf
-
 from imgaug.augmentables.kps import KeypointsOnImage
 from imgaug.augmentables.kps import Keypoint
 import imgaug.augmenters as iaa
-
-from pprint import pprint
-
 from PIL import Image
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
@@ -19,7 +15,7 @@ import os
 # HIPERPARÁMETROS
 IMG_SIZE = 224
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 5
 NUM_KEYPOINTS = 18 * 2
 
 # Leer datos JSON Dict
@@ -180,10 +176,13 @@ class KeyPointsDataset(keras.utils.PyDataset):
 train_aug = iaa.Sequential(
     [
         iaa.Resize(IMG_SIZE, interpolation="linear"),
-        iaa.Fliplr(0.3),
+        iaa.Sometimes(0.3, iaa.Fliplr(0.3)),
         # `Sometimes()` applies a function randomly to the inputs with
         # a given probability (0.3, in this case).
         iaa.Sometimes(0.3, iaa.Affine(rotate=10, scale=(0.5, 0.7))),
+        iaa.Sometimes(0.3, iaa.Multiply((0.8, 1.2))),  # Ajustar brillo con una probabilidad del 30%
+        iaa.Sometimes(0.3, iaa.LinearContrast((0.75, 1.5))),  # Ajustar contraste con una probabilidad del 30%
+        iaa.Sometimes(0.3, iaa.AdditiveGaussianNoise(scale=(0, 0.05*255))),  # Agregar ruido con una probabilidad del 30%
     ]
 )
 
@@ -211,26 +210,33 @@ sample_keypoints = sample_keypoints[:4].reshape(-1, NUM_KEYPOINTS//2, 2) * IMG_S
 #visualize_keypoints(sample_images[:4], sample_keypoints)
 
 def get_model():
-    # Load the pre-trained weights of MobileNetV2 and freeze the weights
-    backbone = keras.applications.MobileNetV2(
-        weights="imagenet",
-        include_top=False,
-        input_shape=(IMG_SIZE, IMG_SIZE, 3),
-    )
-    backbone.trainable = False
+    inputs = layers.Input(shape=(IMG_SIZE, IMG_SIZE, 3))
 
-    inputs = layers.Input((IMG_SIZE, IMG_SIZE, 3))
-    x = keras.applications.mobilenet_v2.preprocess_input(inputs)
-    x = backbone(x)
+    # Capa convolucional 1
+    x = layers.Conv2D(32, (3, 3), activation='relu', padding='same')(inputs)
+    x = layers.MaxPooling2D((2, 2))(x)
+
+    # Capa convolucional 2
+    x = layers.Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+
+    # Capa convolucional 3
+    x = layers.Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+
+    # Capa convolucional 4
+    x = layers.Conv2D(256, (3, 3), activation='relu', padding='same')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+
+    # Capa de Flatten y densa
+    x = layers.Flatten()(x)
+    x = layers.Dense(512, activation='relu')(x)
     x = layers.Dropout(0.3)(x)
-    x = layers.SeparableConv2D(
-        NUM_KEYPOINTS, kernel_size=5, strides=1, activation="relu"
-    )(x)
-    outputs = layers.SeparableConv2D(
-        NUM_KEYPOINTS, kernel_size=3, strides=1, activation="sigmoid"
-    )(x)
+    
+    # Capa de salida
+    outputs = layers.Dense(NUM_KEYPOINTS, activation='sigmoid')(x)
 
-    return keras.Model(inputs, outputs, name="keypoint_detector")
+    return models.Model(inputs, outputs, name="simple_keypoint_detector")
 
 model = get_model()
 model.compile(loss="mse", optimizer=keras.optimizers.Adam(1e-4))

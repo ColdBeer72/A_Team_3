@@ -5,7 +5,7 @@ import json
 folders = [
     "../../../../../images_anotaciones/Javi_Json",
     "../../../../../images_anotaciones/Joan_Json/Joan_Json",
-    "../../../../../images_anotaciones/Manu_Json",
+    "../../../../../images_anotaciones/ManuJson",
     "../../../../../images_anotaciones/Jordi_Json/jordi_anotaciones"
 ]
 
