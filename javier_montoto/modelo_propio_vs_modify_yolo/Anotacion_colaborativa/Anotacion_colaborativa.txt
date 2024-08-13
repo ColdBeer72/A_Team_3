@@ -39,7 +39,7 @@ Si observais el labels.json vereis la etiqueta de head_rect,
 esa etiqueta despues en la conversion a labelsDEF.json pasan a ocupar las dos primeras posiciones del array.
 
 ESTRUCTURA JSON
-id , punto x, punto y, booleano de si el punto es visible o no.
+id con nombre punto, punto x, punto y, booleano de si el punto es visible o no.
 
 CONCLUSION FINAL:
 TENEMOS QUE AÑADIR A CADA FOTO
@@ -48,9 +48,9 @@ TENEMOS QUE AÑADIR A CADA FOTO
 'ojo_dcho': [],
 'oreja_izda': [],
 'oreja_dcha': [],
-pulgar: [],
-meñique: [],
-talon : [],
-punta: [],
-ombligo: []
+'pulgar': [],
+'meñique': [],
+'talon' : [],
+'punta': [],
+'ombligo': []
 
