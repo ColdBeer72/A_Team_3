@@ -12,4 +12,4 @@ Tal es así, que incluso se podrían lanzar en streamlit las páginas por separa
 ##### Estilo Gráfico
 
 1. **Themming**: Se utiliza el themming básico de Streamlit, utilizando una paleta de colores titulada "**La Delicadeza**", sacada del libro ["Psicología del color. Cómo actúan los colores sobre los sentimientos y la razón"](https://editorialgg.com/psicologia-del-color-libro.html) de Eva Heller.
-2. **CSS**: Hemos limitado lo más posible este tipo de personalización, y organizativamente, lo tenemos en una única variable definida en `inc/input.py`.
+2. **CSS**: Hemos limitado lo más posible este tipo de personalización, y organizativamente, lo tenemos en una única variable definida en `inc/basic.py`.
