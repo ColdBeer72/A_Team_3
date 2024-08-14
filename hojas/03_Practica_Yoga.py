@@ -78,7 +78,7 @@ scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 estado_usuario = False
 
 scol3_debugging.warning(estado_usuario)
-scol3_bar = scol3.progress(0, text=progress_text)
+scol3_bar = scol3.progress(0, text=progress_text_wait)
 
 scol4_semaforo = scol4.empty()
 update_semaforo(estado_usuario, scol4_semaforo)
