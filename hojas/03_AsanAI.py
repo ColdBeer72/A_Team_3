@@ -110,9 +110,12 @@ if vercaja:
                    muted=True
                    )
     else:
-        for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
-            videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
-
+        if secuencia_min == "postura_concreta":
+            for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
+                videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
+        else:
+            for tip in TRANSICIONESTIPS[sequence][pose_actual]:
+                videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
         video_processor = video_processor_factory()
