@@ -103,6 +103,7 @@ if vercaja:
     videotip = col1.container(height=None, border= False)
 
     if col1_muestravid:
+        st.warning(video_path)
         videotip.video(data=video_path,
                    loop=True,
                    autoplay=True,
