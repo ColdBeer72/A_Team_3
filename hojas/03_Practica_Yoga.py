@@ -63,8 +63,9 @@ else:
     posturas_sequence = TRANSICIONES_SECUENCIA[secuencia_concreta]
     posturas = list(posturas_sequence.values())
     postura = posturas[step]
+    postura_min = "_".join(postura.split(" ")).lower()
     vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
