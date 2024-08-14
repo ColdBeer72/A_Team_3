@@ -157,6 +157,7 @@ if vercaja:
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
                 if estado_usuario:
+                    st.success(estado_usuario)
                     # Iniciamos Contador
                     counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                     # Aumentamos contador de Success
