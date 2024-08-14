@@ -144,11 +144,13 @@ if vercaja:
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
         while webrtc_ctx.state.playing:
+            scol3_debugging.write("Grabando!")
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
             frame_success = 0
             # Cada 10 frames..
             if frame_count % 10 == 0:
+                scol3_debugging.success("Cada 10 frames uWu")
                 # Aumento de Frame
                 frame_count += 1
                 # Update KPs del Objeto User_Pose y de la postura
