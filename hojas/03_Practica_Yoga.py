@@ -41,7 +41,6 @@ secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 
 scol1_cajavisos = scol1.empty()
 scol2_modsec = scol2.empty()
-scol3_scroll = scol3.empty()
 scol3_debugging = scol3.empty()
 cajavideos = st.empty()
 vercaja = False
@@ -75,10 +74,12 @@ else:
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
+estado_usuario = False
+
+scol3_debugging.warning(estado_usuario)
 scol3_bar = scol3.progress(0, text=progress_text)
 
 scol4_semaforo = scol4.empty()
-estado_usuario = False
 update_semaforo(estado_usuario, scol4_semaforo)
 
 # Caja
