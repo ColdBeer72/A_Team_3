@@ -11,13 +11,13 @@ st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 # Header de la página
 st.subheader("Practica Posturas", anchor = False, divider="red")
 
-
 # Caja superior con selector de Ejercicio
 # Creación de la caja contenedor
 cajaselect = st.container(height = 110, border = True)
 # Variables de sección
 postura = ""
 secuencia_concreta = ""
+scol2_text = ""
 progress_text = "Postura detectada, un momento..."
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
@@ -34,18 +34,13 @@ scol1_secuencia = scol1_seleccion.selectbox(
         secuencias,
         index=len(secuencias)-1
     )
-scol1_cajavisos = scol1.empty()
-
-scol2_modsec = scol2.empty()
-scol2_text = ""
-
-scol3_scroll = scol3.empty()
-
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
-cajavideos = st.empty()
 
+scol1_cajavisos = scol1.empty()
+scol2_modsec = scol2.empty()
+scol3_scroll = scol3.empty()
+cajavideos = st.empty()
 vercaja = False
-estado_usuario = False
 
 if secuencia_min == "postura_concreta":
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
@@ -61,11 +56,15 @@ if secuencia_min == "postura_concreta":
                     Postura seleccionada: **:red[{postura}]**
                     '''
 else:
-    secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
-    scol1_seleccion.warning("La selección de SECUENCIA todavía no está disponible.")
-    # Se añadirá a postoriori
-    scol2_text = ""
-    vercaja = False
+    sequence = "_".join(secuencia_concreta.split(" ")).lower()
+    postura_min = "_".join(postura.split(" ")).lower()
+    vercaja = True
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
+    scol2_text = f'''
+                    Modalidad: **:orange[SECUENCIA]**<br>
+                    Secuencia seleccionada: **:blue[{scol1_secuencia}]**<br>
+                    Postura actual: **:red[{postura}]**
+                    '''
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
@@ -75,6 +74,7 @@ counterto100(scol3_bar, progress_text)
 scol3.button("Activa")
 
 scol4_semaforo = scol4.empty()
+estado_usuario = False
 update_semaforo(estado_usuario, scol4_semaforo)
 
 if vercaja:

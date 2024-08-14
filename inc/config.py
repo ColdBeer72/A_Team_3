@@ -107,3 +107,18 @@ TRANSICIONESTIPS = {
                                  'Intención de tocar el cielo con los glúteos']
                         } 
                     }
+TRANSICIONES_SECUENCIA = {
+    'Saludo al sol': {
+        'Paso_1': 'Tadasana',
+        'Paso_2' : 'Urdhva Hastasana',
+        'Paso_3': 'Uttanasana',
+        'Paso_4': 'Ardha Uttanasana',
+        'Paso_5': 'Chaturanga Dandasana',
+        'Paso_6': 'Urdhva Mukha Svanasana',
+        'Paso_7': 'Adho Mukha Svanasana',
+        'Paso_8': 'Uttanasana',
+        'Paso_9': 'Ardha Uttanasana',
+        'Paso_10': 'Urdhva Hastasana',
+        'Paso_11': 'Tadasana'
+    }
+}
