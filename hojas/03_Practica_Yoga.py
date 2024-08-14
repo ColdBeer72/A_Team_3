@@ -159,7 +159,7 @@ if vercaja:
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
                 if estado_usuario:
-                    scol3_debugging.toast(estado_usuario)
+                    scol3_debugging.success(estado_usuario)
                     # Iniciamos Contador
                     counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                     # Aumentamos contador de Success
@@ -195,7 +195,7 @@ if vercaja:
                                 st.success("¡Secuencia completada!")
                                 break
                 else:
-                    scol3_debugging.warning(estado_usuario)
+                    scol3_debugging.error(estado_usuario)
                     st.session_state.frame_success = 0
                     counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                 if frame_count == 1000:
