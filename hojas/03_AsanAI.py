@@ -56,14 +56,18 @@ if secuencia_min == "postura_concreta":
                     Postura seleccionada: **:red[{postura}]**
                     '''
 else:
-    sequence = "_".join(secuencia_concreta.split(" ")).lower()
-    postura_min = "_".join(postura.split(" ")).lower()
+    sequence = scol1_secuencia
+    posturas_sequence = TRANSICIONES_SECUENCIA[sequence]
+    posturas = []
+    for pose in posturas_sequence.values():
+        posturas.append(pose)
+    step = 0
     vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{posturas[step]}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
-                    Secuencia seleccionada: **:blue[{scol1_secuencia}]**<br>
-                    Postura actual: **:red[{postura}]**
+                    Secuencia seleccionada: **:blue[{sequence}]**<br>
+                    Postura actual: **:red[{posturas[step]}]**
                     '''
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
@@ -77,6 +81,7 @@ scol4_semaforo = scol4.empty()
 estado_usuario = False
 update_semaforo(estado_usuario, scol4_semaforo)
 
+# Caja
 if vercaja:
     cajavideos = st.container(height = 650, border = True)
     lcol = 20
