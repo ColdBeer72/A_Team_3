@@ -1,7 +1,7 @@
 #### Creación de modelo propio para detectar puntos clave en postura corporal
 
-### Hemos querido investigar cuál es el proceso para crear un modelo de detección de puntos clave **desde cero**,
-### lo cual tiene sus retos y tecnologías independientes.
+##### Hemos querido investigar cuál es el proceso para crear un modelo de detección de puntos clave **desde cero**,
+##### lo cual tiene sus retos y tecnologías independientes.
 
 - Proceso a seguir
     1. Conseguir o crear un dataset de imágenes variadas sobre personas en diferentes posturas:
