@@ -197,12 +197,11 @@ if vercaja:
                         #         break
                 else:
                     scol3_debugging.error(estado_usuario)
-                    frame_count += 1
                     frame_success = 0
                     counterto100(scol3_bar, progress_text, frame_success)
-                if frame_count == 1000:
-                    frame_count = 0
             else:
                 frame_count += 1
+            if frame_count == 1000:
+                frame_count = 0
         else:
             keypoint_queue.empty()
