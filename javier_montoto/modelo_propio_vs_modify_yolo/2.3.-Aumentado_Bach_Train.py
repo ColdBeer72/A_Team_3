@@ -240,12 +240,13 @@ def get_model():
 
 model = get_model()
 model.compile(loss="mse", optimizer=keras.optimizers.Adam(1e-4))
-model.fit(train_dataset, validation_data=validation_dataset, epochs=EPOCHS)
+history = model.fit(train_dataset, validation_data=validation_dataset, epochs=EPOCHS)
+
 
 sample_val_images, sample_val_keypoints = next(iter(validation_dataset))
 sample_val_images = sample_val_images[:4]
-sample_val_keypoints = sample_val_keypoints[:4].reshape(-1, 24, 2) * IMG_SIZE
-predictions = model.predict(sample_val_images).reshape(-1, 24, 2) * IMG_SIZE
+sample_val_keypoints = sample_val_keypoints[:4].reshape(-1, NUM_KEYPOINTS//2, 2) * IMG_SIZE
+predictions = model.predict(sample_val_images).reshape(-1, NUM_KEYPOINTS//2, 2) * IMG_SIZE
 
 # Ground-truth
 visualize_keypoints(sample_val_images, sample_val_keypoints)
