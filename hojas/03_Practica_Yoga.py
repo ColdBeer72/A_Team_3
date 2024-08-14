@@ -144,7 +144,7 @@ if vercaja:
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
         while webrtc_ctx.state.playing:
-            scol3_debugging.write("Grabando!")
+            scol3_debugging.write(frame_count)
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
             frame_success = 0
