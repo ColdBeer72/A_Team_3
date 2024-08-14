@@ -18,6 +18,7 @@ cajaselect = st.container(height = 110, border = True)
 postura = ""
 secuencia_concreta = ""
 scol2_text = ""
+progress_text_wait = "No detectamos que esté realizando la postura correctamente :("
 progress_text = "Detectando postura, un momento..."
 posturas = []
 step = 0
@@ -159,12 +160,11 @@ if vercaja:
                 if estado_usuario:
                     scol3_debugging.success(estado_usuario)
                     # Iniciamos Contador
-                    for i in range(10):
-                        counterto100(scol3_bar, progress_text, frame_success)
-                        # Aumentamos contador de Success
-                        frame_success += FRAMES_SUCCESS_RATIO
+                    counterto100(scol3_bar, progress_text, frame_success)
+                    # Aumentamos contador de Success
+                    frame_success += FRAMES_SUCCESS_RATIO
                     # Si alcanzamos tiempo objetivo...
-                    if frame_success >= (FRAMES_SUCCESS_RATIO * 50):
+                    if frame_success >= 50:
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito

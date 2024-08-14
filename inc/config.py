@@ -108,7 +108,7 @@ TRANSICIONESTIPS = {
                         } 
                     }
 # SECUENCIAS
-FRAMES_SUCCESS_RATIO = 1
+FRAMES_SUCCESS_RATIO = 10
 TRANSICIONES_SECUENCIA = {
     'Saludo al sol': {
         'Paso_1': 'Tadasana',
