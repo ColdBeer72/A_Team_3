@@ -162,7 +162,7 @@ if vercaja:
                     # Aumentamos contador de Success
                     st.session_state.frame_success += FRAMES_SUCCESS_RATIO
                     # Si alcanzamos tiempo objetivo...
-                    if st.session_state.frame_success >= (FRAMES_SUCCESS_RATIO * 100):
+                    if st.session_state.frame_success >= (FRAMES_SUCCESS_RATIO * 50):
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
