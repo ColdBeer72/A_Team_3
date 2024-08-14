@@ -10,15 +10,8 @@ st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
 postura = ""
 secuencia_concreta = ""
-falso_frame_count = 0
-
-def video_processor_factory():
-    model_input = Modelos.YOLO
-    return VideoProcessor(model_input)
 
 st.subheader("Practica Posturas", anchor = False, divider="red")
-
-# st.subheader("¡Escoge tu ejercicio!", anchor = False, divider="gray")
 
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
@@ -104,7 +97,6 @@ if vercaja:
                    muted=True
                    )
     else:
-        # col1.write("Aquí vendrán los TIPS")
         for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
             videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
 
@@ -134,6 +126,7 @@ if vercaja:
             async_processing=True
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
+        falso_frame_count = 0
         while webrtc_ctx.state.playing:
             keypoints = keypoint_queue.get()
             if falso_frame_count % 10 == 0:

@@ -106,3 +106,8 @@ def counterto100(funcion, progress_text):
         funcion.progress(percent_complete + 1, text=progress_text)
     time.sleep(0.5)
     funcion.empty()
+
+# Factoria de VideoProcessor
+def video_processor_factory():
+    model_input = Modelos.YOLO
+    return VideoProcessor(model_input)
