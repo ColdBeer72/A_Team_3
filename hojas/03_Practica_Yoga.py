@@ -145,10 +145,10 @@ if vercaja:
         while webrtc_ctx.state.playing:
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
-            st.session_state.frame_success = 0
-            if st.session_state.frame_success > 0:
-                counterto100(scol3_bar, progress_text, st.session_state.frame_success)
-                st.session_state.frame_success += 1
+            frame_success = 0
+            if frame_success > 0:
+                counterto100(scol3_bar, progress_text, frame_success)
+                frame_success += 1
             # Cada 10 frames..
             if frame_count % 10 == 0:
                 # Aumento de Frame
@@ -162,15 +162,15 @@ if vercaja:
                 if estado_usuario:
                     scol3_debugging.success(estado_usuario)
                     # Iniciamos Contador
-                    counterto100(scol3_bar, progress_text, st.session_state.frame_success)
+                    counterto100(scol3_bar, progress_text, frame_success)
                     # Aumentamos contador de Success
-                    st.session_state.frame_success += FRAMES_SUCCESS_RATIO
+                    frame_success += FRAMES_SUCCESS_RATIO
                     # Si alcanzamos tiempo objetivo...
-                    if st.session_state.frame_success >= (FRAMES_SUCCESS_RATIO * 50):
+                    if frame_success >= (FRAMES_SUCCESS_RATIO * 50):
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
-                        # st.session_state.frame_success = 0
+                        # frame_success = 0
                         # # Avanzamos a siguiente postura si existe Siguiente postura
                         # if secuencia_min != "postura_concreta":
                         #     step += 1
@@ -197,8 +197,8 @@ if vercaja:
                         #         break
                 else:
                     scol3_debugging.error(estado_usuario)
-                    st.session_state.frame_success = 0
-                    counterto100(scol3_bar, progress_text, st.session_state.frame_success)
+                    frame_success = 0
+                    counterto100(scol3_bar, progress_text, frame_success)
                 if frame_count == 1000:
                     frame_count = 0
             else:
