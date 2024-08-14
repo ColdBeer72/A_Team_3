@@ -59,15 +59,15 @@ if secuencia_min == "postura_concreta":
                     Postura seleccionada: **:red[{postura}]**
                     '''
 else:
-    sequence = scol1_secuencia
-    posturas_sequence = TRANSICIONES_SECUENCIA[sequence]
+    secuencia_concreta = scol1_secuencia
+    posturas_sequence = TRANSICIONES_SECUENCIA[secuencia_concreta]
     posturas = list(posturas_sequence.values())
     postura = posturas[step]
     vercaja = True
     video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
-                    Secuencia seleccionada: **:blue[{sequence}]**<br>
+                    Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
                     Postura actual: **:red[{postura}]**
                     '''
 
@@ -113,7 +113,7 @@ if vercaja:
             for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
                 videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
         else:
-            for tip in TRANSICIONESTIPS[sequence][postura]:
+            for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
                 videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
@@ -176,7 +176,7 @@ if vercaja:
                                 # Actualizacion de Textos y Videos Muestra
                                 scol2_text = f'''
                                                 Modalidad: **:orange[SECUENCIA]**<br>
-                                                Secuencia seleccionada: **:blue[{sequence}]**<br>
+                                                Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
                                                 Postura actual: **:red[{postura}]**
                                                 '''
                                 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
