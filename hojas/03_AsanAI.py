@@ -63,13 +63,13 @@ else:
     sequence = scol1_secuencia
     posturas_sequence = TRANSICIONES_SECUENCIA[sequence]
     posturas = list(posturas_sequence.values())
-    pose_actual = posturas[step]
+    postura = posturas[step]
     vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{pose_actual}.mp4"
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
                     Secuencia seleccionada: **:blue[{sequence}]**<br>
-                    Postura actual: **:red[{pose_actual}]**
+                    Postura actual: **:red[{postura}]**
                     '''
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
@@ -114,7 +114,7 @@ if vercaja:
             for tip in TRANSICIONESTIPS[secuencia_concreta][postura]:
                 videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
         else:
-            for tip in TRANSICIONESTIPS[sequence][pose_actual]:
+            for tip in TRANSICIONESTIPS[sequence][postura]:
                 videotip.markdown(f"- {tip}<br>", unsafe_allow_html=True)
     with col2:
         user_pose = UserPose(postura, secuencia_concreta)
@@ -143,38 +143,53 @@ if vercaja:
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
         while webrtc_ctx.state.playing:
+            # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
+            # Cada 10 frames..
             if frame_count % 10 == 0:
+                # Aumento de Frame
                 frame_count += 1
+                # Update KPs del Objeto User_Pose y de la postura
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
+                # Check de Postura Correcta
                 estado_usuario = user_pose.postura()
+                # Si la postura esta correcta...
                 if estado_usuario:
+                    # Iniciamos Contador
                     counterto100(scol3_bar, progress_text, frame_success)
+                    # Aumentamos contador de Success
                     frame_success += FRAMES_SUCCESS_RATIO
-                    if frame_success >= 100:
+                    # Si alcanzamos tiempo objetivo...
+                    if frame_success >= FRAMES_SUCCESS_RATIO * 3:
+                        # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
+                        # Reseteamos Contador de Exito
                         frame_success = 0
-                        step += 1
-                        if step < len(posturas):
-                            pose_actual = posturas[step]
-                            scol2_text = f'''
-                                            Modalidad: **:orange[SECUENCIA]**<br>
-                                            Secuencia seleccionada: **:blue[{sequence}]**<br>
-                                            Postura actual: **:red[{pose_actual}]**
-                                            '''
-                            scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
-                            video_path = f"{VIDEO_DIR}/{secuencia_min}/{pose_actual}.mp4"
-                            # Actualizar video mostrado
-                            if col1_muestravid:
-                                videotip.video(data=video_path,
-                                               loop=True,
-                                               autoplay=True,
-                                               muted=True
-                                               )
-                        else:
-                            st.success("¡Secuencia completada!")
-                            break
+                        # Avanzamos a siguiente postura si existe Siguiente postura
+                        if secuencia_min != "postura_concreta":
+                            step += 1
+                            if step < len(posturas):
+                                postura = posturas[step]
+                                # Actualizacion de Textos y Videos Muestra
+                                scol2_text = f'''
+                                                Modalidad: **:orange[SECUENCIA]**<br>
+                                                Secuencia seleccionada: **:blue[{sequence}]**<br>
+                                                Postura actual: **:red[{postura}]**
+                                                '''
+                                scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+                                video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
+                                # Actualizar video mostrado
+                                if col1_muestravid:
+                                    videotip.video(data=video_path,
+                                                loop=True,
+                                                autoplay=True,
+                                                muted=True
+                                                )
+                            # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
+                            else:
+                                st.success("¡Secuencia completada!")
+                                break
                 else:
                     frame_success = 0
                     counterto100(scol3_bar, progress_text, frame_success)
