@@ -7,3 +7,7 @@
 - OpenCV
 
 - WebRtc
+
+- Keras
+
+- Imgaug
