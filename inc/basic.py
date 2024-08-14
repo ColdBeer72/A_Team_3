@@ -41,19 +41,19 @@ def autores():
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.write(f"[{LISTA_AUTORES[0][1]}]({LISTA_AUTORES[0][2]})")
+        st.write(f"**[{LISTA_AUTORES[0][1]}]({LISTA_AUTORES[0][2]})**")
         img = f"./streamlit_sources/page1/{LISTA_AUTORES[0][0]}.jpg"
         st.image(img, width=100)
     with col2:
-        st.write(f"[{LISTA_AUTORES[1][1]}]({LISTA_AUTORES[1][2]})")
+        st.write(f"**[{LISTA_AUTORES[1][1]}]({LISTA_AUTORES[1][2]})**")
         img = f"./streamlit_sources/page1/{LISTA_AUTORES[1][0]}.jpg"
         st.image(img, width=100)
     with col3:
-        st.write(f"[{LISTA_AUTORES[2][1]}]({LISTA_AUTORES[2][2]})")
+        st.write(f"**[{LISTA_AUTORES[2][1]}]({LISTA_AUTORES[2][2]})**")
         img = f"./streamlit_sources/page1/{LISTA_AUTORES[2][0]}.jpg"
         st.image(img, width=100)
     with col4:
-        st.write(f"[{LISTA_AUTORES[3][1]}]({LISTA_AUTORES[3][2]})")
+        st.write(f"**[{LISTA_AUTORES[3][1]}]({LISTA_AUTORES[3][2]})**")
         img = f"./streamlit_sources/page1/{LISTA_AUTORES[3][0]}.jpg"
         st.image(img, width=100)
 
