@@ -8,20 +8,26 @@ from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
 st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
-postura = ""
-secuencia_concreta = ""
-
+# Header de la página
 st.subheader("Practica Posturas", anchor = False, divider="red")
 
+
+# Caja superior con selector de Ejercicio
+# Creación de la caja contenedor
+cajaselect = st.container(height = 110, border = True)
+# Variables de sección
+postura = ""
+secuencia_concreta = ""
+progress_text = "Postura detectada, un momento..."
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
-
-cajaselect = st.container(height = 100, border = True)
+# Creación de columnas
 scol1, scol2, scol3, scol4 = cajaselect.columns(
         spec=[20, 45, 30, 5],
         gap='small',
         vertical_alignment='top'
     )
+# Popover para seleccionar ejercicio en COL1
 scol1_seleccion = scol1.popover("Selecciona tu ejercicio")
 scol1_secuencia = scol1_seleccion.selectbox(
         "Escoja su Secuencia",
@@ -29,14 +35,15 @@ scol1_secuencia = scol1_seleccion.selectbox(
         index=len(secuencias)-1
     )
 scol1_cajavisos = scol1.empty()
+
 scol2_modsec = scol2.empty()
 scol2_text = ""
 
-progress_text = "Postura detectada, un momento..."
 scol3_scroll = scol3.empty()
 
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 cajavideos = st.empty()
+
 vercaja = False
 estado_usuario = False
 
