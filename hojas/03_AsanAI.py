@@ -19,6 +19,10 @@ postura = ""
 secuencia_concreta = ""
 scol2_text = ""
 progress_text = "Postura detectada, un momento..."
+posturas = []
+step = 0
+frame_count = 0
+frame_success = 0
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 # Creación de columnas
@@ -58,22 +62,19 @@ if secuencia_min == "postura_concreta":
 else:
     sequence = scol1_secuencia
     posturas_sequence = TRANSICIONES_SECUENCIA[sequence]
-    posturas = []
-    for pose in posturas_sequence.values():
-        posturas.append(pose)
-    step = 0
+    posturas = list(posturas_sequence.values())
+    pose_actual = posturas[step]
     vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{posturas[step]}.mp4"
+    video_path = f"{VIDEO_DIR}/{secuencia_min}/{pose_actual}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
                     Secuencia seleccionada: **:blue[{sequence}]**<br>
-                    Postura actual: **:red[{posturas[step]}]**
+                    Postura actual: **:red[{pose_actual}]**
                     '''
 
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
 scol3_bar = scol3.progress(0, text=progress_text)
-counterto100(scol3_bar, progress_text)
 # scol3_bar = scol3.button("Activa")
 scol3.button("Activa")
 
@@ -138,18 +139,45 @@ if vercaja:
             async_processing=True
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
-        falso_frame_count = 0
         while webrtc_ctx.state.playing:
             keypoints = keypoint_queue.get()
-            if falso_frame_count % 10 == 0:
-                falso_frame_count += 1
+            if frame_count % 10 == 0:
+                frame_count += 1
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
                 estado_usuario = user_pose.postura()
-                update_semaforo(estado_usuario, scol4_semaforo)
-                if falso_frame_count == 1000:
-                    falso_frame_count = 0
+                if estado_usuario:
+                    counterto100(scol3_bar, progress_text, frame_success)
+                    frame_success += FRAMES_SUCCESS_RATIO
+                    if frame_success >= 100:
+                        update_semaforo(estado_usuario, scol4_semaforo)
+                        frame_success = 0
+                        step += 1
+                        if step < len(posturas):
+                            pose_actual = posturas[step]
+                            scol2_text = f'''
+                                            Modalidad: **:orange[SECUENCIA]**<br>
+                                            Secuencia seleccionada: **:blue[{sequence}]**<br>
+                                            Postura actual: **:red[{pose_actual}]**
+                                            '''
+                            scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+                            video_path = f"{VIDEO_DIR}/{secuencia_min}/{pose_actual}.mp4"
+                            # Actualizar video mostrado
+                            if col1_muestravid:
+                                videotip.video(data=video_path,
+                                               loop=True,
+                                               autoplay=True,
+                                               muted=True
+                                               )
+                        else:
+                            st.success("¡Secuencia completada!")
+                            break
+                else:
+                    frame_success = 0
+                    counterto100(scol3_bar, progress_text, frame_success)
+                if frame_count == 1000:
+                    frame_count = 0
             else:
-                falso_frame_count += 1
+                frame_count += 1
         else:
             keypoint_queue.empty()

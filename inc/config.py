@@ -107,6 +107,8 @@ TRANSICIONESTIPS = {
                                  'Intención de tocar el cielo con los glúteos']
                         } 
                     }
+# SECUENCIAS
+FRAMES_SUCCESS_RATIO = 34
 TRANSICIONES_SECUENCIA = {
     'Saludo al sol': {
         'Paso_1': 'Tadasana',
