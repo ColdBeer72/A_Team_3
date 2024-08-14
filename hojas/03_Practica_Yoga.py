@@ -75,8 +75,6 @@ else:
 scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
 scol3_bar = scol3.progress(0, text=progress_text)
-# scol3_bar = scol3.button("Activa")
-scol3.button("Activa")
 
 scol4_semaforo = scol4.empty()
 estado_usuario = False

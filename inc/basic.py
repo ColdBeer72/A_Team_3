@@ -101,6 +101,7 @@ def get_current_body_dict():
     return VideoProcessor.get_body_dict()
 
 def counterto100(funcion, progress_text, frame):
+    frame *= 2
     funcion.progress(frame, text=progress_text)
     if frame == 100:
         time.sleep(0.5)
