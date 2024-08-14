@@ -252,3 +252,5 @@ visualize_keypoints(sample_val_images, sample_val_keypoints)
 
 # Predictions
 visualize_keypoints(sample_val_images, predictions)
+
+#TODO mejorar predicciones y ordenar entrada y salida
