@@ -145,6 +145,7 @@ if vercaja:
         while webrtc_ctx.state.playing:
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
+            st.session_state.frame_success = 0
             if st.session_state.frame_success > 0:
                 counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                 st.session_state.frame_success += 1
@@ -169,31 +170,31 @@ if vercaja:
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
-                        st.session_state.frame_success = 0
-                        # Avanzamos a siguiente postura si existe Siguiente postura
-                        if secuencia_min != "postura_concreta":
-                            step += 1
-                            if step < len(posturas):
-                                postura = posturas[step]
-                                # Actualizacion de Textos y Videos Muestra
-                                scol2_text = f'''
-                                                Modalidad: **:orange[SECUENCIA]**<br>
-                                                Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
-                                                Postura actual: **:red[{postura}]**
-                                                '''
-                                scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
-                                video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
-                                # Actualizar video mostrado
-                                if col1_muestravid:
-                                    videotip.video(data=video_path,
-                                                loop=True,
-                                                autoplay=True,
-                                                muted=True
-                                                )
-                            # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
-                            else:
-                                st.success("¡Secuencia completada!")
-                                break
+                        # st.session_state.frame_success = 0
+                        # # Avanzamos a siguiente postura si existe Siguiente postura
+                        # if secuencia_min != "postura_concreta":
+                        #     step += 1
+                        #     if step < len(posturas):
+                        #         postura = posturas[step]
+                        #         # Actualizacion de Textos y Videos Muestra
+                        #         scol2_text = f'''
+                        #                         Modalidad: **:orange[SECUENCIA]**<br>
+                        #                         Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
+                        #                         Postura actual: **:red[{postura}]**
+                        #                         '''
+                        #         scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+                        #         video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
+                        #         # Actualizar video mostrado
+                        #         if col1_muestravid:
+                        #             videotip.video(data=video_path,
+                        #                         loop=True,
+                        #                         autoplay=True,
+                        #                         muted=True
+                        #                         )
+                        #     # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
+                        #     else:
+                        #         st.success("¡Secuencia completada!")
+                        #         break
                 else:
                     scol3_debugging.error(estado_usuario)
                     st.session_state.frame_success = 0
