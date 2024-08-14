@@ -18,7 +18,7 @@ cajaselect = st.container(height = 110, border = True)
 postura = ""
 secuencia_concreta = ""
 scol2_text = ""
-progress_text = "Postura detectada, un momento..."
+progress_text = "Detectando postura, un momento..."
 posturas = []
 step = 0
 frame_count = 0
@@ -49,10 +49,10 @@ if secuencia_min == "postura_concreta":
     secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
     posturas = sublista(TRANSICIONESTIPS, secuencia_concreta)
     postura:str = scol1_seleccion.select_slider("Escoja su postura a practicar:", posturas)
-    secuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
+    subsecuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
     postura_min = "_".join(postura.split(" ")).lower()
     vercaja = True
-    video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
+    video_path = f"{VIDEO_DIR}/{subsecuencia_min}/{postura_min}.mp4"
     scol2_text = f'''
                     Modalidad: **:orange[POSTURA CONCRETA]**<br>
                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
