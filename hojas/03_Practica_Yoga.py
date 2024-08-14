@@ -146,9 +146,6 @@ if vercaja:
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
             frame_success = 0
-            if frame_success > 0:
-                counterto100(scol3_bar, progress_text, frame_success)
-                frame_success += 1
             # Cada 10 frames..
             if frame_count % 10 == 0:
                 # Aumento de Frame
@@ -162,9 +159,10 @@ if vercaja:
                 if estado_usuario:
                     scol3_debugging.success(estado_usuario)
                     # Iniciamos Contador
-                    counterto100(scol3_bar, progress_text, frame_success)
-                    # Aumentamos contador de Success
-                    frame_success += FRAMES_SUCCESS_RATIO
+                    for i in range(10):
+                        counterto100(scol3_bar, progress_text, frame_success)
+                        # Aumentamos contador de Success
+                        frame_success += FRAMES_SUCCESS_RATIO
                     # Si alcanzamos tiempo objetivo...
                     if frame_success >= (FRAMES_SUCCESS_RATIO * 50):
                         # Actualizamos Notificacion Usuario de Postura OK
