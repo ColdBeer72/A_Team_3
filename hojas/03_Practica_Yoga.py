@@ -42,6 +42,7 @@ secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 scol1_cajavisos = scol1.empty()
 scol2_modsec = scol2.empty()
 scol3_scroll = scol3.empty()
+scol3_debugging = scol3.empty()
 cajavideos = st.empty()
 vercaja = False
 
@@ -157,7 +158,7 @@ if vercaja:
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
                 if estado_usuario:
-                    scol3.success(estado_usuario)
+                    scol3_debugging.toast(estado_usuario)
                     # Iniciamos Contador
                     counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                     # Aumentamos contador de Success
@@ -193,6 +194,7 @@ if vercaja:
                                 st.success("¡Secuencia completada!")
                                 break
                 else:
+                    scol3_debugging.warning(estado_usuario)
                     st.session_state.frame_success = 0
                     counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                 if frame_count == 1000:
