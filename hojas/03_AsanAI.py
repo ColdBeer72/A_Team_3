@@ -22,7 +22,6 @@ progress_text = "Postura detectada, un momento..."
 posturas = []
 step = 0
 frame_count = 0
-frame_success = 0
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 # Creación de columnas
@@ -145,6 +144,9 @@ if vercaja:
         while webrtc_ctx.state.playing:
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
+            if st.session_state.frame_success > 0:
+                counterto100(scol3_bar, progress_text, st.session_state.frame_success)
+                st.session_state.frame_success += 1
             # Cada 10 frames..
             if frame_count % 10 == 0:
                 # Aumento de Frame
@@ -157,15 +159,15 @@ if vercaja:
                 # Si la postura esta correcta...
                 if estado_usuario:
                     # Iniciamos Contador
-                    counterto100(scol3_bar, progress_text, frame_success)
+                    counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                     # Aumentamos contador de Success
-                    frame_success += FRAMES_SUCCESS_RATIO
+                    st.session_state.frame_success += FRAMES_SUCCESS_RATIO
                     # Si alcanzamos tiempo objetivo...
-                    if frame_success >= FRAMES_SUCCESS_RATIO * 3:
+                    if st.session_state.frame_success >= (FRAMES_SUCCESS_RATIO * 100):
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
-                        frame_success = 0
+                        st.session_state.frame_success = 0
                         # Avanzamos a siguiente postura si existe Siguiente postura
                         if secuencia_min != "postura_concreta":
                             step += 1
@@ -191,8 +193,8 @@ if vercaja:
                                 st.success("¡Secuencia completada!")
                                 break
                 else:
-                    frame_success = 0
-                    counterto100(scol3_bar, progress_text, frame_success)
+                    st.session_state.frame_success = 0
+                    counterto100(scol3_bar, progress_text, st.session_state.frame_success)
                 if frame_count == 1000:
                     frame_count = 0
             else:
