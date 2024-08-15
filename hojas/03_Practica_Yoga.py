@@ -1,9 +1,8 @@
 import streamlit as st
-#from inc.basic import sublista, update_semaforo
 from inc.basic import *
 from inc.config import *
 from inc.state_machine import *
-from inc.video_stream import VideoProcessor, keypoint_queue
+from inc.video_stream import keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
 st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
@@ -15,18 +14,7 @@ st.subheader("Practica Posturas", anchor = False, divider="red")
 # Creación de la caja contenedor
 cajaselect = st.container(height = 110, border = True)
 # Variables de sección
-postura = ""
-secuencia_concreta = ""
-scol2_text = ""
-progress_text_wait = "No detectamos que esté realizando la postura correctamente :("
-progress_text = "Detectando postura, un momento..."
-posturas = []
-step = 0
-frame_count = 0
-frame_success = 0
-frame_success_save = 0
-secuencias_red = list(TRANSICIONESTIPS.keys())
-secuencias = secuencias_red + ["Postura concreta"]
+
 # Creación de columnas
 scol1, scol2, scol3, scol4 = cajaselect.columns(
         spec=[20, 45, 30, 5],
@@ -42,20 +30,17 @@ scol1_secuencia = scol1_seleccion.selectbox(
     )
 secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 
-scol1_cajavisos = scol1.empty()
-scol2_modsec = scol2.empty()
-cajavideos = st.empty()
 vercaja = False
 
 if secuencia_min == "postura_concreta":
-    secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", secuencias_red)
+    secuencia_concreta = scol1_seleccion.selectbox("¿De qué secuencia quieres practicar una postura?", lista_sequences)
     posturas = sublista(TRANSICIONESTIPS, secuencia_concreta)
     postura:str = scol1_seleccion.select_slider("Escoja su postura a practicar:", posturas)
     subsecuencia_min = "_".join(secuencia_concreta.split(" ")).lower()
     postura_min = "_".join(postura.split(" ")).lower()
     vercaja = True
     video_path = f"{VIDEO_DIR}/{subsecuencia_min}/{postura_min}.mp4"
-    scol2_text = f'''
+    upper_col2_text = f'''
                     Modalidad: **:orange[POSTURA CONCRETA]**<br>
                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
                     Postura seleccionada: **:red[{postura}]**
@@ -68,13 +53,14 @@ else:
     postura_min = "_".join(postura.split(" ")).lower()
     vercaja = True
     video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
-    scol2_text = f'''
+    upper_col2_text = f'''
                     Modalidad: **:orange[SECUENCIA]**<br>
                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
                     Postura actual: **:red[{postura}]**
                     '''
 
-scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+scol2_modsec = scol2.empty()
+scol2_modsec.markdown(upper_col2_text, unsafe_allow_html=True)
 
 estado_usuario = False
 
@@ -84,6 +70,7 @@ scol3_bar = scol3.progress(0, text=progress_text_wait)
 scol4_semaforo = scol4.empty()
 update_semaforo(estado_usuario, scol4_semaforo)
 
+cajavideos = st.empty()
 # Caja
 if vercaja:
     cajavideos = st.container(height = 650, border = True)
@@ -181,11 +168,11 @@ if vercaja:
                                 postura = posturas[step]
                                 postura_min = "_".join(postura.split(" ")).lower()
                                 # Actualizacion de Textos y Videos Muestra
-                                scol2_text = f'''
+                                upper_col2_text = f'''
                                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
                                     Postura actual: **:red[{postura}]**
                                     '''
-                                scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+                                scol2_modsec.markdown(upper_col2_text, unsafe_allow_html=True)
                                 video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
                                 # Actualizar video mostrado
                                 videotip.video(data=video_path,

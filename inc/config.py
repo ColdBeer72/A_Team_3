@@ -1,8 +1,8 @@
 from ultralytics import YOLO
+from streamlit_webrtc import RTCConfiguration
 
 #Activar/Desactivar modo Debug
 DEBUG = True
-
 # Ancho de Columna por defecto en StreamLit
 DEFAULT_COLUMN_WIDTH = 30
 MIN_COLUMN_WIDTH = 15
@@ -27,60 +27,6 @@ LISTA_AUTORES = [
         ["jordi", "Jordi Porcel", "https://www.linkedin.com/in/jordi-porcel-mezquida-60168bb1/"],
         ["javi", "Javier Montoto", "https://www.linkedin.com/in/javier-montoto/"]
     ]
-#Formato de CAPTURA de vídeo
-CAM_WIDTH = 640
-CAM_HEIGHT = 480
-# Origen del vídeo
-VIDEO_DIR = "data/Secuencias"
-# Modelos
-class Modelos():
-    YOLO =      YOLO("../data/models/yolov8n-pose.pt")
-    PROPIO =    None
-# Lista de Transiciones con sus diferentes posturas
-TRANSICIONES = {
-        'Saludo al sol': {
-            'Tadasana': 'Urdhva Hastasana',
-            'Urdhva Hastasana': 'Uttanasana',
-            'Uttanasana': 'Ardha Uttanasana', 
-            'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
-            'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
-            'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
-            'Adho Mukha Svanasana': 'Uttanasana'
-        } 
-    }
-# Umbrales del State Machine
-class UMBRALES():
-    THREE_POINT_STRAIGHT =              [195, 155]
-    MANOS_JUNTAS =                      [40, 15]
-    INCLINACION_CABEZA_UTTANASANA =     10
-    ANGULO_CUERPO_ARDHA_UTTANASANA =    90
-    HOMBRO_DCHO_TAPADO_CARA_ARDHA =     30
-    BRAZOS_90_CHATURANGA =              [110, 70]
-    CHATURANGA_Y_CODO_MUNECA =          10
-    DIST_CODO_CHATURANGA =              45
-    ORIENTACION_CABEZA_URDHVA_MUKHA =   10
-    ESPALDA_RECTA_ADHO_MUKHA_SVANA =    [190, 150]
-    FRAMES_SEMAFORO_EN_VERDE =          20
-
-# Partes formato string
-t_nariz: str =      'nariz'
-t_ojoi: str =       'ojo_izdo'
-t_ojod: str =       'ojo_dcho'
-t_orejai: str =     'oreja_izda'
-t_orejad: str =     'oreja_dcha'
-t_hombroi: str =    'hombro_izdo' 
-t_hombrod: str =    'hombro_dcho'
-t_codoi: str =      'codo_izdo'
-t_codod: str =      'codo_dcho'
-t_munecai: str =    'muneca_izda'
-t_munecad: str =    'muneca_dcha'
-t_caderai: str =    'cadera_izda'
-t_caderad: str =    'cadera_dcha'
-t_rodillai: str =   'rodilla_izda'
-t_rodillad: str =   'rodilla_dcha'
-t_tobilloi: str =   'tobillo_izdo'
-t_tobillod: str =   'tobillo_dcho'
-
 TRANSICIONESTIPS = {
         'Saludo al sol': {
             'Tadasana':         ['Equilibra el peso en ambos pies',
@@ -125,3 +71,81 @@ TRANSICIONES_SECUENCIA = {
         'Paso_11': 'Tadasana'
     }
 }
+# Variables Page3
+lista_sequences = list(TRANSICIONESTIPS.keys())
+secuencias = lista_sequences + ["Postura concreta"]
+postura = ""
+secuencia_concreta = ""
+upper_col2_text = '''
+            '''
+progress_text_wait = "No detectamos que esté realizando la postura correctamente"
+progress_text = "Detectando postura, un momento..."
+posturas = []
+step = 0
+#Formato de CAPTURA de vídeo
+CAM_WIDTH = 640
+CAM_HEIGHT = 480
+# Origen del vídeo
+VIDEO_DIR = "data/Secuencias"
+VIDEO_PATH = VIDEO_DIR
+# WEBRTC_PARAMS
+rtc_configuration = RTCConfiguration({
+    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+})
+media_stream_constraints = {
+    "video": {
+        "width": {"ideal": CAM_WIDTH},
+        "height": {"ideal": CAM_HEIGHT},
+        "frameRate": {"exact": 15} #"min":20, "max": 40}
+    },
+    "audio": False
+}
+# Modelos
+Modelos = {
+    'YOLO': YOLO("../data/models/yolov8n-pose.pt"),
+    'I+D': None
+}
+# Lista de Transiciones con sus diferentes posturas
+TRANSICIONES = {
+        'Saludo al sol': {
+            'Tadasana': 'Urdhva Hastasana',
+            'Urdhva Hastasana': 'Uttanasana',
+            'Uttanasana': 'Ardha Uttanasana', 
+            'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
+            'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
+            'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
+            'Adho Mukha Svanasana': 'Uttanasana'
+        } 
+    }
+# Umbrales del State Machine
+class UMBRALES():
+    THREE_POINT_STRAIGHT =              [195, 155]
+    MANOS_JUNTAS =                      [40, 15]
+    INCLINACION_CABEZA_UTTANASANA =     10
+    ANGULO_CUERPO_ARDHA_UTTANASANA =    90
+    HOMBRO_DCHO_TAPADO_CARA_ARDHA =     30
+    BRAZOS_90_CHATURANGA =              [110, 70]
+    CHATURANGA_Y_CODO_MUNECA =          10
+    DIST_CODO_CHATURANGA =              45
+    ORIENTACION_CABEZA_URDHVA_MUKHA =   10
+    ESPALDA_RECTA_ADHO_MUKHA_SVANA =    [190, 150]
+    FRAMES_SEMAFORO_EN_VERDE =          20
+
+# Partes formato string
+t_nariz: str =      'nariz'
+t_ojoi: str =       'ojo_izdo'
+t_ojod: str =       'ojo_dcho'
+t_orejai: str =     'oreja_izda'
+t_orejad: str =     'oreja_dcha'
+t_hombroi: str =    'hombro_izdo' 
+t_hombrod: str =    'hombro_dcho'
+t_codoi: str =      'codo_izdo'
+t_codod: str =      'codo_dcho'
+t_munecai: str =    'muneca_izda'
+t_munecad: str =    'muneca_dcha'
+t_caderai: str =    'cadera_izda'
+t_caderad: str =    'cadera_dcha'
+t_rodillai: str =   'rodilla_izda'
+t_rodillad: str =   'rodilla_dcha'
+t_tobilloi: str =   'tobillo_izdo'
+t_tobillod: str =   'tobillo_dcho'

@@ -154,9 +154,9 @@ class UserPose:
 
     eye_level = CAM_HEIGHT // 100
 
-    def __init__(self, pose, seq):
-        self.actual_state = self.set_pose(pose)
-        self.actual_sequence = self.set_sequence(seq)
+    def __init__(self):
+        self.actual_state = ''
+        self.actual_sequence = ''
         self.user_state = False
         self.kps = KeypointsHandler()
         self.cam = False

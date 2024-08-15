@@ -1,0 +1,178 @@
+from inc.basic import *
+from inc.config import *
+import streamlit as st
+from inc.video_stream import keypoint_queue
+
+
+# UPDATE INFO Caja Superior
+def update_upper_col2_info(sequence, postura, selection):
+    sequence_minus = to_minus(sequence)
+    postura_minus = to_minus(postura)
+    video_path = VIDEO_PATH + f"/{sequence_minus}/{postura_minus}.mp4"
+    upper_col2_text = f'''
+        Modalidad: **<span style="color:orange;">{selection}</span>**<br>
+        Secuencia seleccionada: **<span style="color:purple;">{sequence}</span>**<br>
+        Postura seleccionada: **<span style="color:magenta;">{postura}</span>**
+        '''
+    return(video_path, upper_col2_text)
+
+def set_pose_for_sequence(sequence):
+    lista_posturas = list(TRANSICIONES_SECUENCIA[sequence].values())
+    if st.session_state.step < len(posturas):
+        postura = lista_posturas[st.session_state.step]
+        video_path, upper_col2_text = update_upper_col2_info(sequence, postura, 'SECUENCIA')
+    return postura, video_path, upper_col2_text
+
+###############################################################################################
+#                                   POPOVER MENUS                                             #
+###############################################################################################
+def up_col1_specific_pose_selection(box):
+    sequence = box.selectbox(
+        "¿De qué secuencia quieres practicar una postura?",
+        lista_sequences
+        )
+    list_posturas = sublista(TRANSICIONESTIPS, sequence)
+    postura = box.select_slider(
+        "Escoja postura a practicar:",
+        list_posturas
+        )
+    video_path, upper_col2_text = update_upper_col2_info(sequence, postura, 'PORTURA CONCRETA')
+    return(sequence, postura, video_path, upper_col2_text)
+
+def up_col1_specific_sequence_selection(box):
+    sequence = box.selectbox(
+        "¿Qué secuencia quieres practicar?",
+        lista_sequences
+        )
+    postura, video_path, upper_col2_text = set_pose_for_sequence(sequence)
+    return(sequence, postura, video_path, upper_col2_text)
+
+def up_col1_menu(location):
+    select_exercice = location.popover(("Selecciona tu ejercicio"))
+    selection = select_exercice.radio(
+            "¿Qué deseas practicar?",
+            ["**Postura** :camera:", "**Secuencia** :movie_camera:"]
+        )
+    if selection == '**Postura** :camera:':
+        return up_col1_specific_pose_selection(select_exercice)
+    else:
+        st.session_state['secuencia'] = True
+        return up_col1_specific_sequence_selection(select_exercice)
+    
+###############################################################################################
+#                           INFO SELECCION DE SECUENCIA + POSTURA                             #
+###############################################################################################
+def up_col2_update_info_markdown(location, markdown):
+    location.markdown(markdown, unsafe_allow_html=True)
+
+###############################################################################################
+#                                   BARRA DE PROGRESO                                         #
+###############################################################################################
+def up_col3_update_progress_bar(location, text):
+    if st.session_state.grabando:
+        if st.session_state.frames_success == 0:
+            location.progress(0, text=text)
+        else:
+            location.progress(st.session_state.frames_success, text=text)
+    else:
+        location.empty()
+
+###############################################################################################
+#                                       SEMAFORO                                              #                                                         
+###############################################################################################
+def up_col4_update_status(location, state):
+    if st.session_state.grabando:
+        if state:
+            location.image(SEM_GREEN, use_column_width="auto")
+        else:
+            location.image(SEM_RED, use_column_width="auto")
+
+###############################################################################################
+#                                    LATERAL WEBCAM                                           #                                                         
+###############################################################################################
+def down_col1_choose_model(location):
+    selection = location.radio(
+        "**Modelo**",
+        Modelos.keys(),
+        horizontal=True,
+        label_visibility='visible'
+    )
+    return Modelos[selection]
+
+def down_col1_update_kps_vision(location, video_processor):
+    see_keypoints = location.toggle(
+        "Ver KeyPoints",
+        value=True
+        )
+    video_processor.set_draw(see_keypoints)
+
+def down_col1_update_tips_or_vids(location, video_path, sequence, postura, tips_or_video_box):
+    tips_or_vid = location.toggle(
+        label="TIPS / VIDEO",
+        value=False
+    )
+    if tips_or_vid:
+        down_col1_update_video(tips_or_video_box, video_path)
+    else:
+        down_col1_update_tips(tips_or_video_box, sequence, postura)
+
+def down_col1_update_video(location, video_path):
+    location.video(        data=video_path,
+        loop=True,
+        autoplay=True,
+        muted=True
+    )
+
+def down_col1_update_tips(location, sequence, postura):
+    for tip in TRANSICIONESTIPS[sequence][postura]:
+        location.markdown(f"- {tip}<br>", unsafe_allow_html=True)
+
+###############################################################################################
+#                                     WEBCAM                                                  #                                                         
+###############################################################################################
+def frame_counter_increment():
+    st.session_state.frame_count += 1
+
+def reset_frame_counters():
+    st.session_state.frame_count = 0
+    st.session_state.frame_success = 0
+
+def check_postura(user_pose, kps):
+    user_pose.update_keypoints(kps)
+    return user_pose.postura()
+
+def next_sequence_step(user_pose, markdown, video_place):
+    step += 1
+    postura, video_path, upper_col2_text = set_pose_for_sequence(user_pose.actual_sequence)
+    user_pose.set_pose(postura)
+    up_col2_update_info_markdown(markdown ,upper_col2_text)
+    down_col1_update_video(video_place ,video_path)
+
+def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
+    time.sleep(1)
+    up_col4_update_status(semaforo, estado_usuario)
+    reset_frame_counters()
+    if st.session_state.secuencia:
+        next_sequence_step(user_pose, markdown, video_place)
+
+def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
+    while webrtc_ctx.state.playing:
+        st.session_state['grabando'] = True
+        keypoints = keypoint_queue.get()
+        frame_counter_increment()
+        if st.session_state.frame_count % 10 == 0:
+            estado_usuario = check_postura(
+                user_pose,
+                keypoints
+            )
+            if estado_usuario:
+                st.session_state.frames_success += FRAMES_SUCCESS_RATIO
+                up_col3_update_progress_bar(progress, st.session_state.frames_success, progress_text)
+                if st.session_state.frames_success == 50:
+                    pose_success(user_pose, markdown, semaforo, estado_usuario, video_place)
+            else:
+                st.session_state.frames_success = 0
+                up_col3_update_progress_bar(progress, progress_text)
+    else:
+        keypoint_queue.empty()
+        st.session_state['grabando'] = False

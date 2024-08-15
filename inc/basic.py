@@ -108,6 +108,9 @@ def counterto100(funcion, progress_text, frame):
         funcion.empty()
 
 # Factoria de VideoProcessor
-def video_processor_factory():
-    model_input = Modelos.YOLO
+def video_processor_factory(model):
+    model_input = model
     return VideoProcessor(model_input)
+
+def to_minus(str):
+    return "_".join(str.split(" ")).lower()
