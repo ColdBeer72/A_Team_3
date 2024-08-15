@@ -23,6 +23,7 @@ progress_text = "Detectando postura, un momento..."
 posturas = []
 step = 0
 frame_count = 0
+frame_success = 0
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 # Creación de columnas
@@ -42,7 +43,6 @@ secuencia_min = "_".join(scol1_secuencia.split(" ")).lower()
 
 scol1_cajavisos = scol1.empty()
 scol2_modsec = scol2.empty()
-scol3_debugging = scol3.empty()
 cajavideos = st.empty()
 vercaja = False
 
@@ -77,7 +77,6 @@ scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
 
 estado_usuario = False
 
-scol3_debugging.warning(estado_usuario)
 scol3_bar = scol3.progress(0, text=progress_text_wait)
 
 scol4_semaforo = scol4.empty()
@@ -144,13 +143,12 @@ if vercaja:
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
         while webrtc_ctx.state.playing:
-            scol3_debugging.write(frame_count)
+            print(frame_count)
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
-            frame_success = 0
             # Cada 10 frames..
             if frame_count % 10 == 0:
-                scol3_debugging.success("Cada 10 frames uWu")
+                print("Cada 10 frames uWu")
                 # Aumento de Frame
                 frame_count += 1
                 # Update KPs del Objeto User_Pose y de la postura
@@ -160,43 +158,47 @@ if vercaja:
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
                 if estado_usuario:
-                    scol3_debugging.success(estado_usuario)
-                    # Iniciamos Contador
-                    counterto100(scol3_bar, progress_text, frame_success)
+                    print(estado_usuario)
                     # Aumentamos contador de Success
                     frame_success += FRAMES_SUCCESS_RATIO
+                    print(frame_success)
+                    # Iniciamos Contador
+                    counterto100(scol3_bar, progress_text, frame_success)
                     # Si alcanzamos tiempo objetivo...
                     if frame_success >= 50:
                         # Actualizamos Notificacion Usuario de Postura OK
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
-                        # frame_success = 0
-                        # # Avanzamos a siguiente postura si existe Siguiente postura
-                        # if secuencia_min != "postura_concreta":
-                        #     step += 1
-                        #     if step < len(posturas):
-                        #         postura = posturas[step]
-                        #         # Actualizacion de Textos y Videos Muestra
-                        #         scol2_text = f'''
-                        #                         Modalidad: **:orange[SECUENCIA]**<br>
-                        #                         Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
-                        #                         Postura actual: **:red[{postura}]**
-                        #                         '''
-                        #         scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
-                        #         video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
-                        #         # Actualizar video mostrado
-                        #         if col1_muestravid:
-                        #             videotip.video(data=video_path,
-                        #                         loop=True,
-                        #                         autoplay=True,
-                        #                         muted=True
-                        #                         )
-                        #     # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
-                        #     else:
-                        #         st.success("¡Secuencia completada!")
-                        #         break
+                        frame_success = 0
+                        # Avanzamos a siguiente postura si existe Siguiente postura
+                        if secuencia_min != "postura_concreta":
+                            print("Avanzamos Step")
+                            step += 1
+                            if step < len(posturas):
+                                print(f"Anterior postura: {postura}")
+                                postura = posturas[step]
+                                print(f"Nueva postura: {postura}")
+                                # # Actualizacion de Textos y Videos Muestra
+                                # scol2_text = f'''
+                                #                 Modalidad: **:orange[SECUENCIA]**<br>
+                                #                 Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
+                                #                 Postura actual: **:red[{postura}]**
+                                #                 '''
+                                # scol2_modsec.rrrmarkdown(scol2_text, unsafe_allow_html=True)
+                                # video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
+                                # # Actualizar video mostrado
+                                # if col1_muestravid:
+                                #     videotip.video(data=video_path,
+                                #                 loop=True,
+                                #                 autoplay=True,
+                                #                 muted=True
+                                #                 )
+                            # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
+                            else:
+                                st.success("¡Secuencia completada!")
+                                break
                 else:
-                    scol3_debugging.error(estado_usuario)
+                    print(estado_usuario)
                     frame_success = 0
                     counterto100(scol3_bar, progress_text, frame_success)
             else:
