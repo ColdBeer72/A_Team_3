@@ -1,5 +1,15 @@
 from ultralytics import YOLO
 from streamlit_webrtc import RTCConfiguration
+import streamlit as st
+
+if 'grabando' not in st.session_state:
+    st.session_state['grabando'] = False
+
+if 'frame_count' not in st.session_state:
+    st.session_state['grabando'] = 0
+
+if 'frames_success' not in st.session_state:
+    st.session_state['grabando'] = 0
 
 #Activar/Desactivar modo Debug
 DEBUG = True

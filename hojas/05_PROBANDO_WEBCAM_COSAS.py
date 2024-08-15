@@ -3,48 +3,45 @@ from inc.basic import *
 from inc.config import *
 from inc.functions_page3 import *
 from inc.state_machine import *
-from inc.video_stream import keypoint_queue
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
-st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
-
-if 'grabando' not in st.session_state:
-    st.session_state['grabando'] = False
-
-if 'frame_count' not in st.session_state:
-    st.session_state['grabando'] = 0
-
-if 'frames_success' not in st.session_state:
-    st.session_state['grabando'] = 0
+st.markdown(
+    HIDE_IMG_FS,
+    unsafe_allow_html=True
+)
 
 user_pose = UserPose()
 
 # Header de la página
-st.subheader("Practica Posturas", anchor = False, divider="rainbow")
+st.subheader(
+    "Practica Posturas",
+    anchor=False,
+    divider="rainbow"
+)
 
 # DISTRIBUCION DEL ESPACIO
 # Caja Superior > Seleccion de Ex
 caja_superior = st.container(
         height=110,
         border=True
-    )
+)
 # Caja Inferior > Ex en Webcam
 caja_inferior = st.container(
         height=450,
         border=True
-    )
+)
 # Columnas Superiores
 up_col1, up_col2, up_col3, up_col4 = caja_superior.columns(
         spec=[25, 30, 30, 15],
         gap='small',
         vertical_alignment='top'
-    )
+)
 # Columnas inferiores
 down_col1, _, down_col2, _ = caja_inferior.columns(
         spec=[15, 15, 45, 25],
         gap='small',
         vertical_alignment='top'
-    )
+)
 
 # SECCION SUPERIOR
 # Up_Col1 > Selector Ejercicio
@@ -69,7 +66,10 @@ with up_col3:
 # Up_Col4 > Semaforo
 with up_col4:
     up_col4_status = st.empty()
-    up_col4_update_status(up_col4_status, None)
+    up_col4_update_status(
+        up_col4_status,
+        None
+    )
 
 # SECCION INFERIOR
 # Down_Col1 > TIPS / VIDS + toggles
@@ -99,7 +99,9 @@ with down_col2:
         media_stream_constraints=media_stream_constraints,
         async_processing=True
     )
+    debugging = st.empty()
     down_col2_webcam(
+        debugging,
         webrtc_ctx,
         user_pose,
         up_col2_info_markdown,

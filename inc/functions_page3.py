@@ -155,7 +155,7 @@ def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
-def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
+def down_col2_webcam(debugging, webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
     while webrtc_ctx.state.playing:
         st.session_state['grabando'] = True
         keypoints = keypoint_queue.get()
@@ -165,6 +165,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
                 user_pose,
                 keypoints
             )
+            debugging(user_pose.kps.keypoints)
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress, st.session_state.frames_success, progress_text)
