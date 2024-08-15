@@ -18,7 +18,7 @@ def update_upper_col2_info(sequence, postura, selection):
 
 def set_pose_for_sequence(sequence):
     lista_posturas = list(TRANSICIONES_SECUENCIA[sequence].values())
-    if st.session_state.step < len(posturas):
+    if st.session_state.step < len(lista_posturas):
         postura = lista_posturas[st.session_state.step]
         video_path, upper_col2_text = update_upper_col2_info(sequence, postura, 'SECUENCIA')
     return postura, video_path, upper_col2_text
@@ -142,7 +142,7 @@ def check_postura(user_pose, kps):
     return user_pose.postura()
 
 def next_sequence_step(user_pose, markdown, video_place):
-    step += 1
+    st.session_state.step += 1
     postura, video_path, upper_col2_text = set_pose_for_sequence(user_pose.actual_sequence)
     user_pose.set_pose(postura)
     up_col2_update_info_markdown(markdown ,upper_col2_text)

@@ -3,13 +3,16 @@ from streamlit_webrtc import RTCConfiguration
 import streamlit as st
 
 if 'grabando' not in st.session_state:
-    st.session_state['grabando'] = False
+    st.session_state.grabando = False
 
 if 'frame_count' not in st.session_state:
-    st.session_state['grabando'] = 0
+    st.session_state.frame_count = 0
 
 if 'frames_success' not in st.session_state:
-    st.session_state['grabando'] = 0
+    st.session_state.frames_success = 0
+
+if 'step' not in st.session_state:
+    st.session_state.step = 0
 
 #Activar/Desactivar modo Debug
 DEBUG = True
@@ -91,7 +94,6 @@ upper_col2_text = '''
 progress_text_wait = "No detectamos que esté realizando la postura correctamente"
 progress_text = "Detectando postura, un momento..."
 posturas = []
-step = 0
 #Formato de CAPTURA de vídeo
 CAM_WIDTH = 640
 CAM_HEIGHT = 480
