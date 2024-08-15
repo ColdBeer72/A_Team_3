@@ -154,6 +154,7 @@ if vercaja:
                 # Update KPs del Objeto User_Pose y de la postura
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
+                print(f"POSE SEGUN STATEMACHINE: {user_pose.actual_state}")
                 # Check de Postura Correcta
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
@@ -177,22 +178,23 @@ if vercaja:
                             if step < len(posturas):
                                 print(f"Anterior postura: {postura}")
                                 postura = posturas[step]
+                                postura_min = "_".join(postura.split(" ")).lower()
                                 print(f"Nueva postura: {postura}")
-                                # # Actualizacion de Textos y Videos Muestra
-                                # scol2_text = f'''
-                                #                 Modalidad: **:orange[SECUENCIA]**<br>
-                                #                 Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
-                                #                 Postura actual: **:red[{postura}]**
-                                #                 '''
-                                # scol2_modsec.rrrmarkdown(scol2_text, unsafe_allow_html=True)
-                                # video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura}.mp4"
-                                # # Actualizar video mostrado
-                                # if col1_muestravid:
-                                #     videotip.video(data=video_path,
-                                #                 loop=True,
-                                #                 autoplay=True,
-                                #                 muted=True
-                                #                 )
+                                print(f"Segun la StateMachine: {user_pose.actual_state}")
+                                # HACE FALTA ????????
+                                # Actualizacion de Textos y Videos Muestra
+                                scol2_text = f'''
+                                    Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
+                                    Postura actual: **:red[{postura}]**
+                                    '''
+                                scol2_modsec.markdown(scol2_text, unsafe_allow_html=True)
+                                video_path = f"{VIDEO_DIR}/{secuencia_min}/{postura_min}.mp4"
+                                # Actualizar video mostrado
+                                videotip.video(data=video_path,
+                                            loop=True,
+                                            autoplay=True,
+                                            muted=True
+                                            )
                             # Si alcanzamos final de Secuencia cerramos webcam y Felicitamos al Usuario.
                             else:
                                 st.success("¡Secuencia completada!")
