@@ -3,12 +3,27 @@ from inc.basic import *
 from inc.config import *
 from inc.functions_page3 import *
 from inc.state_machine import *
-from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
+from streamlit_webrtc import webrtc_streamer, WebRtcMode
 
 st.markdown(
     HIDE_IMG_FS,
     unsafe_allow_html=True
 )
+
+if 'grabando' not in st.session_state:
+    st.session_state.grabando = False
+
+if 'frame_count' not in st.session_state:
+    st.session_state.frame_count = 0
+
+if 'frames_success' not in st.session_state:
+    st.session_state.frames_success = 0
+
+if 'step' not in st.session_state:
+    st.session_state.step = 0
+
+if 'secuencia' not in st.session_state:
+    st.session_state.secuencia = False
 
 user_pose = UserPose()
 
@@ -27,7 +42,7 @@ caja_superior = st.container(
 )
 # Caja Inferior > Ex en Webcam
 caja_inferior = st.container(
-        height=450,
+        height=600,
         border=True
 )
 # Columnas Superiores
@@ -37,8 +52,8 @@ up_col1, up_col2, up_col3, up_col4 = caja_superior.columns(
         vertical_alignment='top'
 )
 # Columnas inferiores
-down_col1, _, down_col2, _ = caja_inferior.columns(
-        spec=[15, 15, 45, 25],
+_, down_col1, _, down_col2, _ = caja_inferior.columns(
+        spec=[5, 15, 15, 45, 20],
         gap='small',
         vertical_alignment='top'
 )
@@ -59,10 +74,7 @@ with up_col2:
 # Up_Col3 > Carga de Check Postura
 with up_col3:
     up_col3_progress_bar = st.empty()
-    up_col3_update_progress_bar(
-        up_col3_progress_bar,
-        progress_text_wait
-    )
+    up_col3_update_progress_bar(up_col3_progress_bar)
 # Up_Col4 > Semaforo
 with up_col4:
     up_col4_status = st.empty()
@@ -90,7 +102,6 @@ with down_col1:
     )
 # Down_Col2 > Webcam
 with down_col2:
-    video_processor = video_processor_factory(model_select)
     webrtc_ctx = webrtc_streamer(
         key="streamer",
         mode=WebRtcMode.SENDRECV,
@@ -99,9 +110,7 @@ with down_col2:
         media_stream_constraints=media_stream_constraints,
         async_processing=True
     )
-    debugging = st.empty()
     down_col2_webcam(
-        debugging,
         webrtc_ctx,
         user_pose,
         up_col2_info_markdown,

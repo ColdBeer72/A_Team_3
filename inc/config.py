@@ -1,18 +1,5 @@
 from ultralytics import YOLO
 from streamlit_webrtc import RTCConfiguration
-import streamlit as st
-
-if 'grabando' not in st.session_state:
-    st.session_state.grabando = False
-
-if 'frame_count' not in st.session_state:
-    st.session_state.frame_count = 0
-
-if 'frames_success' not in st.session_state:
-    st.session_state.frames_success = 0
-
-if 'step' not in st.session_state:
-    st.session_state.step = 0
 
 #Activar/Desactivar modo Debug
 DEBUG = True
@@ -91,8 +78,8 @@ postura = ""
 secuencia_concreta = ""
 upper_col2_text = '''
             '''
-progress_text_wait = "No detectamos que esté realizando la postura correctamente"
-progress_text = "Detectando postura, un momento..."
+progress_text_wait = "Iniciando detección de postura..."
+progress_text = "**¡Postura detectada!** Aguante unos instantes..."
 posturas = []
 #Formato de CAPTURA de vídeo
 CAM_WIDTH = 640

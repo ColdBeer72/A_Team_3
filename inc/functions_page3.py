@@ -56,7 +56,7 @@ def up_col1_menu(location):
     if selection == '**Postura** :camera:':
         return up_col1_specific_pose_selection(select_exercice)
     else:
-        st.session_state['secuencia'] = True
+        st.session_state.secuencia = True
         return up_col1_specific_sequence_selection(select_exercice)
     
 ###############################################################################################
@@ -68,12 +68,13 @@ def up_col2_update_info_markdown(location, markdown):
 ###############################################################################################
 #                                   BARRA DE PROGRESO                                         #
 ###############################################################################################
-def up_col3_update_progress_bar(location, text):
+def up_col3_update_progress_bar(location):
     if st.session_state.grabando:
         if st.session_state.frames_success == 0:
-            location.progress(0, text=text)
+            location.progress(0, text=progress_text_wait)
         else:
-            location.progress(st.session_state.frames_success, text=text)
+            progress_bar = st.session_state.frames_success * 2
+            location.progress(progress_bar, text=progress_text)
     else:
         location.empty()
 
@@ -155,25 +156,32 @@ def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
-def down_col2_webcam(debugging, webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
+def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
     while webrtc_ctx.state.playing:
-        st.session_state['grabando'] = True
+        st.session_state.grabando = True
         keypoints = keypoint_queue.get()
         frame_counter_increment()
+        print(st.session_state.frame_count)
         if st.session_state.frame_count % 10 == 0:
             estado_usuario = check_postura(
                 user_pose,
                 keypoints
             )
-            debugging(user_pose.kps.keypoints)
+            print(estado_usuario)
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
-                up_col3_update_progress_bar(progress, st.session_state.frames_success, progress_text)
+                up_col3_update_progress_bar(progress)
                 if st.session_state.frames_success == 50:
-                    pose_success(user_pose, markdown, semaforo, estado_usuario, video_place)
+                    pose_success(
+                        user_pose,
+                        markdown,
+                        semaforo,
+                        estado_usuario,
+                        video_place
+                    )
             else:
                 st.session_state.frames_success = 0
-                up_col3_update_progress_bar(progress, progress_text)
+                up_col3_update_progress_bar(progress)
     else:
         keypoint_queue.empty()
-        st.session_state['grabando'] = False
+        st.session_state.grabando = False
