@@ -155,6 +155,8 @@ if vercaja:
                 user_pose.set_pose(postura)
                 # Check de Postura Correcta
                 estado_usuario = user_pose.postura()
+                if frame_count == frame_success_save + UMBRALES.FRAMES_SEMAFORO_EN_VERDE:
+                    update_semaforo(estado_usuario, scol4_semaforo)
                 # Si la postura esta correcta...
                 if estado_usuario:
                     # Aumentamos contador de Success
@@ -169,6 +171,8 @@ if vercaja:
                         update_semaforo(estado_usuario, scol4_semaforo)
                         # Reseteamos Contador de Exito
                         frame_success = 0
+                        # Frame Success Guardado
+                        frame_success_save = frame_count
                         # Avanzamos a siguiente postura si existe Siguiente postura
                         if secuencia_min != "postura_concreta":
                             step += 1

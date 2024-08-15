@@ -60,6 +60,7 @@ class UMBRALES():
     DIST_CODO_CHATURANGA =              45
     ORIENTACION_CABEZA_URDHVA_MUKHA =   10
     ESPALDA_RECTA_ADHO_MUKHA_SVANA =    [190, 150]
+    FRAMES_SEMAFORO_EN_VERDE =          20
 
 # Partes formato string
 t_nariz: str =      'nariz'
