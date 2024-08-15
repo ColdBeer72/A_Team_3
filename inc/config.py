@@ -50,7 +50,7 @@ TRANSICIONES = {
     }
 # Umbrales del State Machine
 class UMBRALES():
-    THREE_POINT_STRAIGHT =              [190, 170]
+    THREE_POINT_STRAIGHT =              [195, 155]
     MANOS_JUNTAS =                      [40, 15]
     INCLINACION_CABEZA_UTTANASANA =     10
     ANGULO_CUERPO_ARDHA_UTTANASANA =    90
