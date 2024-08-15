@@ -144,26 +144,21 @@ if vercaja:
         )
         # Mientras este el PLAY >>> Hacemos cositas aqui
         while webrtc_ctx.state.playing:
-            print(frame_count)
             # Obtenemos kps desde la cola
             keypoints = keypoint_queue.get()
             # Cada 10 frames..
             if frame_count % 10 == 0:
-                print("Cada 10 frames uWu")
                 # Aumento de Frame
                 frame_count += 1
                 # Update KPs del Objeto User_Pose y de la postura
                 user_pose.update_keypoints(keypoints)
                 user_pose.set_pose(postura)
-                print(f"POSE SEGUN STATEMACHINE: {user_pose.actual_state}")
                 # Check de Postura Correcta
                 estado_usuario = user_pose.postura()
                 # Si la postura esta correcta...
                 if estado_usuario:
-                    print(estado_usuario)
                     # Aumentamos contador de Success
                     frame_success += FRAMES_SUCCESS_RATIO
-                    print(frame_success)
                     # Iniciamos Contador
                     counterto100(scol3_bar, progress_text, frame_success)
                     # Iniciamos girador
@@ -176,15 +171,10 @@ if vercaja:
                         frame_success = 0
                         # Avanzamos a siguiente postura si existe Siguiente postura
                         if secuencia_min != "postura_concreta":
-                            print("Avanzamos Step")
                             step += 1
                             if step < len(posturas):
-                                print(f"Anterior postura: {postura}")
                                 postura = posturas[step]
                                 postura_min = "_".join(postura.split(" ")).lower()
-                                print(f"Nueva postura: {postura}")
-                                print(f"Segun la StateMachine: {user_pose.actual_state}")
-                                # HACE FALTA ????????
                                 # Actualizacion de Textos y Videos Muestra
                                 scol2_text = f'''
                                     Secuencia seleccionada: **:blue[{secuencia_concreta}]**<br>
@@ -203,7 +193,6 @@ if vercaja:
                                 st.success("¡Secuencia completada!")
                                 break
                 else:
-                    print(estado_usuario)
                     frame_success = 0
                     counterto100(scol3_bar, progress_text, frame_success)
                     # scol3_girador = scol3.empty()

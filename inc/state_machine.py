@@ -344,8 +344,6 @@ class UserPose:
             espalda_recta = Pose_Calculator.three_points_straight(cadera_izda, hombro_izdo, oreja_izda)
             manos =  Pose_Calculator.mano_safe_zone(muneca_izda, hombro_izdo, tobillo_izdo, rodilla_izda)\
                 and Pose_Calculator.mano_safe_zone(muneca_dcha, hombro_dcho, tobillo_dcho, rodilla_dcha)
-        print(self.kps.keypoints)
-        print(f"angulo_cuepo: {angulo_cuerpo}")
         return angulo_cuerpo and espalda_recta and manos
 
     # Determinar si la postura CHATURANGA DANDASANA esta correcta
