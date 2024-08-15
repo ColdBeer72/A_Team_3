@@ -167,7 +167,7 @@ if vercaja:
                     # Iniciamos Contador
                     # counterto100(scol3_bar, progress_text, frame_success)
                     # Iniciamos girador
-                    scol3_girador.spinner("Aguanta la postura")
+                    scol3_girador = st.spinner("Aguanta la postura")
                     # Si alcanzamos tiempo objetivo...
                     if frame_success >= 50:
                         # Actualizamos Notificacion Usuario de Postura OK
