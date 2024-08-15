@@ -206,11 +206,11 @@ if vercaja:
                     print(estado_usuario)
                     frame_success = 0
                     # counterto100(scol3_bar, progress_text, frame_success)
-                    scol3_girador.empty()
+                    scol3_girador = scol3.empty()
             else:
                 frame_count += 1
             if frame_count == 1000:
                 frame_count = 0
         else:
             keypoint_queue.empty()
-            scol3_girador.empty()
+            scol3_girador = scol3.empty()
