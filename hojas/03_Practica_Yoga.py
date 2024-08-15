@@ -24,6 +24,7 @@ posturas = []
 step = 0
 frame_count = 0
 frame_success = 0
+frame_success_save = 0
 secuencias_red = list(TRANSICIONESTIPS.keys())
 secuencias = secuencias_red + ["Postura concreta"]
 # Creación de columnas
