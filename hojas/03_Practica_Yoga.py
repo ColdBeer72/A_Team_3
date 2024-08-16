@@ -48,7 +48,6 @@ caja_inferior = st.container(
 
 with st.sidebar:
     mutenroshi = st.checkbox("¿Quieres conocer a Mutenroshi?")
-    mutenroshi_player(postura, mutenroshi)
 
 # Columnas Superiores
 up_col1, up_col2, up_col3, up_col4 = caja_superior.columns(
@@ -121,5 +120,6 @@ with down_col2:
         up_col2_info_markdown,
         up_col3_progress_bar,
         up_col4_status,
-        tips_or_video_box
+        tips_or_video_box,
+        mutenroshi
     )
