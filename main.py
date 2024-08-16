@@ -22,7 +22,6 @@ def main():
         "🔴 La Aplicación": [
             st.Page("hojas/03_Practica_Yoga.py", title="Practica Yoga", icon=":material/self_improvement:"),
             st.Page("hojas/04_Sabiduria_y_asanas.py", title='Sabiduría y Asanas', icon= ':material/school:'),
-            st.Page("hojas/05_PROBANDO_WEBCAM_COSAS.py", title="Practica Yoga 2.0", icon=":material/self_improvement:"),
         ],
     }
 

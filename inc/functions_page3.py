@@ -2,7 +2,9 @@ from inc.basic import *
 from inc.config import *
 import streamlit as st
 from inc.video_stream import keypoint_queue
-
+import os
+import time
+import asyncio
 
 # UPDATE INFO Caja Superior
 def update_upper_col2_info(sequence, postura, selection):
@@ -11,8 +13,8 @@ def update_upper_col2_info(sequence, postura, selection):
     video_path = VIDEO_PATH + f"/{sequence_minus}/{postura_minus}.mp4"
     upper_col2_text = f'''
         Modalidad: **<span style="color:orange;">{selection}</span>**<br>
-        Secuencia seleccionada: **<span style="color:purple;">{sequence}</span>**<br>
-        Postura seleccionada: **<span style="color:magenta;">{postura}</span>**
+        Secuencia: **<span style="color:purple;">{sequence}</span>**<br>
+        Postura: **<span style="color:magenta;">{postura}</span>**
         '''
     return(video_path, upper_col2_text)
 
@@ -185,3 +187,28 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
     else:
         keypoint_queue.empty()
         st.session_state.grabando = False
+
+###############################################################################################
+#                                     AUDIOS                                                  #                                                         
+###############################################################################################
+def play_audios(files):
+    st.image("streamlit_sources/page3/fullet_tortuga.png")
+    for file in files:
+        with st.status("Consejos del sabio Mutenroshi"):
+            st.audio(
+                data=file,
+                format='audio',
+                autoplay=True
+            )
+            time.sleep(3.5)
+
+def mutenroshi_player(postura, set):
+    files = []
+    if postura:
+        path = list(sounds_dict[postura].keys())[0]
+        cdad_audios = list(sounds_dict[postura].values())[0]
+    for i in cdad_audios:
+        file_path = f"{path}/{i}.mp3"
+        files.append(file_path)
+    if st.session_state.grabando and set:
+        play_audios(files)

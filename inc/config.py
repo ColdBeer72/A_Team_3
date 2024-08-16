@@ -116,6 +116,33 @@ TRANSICIONES = {
             'Adho Mukha Svanasana': 'Uttanasana'
         } 
     }
+sounds_path = "streamlit_sources/page3/yoga_sounds"
+sounds_dict = {
+    'Tadasana': {
+        f'{sounds_path}/tadasana': [1, 2, 3]
+    },
+    'Urdhva Hastasana': {
+        f'{sounds_path}/urdhva_hastasana': [1, 2, 3]
+    },
+    'Uttanasana': {
+        f'{sounds_path}/utanasana': [1, 2, 3]
+    }, 
+    'Ardha Uttanasana': {
+        f'{sounds_path}/ardha_utanasana': [1, 2, 3]
+    },
+    'Chaturanga Dandasana': {
+        f'{sounds_path}/chaturanga_dandasana': [1, 2, 3]
+    },
+    'Urdhva Mukha Svanasana': {
+        f'{sounds_path}/urdhva_mukha_svanasana': [1, 2, 3]
+    },
+    'Adho Mukha Svanasana': {
+        f'{sounds_path}/adho_mukha_svanasana': [1, 2, 3, 4],
+    },
+    # 'consejos': {
+    #     f'{sounds_path}/consejos': []
+    # }
+}
 # Umbrales del State Machine
 class UMBRALES():
     THREE_POINT_STRAIGHT =              [195, 155]
