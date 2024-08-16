@@ -195,7 +195,7 @@ def play_audios(files):
     st.sidebar.image("streamlit_sources/page3/fullet_tortuga.png")
     with st.status("Consejos del sabio Mutenroshi"):
         for file in files:
-            st.audio(
+            st.sidebar.audio(
                 data=file,
                 format='audio',
                 autoplay=True
