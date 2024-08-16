@@ -2,9 +2,7 @@ from inc.basic import *
 from inc.config import *
 import streamlit as st
 from inc.video_stream import keypoint_queue
-import os
 import time
-import asyncio
 
 # UPDATE INFO Caja Superior
 def update_upper_col2_info(sequence, postura, selection):
@@ -56,6 +54,7 @@ def up_col1_menu(location):
             ["**Postura** :camera:", "**Secuencia** :movie_camera:"]
         )
     if selection == '**Postura** :camera:':
+        st.session_state.secuencia = False
         return up_col1_specific_pose_selection(select_exercice)
     else:
         st.session_state.secuencia = True
@@ -72,10 +71,10 @@ def up_col2_update_info_markdown(location, markdown):
 ###############################################################################################
 def up_col3_update_progress_bar(location):
     if st.session_state.grabando:
-        if st.session_state.frames_success == 0 or st.session_state.frames_success > 50:
+        if st.session_state.frames_success == 0 or st.session_state.frames_success > 30:
             location.progress(0, text=progress_text_wait)
         else:
-            progress_bar = st.session_state.frames_success * 2
+            progress_bar = st.session_state.frames_success * 3.3
             location.progress(progress_bar, text=progress_text)
     else:
         location.empty()
@@ -137,7 +136,6 @@ def frame_counter_increment():
     st.session_state.frame_count += 1
 
 def reset_frame_counters():
-    st.session_state.frame_count = 0
     st.session_state.frame_success = 0
 
 def check_postura(user_pose, kps):
@@ -161,7 +159,6 @@ def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
 def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
     while webrtc_ctx.state.playing:
         st.session_state.grabando = True
-        # mutenroshi_player(user_pose.actual_state, mutenroshi)
         keypoints = keypoint_queue.get()
         frame_counter_increment()
         if st.session_state.frame_count % 10 == 0:
@@ -172,7 +169,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress)
-                if st.session_state.frames_success == 50:
+                if st.session_state.frames_success == 30:
                     pose_success(
                         user_pose,
                         markdown,

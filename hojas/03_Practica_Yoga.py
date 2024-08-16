@@ -46,9 +46,6 @@ caja_inferior = st.container(
     border=True
 )
 
-# with st.sidebar:
-#     mutenroshi = st.checkbox("¿Quieres conocer a Mutenroshi?")
-
 # Columnas Superiores
 up_col1, up_col2, up_col3, up_col4 = caja_superior.columns(
         spec=[25, 30, 30, 15],
