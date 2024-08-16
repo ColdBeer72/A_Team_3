@@ -207,8 +207,8 @@ def mutenroshi_player(postura, set):
     if postura:
         path = list(sounds_dict[postura].keys())[0]
         cdad_audios = list(sounds_dict[postura].values())[0]
-    for i in cdad_audios:
-        file_path = f"{path}/{i}.mp3"
-        files.append(file_path)
+        for i in cdad_audios:
+            file_path = f"{path}/{i}.mp3"
+            files.append(file_path)
     if st.session_state.grabando and set:
         play_audios(files)
