@@ -161,7 +161,7 @@ def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
 def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place, mutenroshi):
     while webrtc_ctx.state.playing:
         st.session_state.grabando = True
-        mutenroshi_player(user_pose.actual_state, mutenroshi)
+        # mutenroshi_player(user_pose.actual_state, mutenroshi)
         keypoints = keypoint_queue.get()
         frame_counter_increment()
         print(st.session_state.frame_count)
