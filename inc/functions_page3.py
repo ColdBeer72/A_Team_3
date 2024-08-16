@@ -70,7 +70,7 @@ def up_col2_update_info_markdown(location, markdown):
 ###############################################################################################
 def up_col3_update_progress_bar(location):
     if st.session_state.grabando:
-        if st.session_state.frames_success == 0:
+        if st.session_state.frames_success == 0 or st.session_state.frames_success > 50:
             location.progress(0, text=progress_text_wait)
         else:
             progress_bar = st.session_state.frames_success * 2
@@ -150,8 +150,8 @@ def next_sequence_step(user_pose, markdown, video_place):
     down_col1_update_video(video_place ,video_path)
 
 def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
-    time.sleep(1)
     up_col4_update_status(semaforo, estado_usuario)
+    time.sleep(1)
     reset_frame_counters()
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
