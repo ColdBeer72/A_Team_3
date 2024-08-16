@@ -7,22 +7,35 @@ from PIL import Image
 
 # Diccionario para mapear los IDs de los puntos a nombres de articulaciones
 joint_names = {
-    0: 'r_ankle',
-    1: 'r_knee',
-    2: 'r_hip',
-    3: 'l_hip',
-    4: 'l_knee',
-    5: 'l_ankle',
-    6: 'pelvis',
-    7: 'thorax',
-    8: 'upper_neck',
-    9: 'head_top',
-    10: 'r_wrist',
-    11: 'r_elbow',
-    12: 'r_shoulder',
-    13: 'l_shoulder',
-    14: 'l_elbow',
-    15: 'l_wrist'
+    0: 'nariz',
+    1: 'ojo_izdo',
+    2: 'ojo_dcho',
+    3: 'oreja_izdo',
+    4: 'oreja_dcho',
+    5: 'left_shoulder',
+    6: 'right_shoulder',
+    7: 'left_elbow',
+    8: 'right_elbow',
+    9: 'left_wrist',
+    10: 'right_wrist',
+    11: 'left_hip',
+    12: 'right_hip',
+    13: 'left_knee',
+    14: 'right_knee',
+    15: 'left_ankle',
+    16:'right_ankle',
+    17:'pelvis',
+    18:'thorax',
+    19:'upper_neck',
+    20:'head_top',
+    21:'pulgar_izdo',
+    22:'pulgar_dcho',
+    25:'talon_izdo',
+    26:'talon_dcho',
+    27:'punta_izdo',
+    28:'punta_dcho',
+    29:'ombligo',
+
 }
 
 def cargar_anotaciones(json_file_path):
@@ -78,7 +91,7 @@ def verificar_asociacion(imagenes_seleccionadas, anotaciones, image_folder_path)
             print(f"No se encontraron anotaciones para la imagen {imagen}")
 
 # Uso de las funciones
-json_file_path = './labels.json'  # Ruta al archivo JSON de etiquetas
+json_file_path = './labelsFusionDEF.json'  # Ruta al archivo JSON de etiquetas
 image_folder_path = '../../../../human_pose_images_filtrado_1_persona/images_almenos_un_pie_FINAL/'  # Ruta a la carpeta de imágenes
 
 # Cargar anotaciones
