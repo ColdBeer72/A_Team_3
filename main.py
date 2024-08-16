@@ -15,11 +15,11 @@ def main():
     st.markdown(HIDE_IMG_FS, unsafe_allow_html=True)
 
     pages = {
-        "🔴 El Proyecto": [
+        "📕 Proyecto": [
             st.Page("hojas/01_Presentation.py", title="Presentación", icon=":material/support_agent:", default=True),
             st.Page("hojas/02_Sobre_el_Estudio.py", title="Sobre el Estudio", icon=":material/book:"),
         ],
-        "🔴 La Aplicación": [
+        "💠 APP": [
             st.Page("hojas/03_Practica_Yoga.py", title="Practica Yoga", icon=":material/self_improvement:"),
             st.Page("hojas/04_Sabiduria_y_asanas.py", title='Sabiduría y Asanas', icon= ':material/school:'),
         ],
