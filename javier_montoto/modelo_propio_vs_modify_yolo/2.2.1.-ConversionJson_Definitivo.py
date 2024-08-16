@@ -1,10 +1,10 @@
 import json
 
 # Ruta al archivo JSON original
-input_path = './labels.json'
+input_path = './labelsFusionDEF.json'
 
 # Ruta para guardar el nuevo archivo JSON
-output_path = './labelsDEF.json'
+output_path = './labelsFusionDEFINITIVO.json'
 
 # Prefijo para el image_name
 prefix = "../../../../human_pose_images_filtrado_1_persona/images_almenos_un_pie_FINAL/"
