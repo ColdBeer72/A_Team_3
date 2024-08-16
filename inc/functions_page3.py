@@ -136,7 +136,7 @@ def frame_counter_increment():
     st.session_state.frame_count += 1
 
 def reset_frame_success():
-    st.session_state.frame_success = 0
+    st.session_state.frames_success = 0
 
 def check_postura(user_pose, kps):
     user_pose.update_keypoints(kps)
@@ -177,9 +177,9 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
                         video_place
                     )
             else:
-                reset_frame_success()
                 up_col3_update_progress_bar(progress)
                 up_col4_update_status(semaforo, False)
+                reset_frame_success()
     else:
         keypoint_queue.empty()
         st.session_state.grabando = False
