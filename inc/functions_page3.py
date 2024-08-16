@@ -158,7 +158,7 @@ def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
-def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place, mutenroshi):
+def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_place):
     while webrtc_ctx.state.playing:
         st.session_state.grabando = True
         # mutenroshi_player(user_pose.actual_state, mutenroshi)
