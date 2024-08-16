@@ -164,13 +164,11 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
         # mutenroshi_player(user_pose.actual_state, mutenroshi)
         keypoints = keypoint_queue.get()
         frame_counter_increment()
-        print(st.session_state.frame_count)
         if st.session_state.frame_count % 10 == 0:
             estado_usuario = check_postura(
                 user_pose,
                 keypoints
             )
-            print(estado_usuario)
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress)
