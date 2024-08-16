@@ -74,13 +74,10 @@ def up_col2_update_info_markdown(location, markdown):
 ###############################################################################################
 def up_col3_update_progress_bar(location):
     if st.session_state.grabando:
-        if st.session_state.frames_success == 0 or st.session_state.frames_success > 30:
-            location.progress(0, text=progress_text_wait)
+        if 0 < st.session_state.frames_success <= 100:
+            location.progress(st.session_state.frames_success, text=progress_text)
         else:
-            progress_bar = st.session_state.frames_success * 3.3
-            location.progress(progress_bar, text=progress_text)
-    else:
-        location.empty()
+            location.progress(0, text=progress_text_wait)
 
 ###############################################################################################
 #                                       SEMAFORO                                              #                                                         
@@ -138,7 +135,7 @@ def down_col1_update_tips(location, sequence, postura):
 def frame_counter_increment():
     st.session_state.frame_count += 1
 
-def reset_frame_counters():
+def reset_frame_success():
     st.session_state.frame_success = 0
 
 def check_postura(user_pose, kps):
@@ -152,10 +149,10 @@ def next_sequence_step(user_pose, markdown, video_place):
     up_col2_update_info_markdown(markdown ,upper_col2_text)
     down_col1_update_video(video_place ,video_path)
 
-def pose_success(user_pose, markdown, semaforo, estado_usuario, video_place):
-    up_col4_update_status(semaforo, estado_usuario)
+def pose_success(user_pose, markdown, semaforo, video_place):
+    up_col4_update_status(semaforo, True)
     time.sleep(1)
-    reset_frame_counters()
+    reset_frame_success()
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
@@ -172,42 +169,42 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress)
-                if st.session_state.frames_success == 30:
+                if st.session_state.frames_success == 100:
                     pose_success(
                         user_pose,
                         markdown,
                         semaforo,
-                        estado_usuario,
                         video_place
                     )
             else:
-                st.session_state.frames_success = 0
+                reset_frame_success()
                 up_col3_update_progress_bar(progress)
+                up_col4_update_status(semaforo, False)
     else:
         keypoint_queue.empty()
         st.session_state.grabando = False
 
 ###############################################################################################
-#                                     AUDIOS                                                  #                                                         
+#                                 AUDIOS - Falta Implementacion                               #                                                         
 ###############################################################################################
-def play_audios(files):
-    st.sidebar.image("streamlit_sources/page3/fullet_tortuga.png")
-    with st.sidebar.status("Consejos del sabio Mutenroshi"):
-        for file in files:
-            st.audio(
-                data=file,
-                format='audio',
-                autoplay=True
-            )
-            time.sleep(3.5)
+# def play_audios(files):
+#     st.sidebar.image("streamlit_sources/page3/fullet_tortuga.png")
+#     with st.sidebar.status("Consejos del sabio Mutenroshi"):
+#         for file in files:
+#             st.audio(
+#                 data=file,
+#                 format='audio',
+#                 autoplay=True
+#             )
+#             time.sleep(3.5)
 
-def mutenroshi_player(postura, set):
-    files = []
-    if postura:
-        path = list(sounds_dict[postura].keys())[0]
-        cdad_audios = list(sounds_dict[postura].values())[0]
-        for i in cdad_audios:
-            file_path = f"{path}/{i}.mp3"
-            files.append(file_path)
-    if st.session_state.grabando and set:
-        play_audios(files)
+# def mutenroshi_player(postura, set):
+#     files = []
+#     if postura:
+#         path = list(sounds_dict[postura].keys())[0]
+#         cdad_audios = list(sounds_dict[postura].values())[0]
+#         for i in cdad_audios:
+#             file_path = f"{path}/{i}.mp3"
+#             files.append(file_path)
+#     if st.session_state.grabando and set:
+#         play_audios(files)

@@ -75,14 +75,10 @@ with up_col2:
 # Up_Col3 > Carga de Check Postura
 with up_col3:
     up_col3_progress_bar = st.empty()
-    up_col3_update_progress_bar(up_col3_progress_bar)
+
 # Up_Col4 > Semaforo
 with up_col4:
     up_col4_status = st.empty()
-    up_col4_update_status(
-        up_col4_status,
-        None
-    )
 
 # SECCION INFERIOR
 # Down_Col1 > TIPS / VIDS + toggles
