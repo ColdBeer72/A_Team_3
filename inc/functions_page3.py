@@ -193,8 +193,8 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
 ###############################################################################################
 def play_audios(files):
     st.sidebar.image("streamlit_sources/page3/fullet_tortuga.png")
-    for file in files:
-        with st.status("Consejos del sabio Mutenroshi"):
+    with st.status("Consejos del sabio Mutenroshi"):
+        for file in files:
             st.audio(
                 data=file,
                 format='audio',
