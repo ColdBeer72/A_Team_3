@@ -195,14 +195,13 @@ def down_col2_webcam(webrtc_ctx, user_pose, markdown, progress, semaforo, video_
 def play_audios(files):
     st.sidebar.image("streamlit_sources/page3/fullet_tortuga.png")
     with st.sidebar.status("Consejos del sabio Mutenroshi"):
-        audio_space = st.sidebar.container()
-    for file in files:
-        audio_space.audio(
-            data=file,
-            format='audio',
-            autoplay=True
-        )
-        time.sleep(3.5)
+        for file in files:
+            st.audio(
+                data=file,
+                format='audio',
+                autoplay=True
+            )
+            time.sleep(3.5)
 
 def mutenroshi_player(postura, set):
     files = []
