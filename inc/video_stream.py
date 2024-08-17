@@ -54,6 +54,8 @@ class VideoProcessor(VideoTransformerBase):
                 keypoint_queue.put(body_dict)
             return VideoFrame.from_ndarray(img, format="bgr24")
         except Exception as e:
+            results = self.model(img)
+            print(results)
             print(f"Error procesando el frame: {e}")
     
     def set_draw(self, state):
