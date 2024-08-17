@@ -31,16 +31,16 @@ for item in data:
         x1, y1 = head_rect.get('x1', 0), head_rect.get('y1', 0)
         x2, y2 = head_rect.get('x2', 0), head_rect.get('y2', 0)
         
-        # Añadir head_rect como dos puntos en joints
+        # Añadir head_rect como dos puntos en joints al final
         head_rect_points = [
             [x1, y1, 1],
             [x2, y2, 1]
         ]
         
-        # Incluir los puntos de head_rect en los joints
-        transformed_joints = head_rect_points + [
+        # Incluir los puntos de head_rect al final de los joints
+        transformed_joints = [
             [joint['x'], joint['y'], 1 if joint['is_visible'] else 0] for joint in joints
-        ]
+        ] + head_rect_points
         
         # Crear la entrada transformada
         entry = {
