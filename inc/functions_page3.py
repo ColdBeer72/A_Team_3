@@ -163,6 +163,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
     while webrtc_ctx.state.playing:
         print("En marcha!")
         st.session_state.grabando = True
+        print(st.session_state.grabando)
         keypoints = keypoint_queue.get()
         print(keypoints)
         if st.session_state.frame_count % 10 == 0:
