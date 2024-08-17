@@ -158,6 +158,8 @@ def pose_success(user_pose, markdown, semaforo, video_place):
 def down_col2_webcam(user_pose, progress, semaforo):
     st.session_state.grabando = True
     keypoints = keypoint_queue.get()
+    up_col3_update_progress_bar(progress)
+    up_col4_update_status(semaforo, False)
     frame_counter_increment()
     if st.session_state.frame_count % 10 == 0:
         estado_usuario = check_postura(
