@@ -110,8 +110,11 @@ with down_col2:
         if not st.session_state.grabando:
             st.session_state.grabando = True
         keypoints = keypoint_queue.get()
-        frame_counter_increment()
-        if st.session_state.frame_count % 10 == 0:
+        if st.session_state.frame_count % 10 != 0:
+            DEBUG and print("FRAME_COUNT != 0")
+            frame_counter_increment()
+        elif st.session_state.frame_count % 10 == 0:
+            DEBUG and print(f"{st.session_state.frame_count}")
             frame_counter_increment()
             try:
                 estado_usuario = check_postura(
