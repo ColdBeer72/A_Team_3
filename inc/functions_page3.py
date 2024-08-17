@@ -155,30 +155,33 @@ def pose_success(user_pose, markdown, semaforo, video_place):
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
-def down_col2_webcam(user_pose, progress, semaforo):
-    st.session_state.grabando = True
-    keypoints = keypoint_queue.get()
-    up_col3_update_progress_bar(progress)
-    up_col4_update_status(semaforo, False)
-    frame_counter_increment()
-    if st.session_state.frame_count % 10 == 0:
-        estado_usuario = check_postura(
-            user_pose,
-            keypoints
-        )
-        if estado_usuario:
-            st.session_state.frames_success += FRAMES_SUCCESS_RATIO
-            up_col3_update_progress_bar(progress)
-            if st.session_state.frames_success == 100:
-                pose_success(
-                    user_pose,
-                    semaforo,
-                )
+def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
+    while webrtc_ctx.state.playing:
+        st.session_state.grabando = True
+        keypoints = keypoint_queue.get()
+        if st.session_state.frame_count % 10 == 0:
+            frame_counter_increment()
+            estado_usuario = check_postura(
+                user_pose,
+                keypoints
+            )
+            if estado_usuario:
+                st.session_state.frames_success += FRAMES_SUCCESS_RATIO
+                up_col3_update_progress_bar(progress)
+                if st.session_state.frames_success == 100:
+                    pose_success(
+                        user_pose,
+                        semaforo,
+                    )
+            else:
+                up_col3_update_progress_bar(progress)
+                up_col4_update_status(semaforo, False)
+                reset_frame_success()
         else:
-            up_col3_update_progress_bar(progress)
-            up_col4_update_status(semaforo, False)
-            reset_frame_success()
-
+            frame_counter_increment()
+    else:
+        keypoint_queue.empty()
+        st.session_state.grabando = False
 
 ###############################################################################################
 #                                 AUDIOS - Falta Implementacion                               #                                                         
