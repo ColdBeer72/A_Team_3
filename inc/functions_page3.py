@@ -142,12 +142,11 @@ def check_postura(user_pose, kps):
     user_pose.update_keypoints(kps)
     return user_pose.postura()
 
-def next_sequence_step(user_pose, markdown, video_place):
+def next_sequence_step(user_pose):
     st.session_state.step += 1
-    postura, video_path, upper_col2_text = set_pose_for_sequence(user_pose.actual_sequence)
+    postura, _, _ = set_pose_for_sequence(user_pose.actual_sequence)
     user_pose.set_pose(postura)
-    up_col2_update_info_markdown(markdown ,upper_col2_text)
-    down_col1_update_video(video_place ,video_path)
+
 
 def pose_success(user_pose, markdown, semaforo, video_place):
     up_col4_update_status(semaforo, True)
@@ -156,7 +155,7 @@ def pose_success(user_pose, markdown, semaforo, video_place):
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
 
-def down_col2_webcam(user_pose, markdown, progress, semaforo, video_place):
+def down_col2_webcam(user_pose, progress, semaforo):
     st.session_state.grabando = True
     keypoints = keypoint_queue.get()
     frame_counter_increment()
@@ -171,9 +170,7 @@ def down_col2_webcam(user_pose, markdown, progress, semaforo, video_place):
             if st.session_state.frames_success == 100:
                 pose_success(
                     user_pose,
-                    markdown,
                     semaforo,
-                    video_place
                 )
         else:
             up_col3_update_progress_bar(progress)

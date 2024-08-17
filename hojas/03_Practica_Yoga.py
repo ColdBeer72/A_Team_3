@@ -110,10 +110,8 @@ with down_col2:
     while webrtc_ctx.state.playing:
         down_col2_webcam(
             user_pose,
-            up_col2_info_markdown,
             up_col3_progress_bar,
             up_col4_status,
-            tips_or_video_box
         )
     else:
         keypoint_queue.empty()
