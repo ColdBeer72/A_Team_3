@@ -159,7 +159,7 @@ def pose_success(user_pose, markdown, semaforo, video_place):
     print(st.session_state.secuencia)
     reset_frame_success()
     if st.session_state.secuencia:
-        next_sequence_step(user_pose, markdown, video_place)
+        next_sequence_step(user_pose)
 
 def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
     while webrtc_ctx.state.playing:
