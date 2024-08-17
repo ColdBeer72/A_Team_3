@@ -30,7 +30,6 @@ def up_col1_specific_pose_selection(box):
     sequence = box.selectbox(
         "¿De qué secuencia quieres practicar una postura?",
         lista_sequences,
-        placeholder="Elija una opcion"
         )
     list_posturas = sublista(TRANSICIONESTIPS, sequence)
     postura = box.select_slider(
@@ -41,13 +40,13 @@ def up_col1_specific_pose_selection(box):
     return(sequence, postura, video_path, upper_col2_text)
 
 def up_col1_specific_sequence_selection(box):
-    sequence = box.selectbox(
-        "¿Qué secuencia quieres practicar?",
-        lista_sequences,
-        placeholder="Elija una opcion"
-        )
-    postura, video_path, upper_col2_text = set_pose_for_sequence(sequence)
-    return(sequence, postura, video_path, upper_col2_text)
+    if st.session_state.secuencia:
+        sequence = box.selectbox(
+            "¿Qué secuencia quieres practicar?",
+            lista_sequences,
+            )
+        postura, video_path, upper_col2_text = set_pose_for_sequence(sequence)
+        return(sequence, postura, video_path, upper_col2_text)
 
 def up_col1_menu(location):
     select_exercice = location.popover(("Selecciona tu ejercicio"))

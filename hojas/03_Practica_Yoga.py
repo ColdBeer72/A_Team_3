@@ -107,8 +107,10 @@ with down_col2:
         async_processing=True
     )
     while webrtc_ctx.state.playing:
-        st.session_state.grabando = True
+        if not st.session_state.grabando:
+            st.session_state.grabando = True
         keypoints = keypoint_queue.get()
+        frame_counter_increment()
         if st.session_state.frame_count % 10 == 0:
             frame_counter_increment()
             try:
