@@ -88,7 +88,10 @@ with down_col1:
         down_col1,
         video_processor
     )
-    tips_or_video_box = down_col1.container(height=None, border= False)
+    tips_or_video_box = down_col1.container(
+        height=None,
+        border= False
+    )
     down_col1_update_tips_or_vids(
         down_col1,
         video_path,
@@ -129,23 +132,24 @@ with down_col2:
                 if st.session_state.frames_success == 100:
                     pose_success(
                         user_pose,
-                        # up_col2_info_markdown,
-                        up_col4_status,
-                        # tips_or_video_box
+                        up_col4_status
                     )
             else:
                 up_col3_update_progress_bar(up_col3_progress_bar)
-                up_col4_update_status(up_col4_status, False)
+                up_col4_update_status(
+                    up_col4_status,
+                    False
+                )
                 reset_frame_success()
         else:
             frame_counter_increment()
     else:
         keypoint_queue.empty()
         st.session_state.grabando = False
+
     # down_col2_webcam(
     #     webrtc_ctx,
     #     user_pose,
     #     up_col3_progress_bar,
     #     up_col4_status,
     # )
-

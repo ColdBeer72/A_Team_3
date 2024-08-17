@@ -20,7 +20,11 @@ def set_pose_for_sequence(sequence):
     lista_posturas = list(TRANSICIONES_SECUENCIA[sequence].values())
     if st.session_state.step < len(lista_posturas):
         postura = lista_posturas[st.session_state.step]
-        video_path, upper_col2_text = update_upper_col2_info(sequence, postura, 'SECUENCIA')
+        video_path, upper_col2_text = update_upper_col2_info(
+            sequence,
+            postura,
+            'SECUENCIA'
+        )
     return postura, video_path, upper_col2_text
 
 ###############################################################################################
@@ -30,13 +34,20 @@ def up_col1_specific_pose_selection(box):
     sequence = box.selectbox(
         "¿De qué secuencia quieres practicar una postura?",
         lista_sequences,
-        )
-    list_posturas = sublista(TRANSICIONESTIPS, sequence)
+    )
+    list_posturas = sublista(
+        TRANSICIONESTIPS,
+        sequence
+    )
     postura = box.select_slider(
         "Escoja postura a practicar:",
         list_posturas
-        )
-    video_path, upper_col2_text = update_upper_col2_info(sequence, postura, 'PORTURA CONCRETA')
+    )
+    video_path, upper_col2_text = update_upper_col2_info(
+        sequence,
+        postura,
+        'PORTURA CONCRETA'
+    )
     return(sequence, postura, video_path, upper_col2_text)
 
 def up_col1_specific_sequence_selection(box):
@@ -51,10 +62,10 @@ def up_col1_specific_sequence_selection(box):
 def up_col1_menu(location):
     select_exercice = location.popover(("Selecciona tu ejercicio"))
     selection = select_exercice.radio(
-            "¿Qué deseas practicar?",
-            ["**Postura** :camera:", "**Secuencia** :movie_camera:"],
-            captions=["Postura concreta de una secuencia especifica.", "Postura a postura, realizarás una secuencia completa."]
-        )
+        "¿Qué deseas practicar?",
+        ["**Postura** :camera:", "**Secuencia** :movie_camera:"],
+        captions=["Postura concreta de una secuencia especifica.", "Postura a postura, realizarás una secuencia completa."]
+    )
     if selection == '**Postura** :camera:':
         st.session_state.secuencia = False
         return up_col1_specific_pose_selection(select_exercice)
@@ -65,8 +76,11 @@ def up_col1_menu(location):
 ###############################################################################################
 #                           INFO SELECCION DE SECUENCIA + POSTURA                             #
 ###############################################################################################
-def up_col2_update_info_markdown(location, markdown):
-    location.markdown(markdown, unsafe_allow_html=True)
+def up_col2_update_info_markdown(location, md):
+    location.markdown(
+        md,
+        unsafe_allow_html=True
+    )
 
 ###############################################################################################
 #                                   BARRA DE PROGRESO                                         #
@@ -74,9 +88,15 @@ def up_col2_update_info_markdown(location, markdown):
 def up_col3_update_progress_bar(location):
     if st.session_state.grabando:
         if 0 < st.session_state.frames_success <= 100:
-            location.progress(st.session_state.frames_success, text=progress_text)
+            location.progress(
+                st.session_state.frames_success,
+                text=progress_text
+            )
         else:
-            location.progress(0, text=progress_text_wait)
+            location.progress(
+                0,
+                text=progress_text_wait
+            )
 
 ###############################################################################################
 #                                       SEMAFORO                                              #                                                         
@@ -84,9 +104,15 @@ def up_col3_update_progress_bar(location):
 def up_col4_update_status(location, state):
     if st.session_state.grabando:
         if state:
-            location.image(SEM_GREEN, use_column_width="auto")
+            location.image(
+                SEM_GREEN,
+                use_column_width="auto"
+            )
         else:
-            location.image(SEM_RED, use_column_width="auto")
+            location.image(
+                SEM_RED,
+                use_column_width="auto"
+            )
 
 ###############################################################################################
 #                                    LATERAL WEBCAM                                           #                                                         
@@ -104,7 +130,7 @@ def down_col1_update_kps_vision(location, video_processor):
     see_keypoints = location.toggle(
         "Ver KeyPoints",
         value=True
-        )
+    )
     video_processor.set_draw(see_keypoints)
 
 def down_col1_update_tips_or_vids(location, video_path, sequence, postura, tips_or_video_box):
@@ -113,12 +139,20 @@ def down_col1_update_tips_or_vids(location, video_path, sequence, postura, tips_
         value=False
     )
     if tips_or_vid:
-        down_col1_update_video(tips_or_video_box, video_path)
+        down_col1_update_video(
+            tips_or_video_box,
+            video_path
+        )
     else:
-        down_col1_update_tips(tips_or_video_box, sequence, postura)
+        down_col1_update_tips(
+            tips_or_video_box,
+            sequence,
+            postura
+        )
 
 def down_col1_update_video(location, video_path):
-    location.video(        data=video_path,
+    location.video(
+        data=video_path,
         loop=True,
         autoplay=True,
         muted=True
@@ -126,7 +160,10 @@ def down_col1_update_video(location, video_path):
 
 def down_col1_update_tips(location, sequence, postura):
     for tip in TRANSICIONESTIPS[sequence][postura]:
-        location.markdown(f"- {tip}<br>", unsafe_allow_html=True)
+        location.markdown(
+            f"- {tip}<br>",
+            unsafe_allow_html=True
+        )
 
 ###############################################################################################
 #                                     WEBCAM                                                  #                                                         
@@ -151,7 +188,10 @@ def next_sequence_step(user_pose):
     user_pose.set_pose(postura)
 
 def pose_success(user_pose, semaforo):
-    up_col4_update_status(semaforo, True)
+    up_col4_update_status(
+        semaforo,
+        True
+    )
     time.sleep(1)
     DEBUG and print(st.session_state.secuencia)
     reset_frame_success()
@@ -174,7 +214,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
                 if st.session_state.frames_success == 100:
                     pose_success(
                         user_pose,
-                        semaforo,
+                        semaforo
                     )
             else:
                 up_col3_update_progress_bar(progress)
