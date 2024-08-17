@@ -98,6 +98,8 @@ with down_col1:
         tips_or_video_box
     )
 # Down_Col2 > Webcam
+st.write("Grabando:")
+st.session_state.grabando
 with down_col2:
     webrtc_ctx = webrtc_streamer(
         key="streamer",
