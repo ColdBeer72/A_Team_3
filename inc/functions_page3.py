@@ -164,6 +164,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
         print("En marcha!")
         st.session_state.grabando = True
         keypoints = keypoint_queue.get()
+        print(keypoints)
         if st.session_state.frame_count % 10 == 0:
             frame_counter_increment()
             estado_usuario = check_postura(
@@ -186,6 +187,7 @@ def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
                 up_col4_update_status(semaforo, False)
                 reset_frame_success()
         else:
+            print("here?")
             frame_counter_increment()
     else:
         keypoint_queue.empty()
