@@ -23,6 +23,7 @@ class VideoProcessor(VideoTransformerBase):
         img = frame.to_ndarray(format="bgr24")
         # try:
         results = self.model(img)
+        print(results)
         for result in results:
             try:
                 keypoints = result.keypoints.xy
