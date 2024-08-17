@@ -101,7 +101,7 @@ media_stream_constraints = {
 }
 # Modelos
 Modelos = {
-    'YOLO': YOLO("../data/models/yolov8n-pose.pt"),
+    'YOLO': "../data/models/yolov8n-pose.pt",
     'I+D': None
 }
 # Lista de Transiciones con sus diferentes posturas
