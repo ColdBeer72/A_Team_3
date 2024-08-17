@@ -129,7 +129,9 @@ with down_col2:
                     print("Exito")
                     pose_success(
                         user_pose,
+                        up_col2_info_markdown,
                         up_col4_status,
+                        tips_or_video_box
                     )
             else:
                 print("U TRIED")

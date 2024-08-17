@@ -155,6 +155,8 @@ def next_sequence_step(user_pose):
 def pose_success(user_pose, markdown, semaforo, video_place):
     up_col4_update_status(semaforo, True)
     time.sleep(1)
+    print("Estamos despues del Sleep 1???")
+    print(st.session_state.secuencia)
     reset_frame_success()
     if st.session_state.secuencia:
         next_sequence_step(user_pose, markdown, video_place)
