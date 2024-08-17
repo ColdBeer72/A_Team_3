@@ -99,8 +99,7 @@ with down_col1:
     )
 # Down_Col2 > Webcam
 with down_col2:
-    st.write("Grabando:")
-    st.session_state.grabando
+    debugg = st.container()
     webrtc_ctx = webrtc_streamer(
         key="streamer",
         mode=WebRtcMode.SENDRECV,
@@ -109,11 +108,17 @@ with down_col2:
         media_stream_constraints=media_stream_constraints,
         async_processing=True
     )
-    down_col2_webcam(
-        webrtc_ctx,
-        user_pose,
-        up_col2_info_markdown,
-        up_col3_progress_bar,
-        up_col4_status,
-        tips_or_video_box
-    )
+    while webrtc_ctx.state.playing:
+        debugg.write(st.session_state.grabando)
+        down_col2_webcam(
+            debugg,
+            webrtc_ctx,
+            user_pose,
+            up_col2_info_markdown,
+            up_col3_progress_bar,
+            up_col4_status,
+            tips_or_video_box
+        )
+    else:
+        keypoint_queue.empty()
+        st.session_state.grabando = False
