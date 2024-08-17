@@ -133,10 +133,14 @@ def down_col1_update_tips(location, sequence, postura):
 #                                     WEBCAM                                                  #                                                         
 ###############################################################################################
 def frame_counter_increment():
+    print(f"Aumento frame_count de: {st.session_state.frame_count}")
     st.session_state.frame_count += 1
+    print(f"a {st.session_state.frame_count}")
 
 def reset_frame_success():
+    print(f"Reseteo frame_success de {st.session_state.frames_success}")
     st.session_state.frames_success = 0
+    print(f"a {st.session_state.frames_success}")
 
 def check_postura(user_pose, kps):
     user_pose.update_keypoints(kps)
@@ -157,6 +161,7 @@ def pose_success(user_pose, markdown, semaforo, video_place):
 
 def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
     while webrtc_ctx.state.playing:
+        print("En marcha!")
         st.session_state.grabando = True
         keypoints = keypoint_queue.get()
         if st.session_state.frame_count % 10 == 0:
@@ -165,15 +170,18 @@ def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
                 user_pose,
                 keypoints
             )
+            print(f"Estado: {estado_usuario}")
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress)
                 if st.session_state.frames_success == 100:
+                    print("Exito")
                     pose_success(
                         user_pose,
                         semaforo,
                     )
             else:
+                print("U TRIED")
                 up_col3_update_progress_bar(progress)
                 up_col4_update_status(semaforo, False)
                 reset_frame_success()
