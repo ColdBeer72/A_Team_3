@@ -237,7 +237,7 @@ class UserPose:
             'Ardha Uttanasana': self.ardha_uttanasana,
             'Chaturanga Dandasana': self.chaturanga_dandasana,
             'Urdhva Mukha Svanasana': self.urdhva_mukha_svanasana,
-            # 'Adho Mukha Svanasana': self.test
+            'Postura TEST': self.test,
             'Adho Mukha Svanasana': self.adho_mukha_svanasana           
             }
         return pose_dict[postura]()

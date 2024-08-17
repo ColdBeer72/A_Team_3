@@ -51,7 +51,10 @@ TRANSICIONESTIPS = {
             'Adho Mukha Svanasana': ['Recoloca los pies adelante',
                                 'Talones intentan tocar el suelo',
                                 'Mirada al ombligo, cuello relajado',
-                                 'Intención de tocar el cielo con los glúteos']
+                                 'Intención de tocar el cielo con los glúteos'],
+            'Postura TEST': ['Mira al techo',
+                             'Aprieta fuerte las nalgas',
+                             'Levanta la nariz por encima de tus orejas']
                         } 
                     }
 # SECUENCIAS
@@ -113,7 +116,8 @@ TRANSICIONES = {
             'Ardha Uttanasana': ['Chaturanga Dandasana', 'Urdhva Hastasana'],
             'Chaturanga Dandasana': 'Urdhva Mukha Svanasana',
             'Urdhva Mukha Svanasana': 'Adho Mukha Svanasana',
-            'Adho Mukha Svanasana': 'Uttanasana'
+            'Adho Mukha Svanasana': 'Uttanasana',
+            'Postura TEST': 'Postura TEST'
         } 
     }
 sounds_path = "streamlit_sources/page3/yoga_sounds"

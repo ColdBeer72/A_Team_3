@@ -132,14 +132,14 @@ def down_col1_update_tips(location, sequence, postura):
 #                                     WEBCAM                                                  #                                                         
 ###############################################################################################
 def frame_counter_increment():
-    print(f"Aumento frame_count de: {st.session_state.frame_count}")
+    DEBUG and print(f"Aumento frame_count de: {st.session_state.frame_count}")
     st.session_state.frame_count += 1
-    print(f"a {st.session_state.frame_count}")
+    DEBUG and print(f"a {st.session_state.frame_count}")
 
 def reset_frame_success():
-    print(f"Reseteo frame_success de {st.session_state.frames_success}")
+    DEBUG and print(f"Reseteo frame_success de {st.session_state.frames_success}")
     st.session_state.frames_success = 0
-    print(f"a {st.session_state.frames_success}")
+    DEBUG and print(f"a {st.session_state.frames_success}")
 
 def check_postura(user_pose, kps):
     user_pose.update_keypoints(kps)
@@ -151,7 +151,7 @@ def next_sequence_step(user_pose):
     user_pose.set_pose(postura)
 
 
-def pose_success(user_pose, markdown, semaforo, video_place):
+def pose_success(user_pose, semaforo):
     up_col4_update_status(semaforo, True)
     time.sleep(1)
     DEBUG and print(st.session_state.secuencia)

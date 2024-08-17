@@ -129,9 +129,9 @@ with down_col2:
                 if st.session_state.frames_success == 100:
                     pose_success(
                         user_pose,
-                        up_col2_info_markdown,
+                        # up_col2_info_markdown,
                         up_col4_status,
-                        tips_or_video_box
+                        # tips_or_video_box
                     )
             else:
                 up_col3_update_progress_bar(up_col3_progress_bar)
