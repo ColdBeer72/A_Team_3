@@ -21,42 +21,41 @@ class VideoProcessor(VideoTransformerBase):
 
     def recv(self, frame: VideoFrame) -> VideoFrame:
         img = frame.to_ndarray(format="bgr24")
-        try:
-            results = self.model(img)
-            for result in results:
-                keypoints = result.keypoints.xy
-                body_dict = {
-                    'nariz': [],
-                    'ojo_izdo': [],
-                    'ojo_dcho': [],
-                    'oreja_izda': [],
-                    'oreja_dcha': [],
-                    'hombro_izdo': [],
-                    'hombro_dcho': [],
-                    'codo_izdo': [],
-                    'codo_dcho': [],
-                    'muneca_izda': [],
-                    'muneca_dcha': [],
-                    'cadera_izda': [],
-                    'cadera_dcha': [],
-                    'rodilla_izda': [],
-                    'rodilla_dcha': [],
-                    'tobillo_izdo': [],
-                    'tobillo_dcho': []
-                }
-                # Extraer keypoints y asignar a body_dict
-                for kp, body_part in zip(keypoints[0], body_dict):
-                    x, y = kp[0], kp[1]
-                    body_dict[body_part].extend([x, y])
-                # Dibujar keypoints en la imagen
-                if self.draw:
-                    self.draw_kps(img, body_dict)
-                keypoint_queue.put(body_dict)
-            return VideoFrame.from_ndarray(img, format="bgr24")
-        except Exception as e:
-            results = self.model(img)
-            print(results)
-            print(f"Error procesando el frame: {e}")
+        # try:
+        results = self.model(img)
+        print(results)
+        for result in results:
+            keypoints = result.keypoints.xy
+            body_dict = {
+                'nariz': [],
+                'ojo_izdo': [],
+                'ojo_dcho': [],
+                'oreja_izda': [],
+                'oreja_dcha': [],
+                'hombro_izdo': [],
+                'hombro_dcho': [],
+                'codo_izdo': [],
+                'codo_dcho': [],
+                'muneca_izda': [],
+                'muneca_dcha': [],
+                'cadera_izda': [],
+                'cadera_dcha': [],
+                'rodilla_izda': [],
+                'rodilla_dcha': [],
+                'tobillo_izdo': [],
+                'tobillo_dcho': []
+            }
+            # Extraer keypoints y asignar a body_dict
+            for kp, body_part in zip(keypoints[0], body_dict):
+                x, y = kp[0], kp[1]
+                body_dict[body_part].extend([x, y])
+            # Dibujar keypoints en la imagen
+            if self.draw:
+                self.draw_kps(img, body_dict)
+            keypoint_queue.put(body_dict)
+        return VideoFrame.from_ndarray(img, format="bgr24")
+        # except Exception as e:
+        #     print(f"Error procesando el frame: {e}")
     
     def set_draw(self, state):
         self.draw = state
