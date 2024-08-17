@@ -107,11 +107,8 @@ with down_col2:
         async_processing=True
     )
     while webrtc_ctx.state.playing:
-        print("En marcha!")
         st.session_state.grabando = True
-        print(st.session_state.grabando)
         keypoints = keypoint_queue.get()
-        print(keypoints)
         if st.session_state.frame_count % 10 == 0:
             frame_counter_increment()
             try:
@@ -121,12 +118,10 @@ with down_col2:
                 )
             except:
                 estado_usuario = False
-            print(f"Estado: {estado_usuario}")
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(up_col3_progress_bar)
                 if st.session_state.frames_success == 100:
-                    print("Exito")
                     pose_success(
                         user_pose,
                         up_col2_info_markdown,
@@ -134,12 +129,10 @@ with down_col2:
                         tips_or_video_box
                     )
             else:
-                print("U TRIED")
                 up_col3_update_progress_bar(up_col3_progress_bar)
                 up_col4_update_status(up_col4_status, False)
                 reset_frame_success()
         else:
-            print("here?")
             frame_counter_increment()
     else:
         keypoint_queue.empty()

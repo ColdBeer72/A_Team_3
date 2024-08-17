@@ -155,42 +155,34 @@ def next_sequence_step(user_pose):
 def pose_success(user_pose, markdown, semaforo, video_place):
     up_col4_update_status(semaforo, True)
     time.sleep(1)
-    print("Estamos despues del Sleep 1???")
-    print(st.session_state.secuencia)
+    DEBUG and print(st.session_state.secuencia)
     reset_frame_success()
     if st.session_state.secuencia:
         next_sequence_step(user_pose)
 
 def down_col2_webcam(webrtc_ctx, user_pose, progress, semaforo):
     while webrtc_ctx.state.playing:
-        print("En marcha!")
         st.session_state.grabando = True
-        print(st.session_state.grabando)
         keypoints = keypoint_queue.get()
-        print(keypoints)
         if st.session_state.frame_count % 10 == 0:
             frame_counter_increment()
             estado_usuario = check_postura(
                 user_pose,
                 keypoints
             )
-            print(f"Estado: {estado_usuario}")
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
                 up_col3_update_progress_bar(progress)
                 if st.session_state.frames_success == 100:
-                    print("Exito")
                     pose_success(
                         user_pose,
                         semaforo,
                     )
             else:
-                print("U TRIED")
                 up_col3_update_progress_bar(progress)
                 up_col4_update_status(semaforo, False)
                 reset_frame_success()
         else:
-            print("here?")
             frame_counter_increment()
     else:
         keypoint_queue.empty()
