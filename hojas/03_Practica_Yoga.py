@@ -75,7 +75,6 @@ with up_col2:
 # Up_Col3 > Carga de Check Postura
 with up_col3:
     up_col3_progress_bar = st.empty()
-
 # Up_Col4 > Semaforo
 with up_col4:
     up_col4_status = st.empty()
@@ -115,10 +114,13 @@ with down_col2:
         print(keypoints)
         if st.session_state.frame_count % 10 == 0:
             frame_counter_increment()
-            estado_usuario = check_postura(
-                user_pose,
-                keypoints
-            )
+            try:
+                estado_usuario = check_postura(
+                    user_pose,
+                    keypoints
+                )
+            except:
+                estado_usuario = False
             print(f"Estado: {estado_usuario}")
             if estado_usuario:
                 st.session_state.frames_success += FRAMES_SUCCESS_RATIO
