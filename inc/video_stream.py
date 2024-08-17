@@ -7,7 +7,7 @@ from multiprocessing import Queue
 
 keypoint_queue = Queue()
 
-@st.cache_resource
+# @st.cache_resource
 class VideoProcessor(VideoTransformerBase):
     def __init__(self, _model_input):
         self.model = _model_input

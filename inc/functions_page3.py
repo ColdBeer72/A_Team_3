@@ -150,7 +150,6 @@ def next_sequence_step(user_pose):
     postura, _, _ = set_pose_for_sequence(user_pose.actual_sequence)
     user_pose.set_pose(postura)
 
-
 def pose_success(user_pose, semaforo):
     up_col4_update_status(semaforo, True)
     time.sleep(1)
