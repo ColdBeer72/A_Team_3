@@ -2,7 +2,7 @@ from ultralytics import YOLO
 from streamlit_webrtc import RTCConfiguration
 
 #Activar/Desactivar modo Debug
-DEBUG = True
+DEBUG = False
 # Ancho de Columna por defecto en StreamLit
 DEFAULT_COLUMN_WIDTH = 30
 MIN_COLUMN_WIDTH = 15
