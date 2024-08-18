@@ -3,10 +3,6 @@ from streamlit_webrtc import RTCConfiguration
 
 #Activar/Desactivar modo Debug
 DEBUG = False
-# Ancho de Columna por defecto en StreamLit
-DEFAULT_COLUMN_WIDTH = 30
-MIN_COLUMN_WIDTH = 15
-MAX_COLUMN_WIDTH = 50
 # Título de la Página
 PAGE_TITLE = "DSB10RT Grupo A"
 # Título del Proyecto
@@ -120,33 +116,6 @@ TRANSICIONES = {
             'Postura TEST': 'Postura TEST'
         } 
     }
-sounds_path = "streamlit_sources/page3/yoga_sounds"
-sounds_dict = {
-    'Tadasana': {
-        f'{sounds_path}/tadasana': [1, 2, 3]
-    },
-    'Urdhva Hastasana': {
-        f'{sounds_path}/urdhva_hastasana': [1, 2, 3]
-    },
-    'Uttanasana': {
-        f'{sounds_path}/utanasana': [1, 2, 3]
-    }, 
-    'Ardha Uttanasana': {
-        f'{sounds_path}/ardha_utanasana': [1, 2, 3]
-    },
-    'Chaturanga Dandasana': {
-        f'{sounds_path}/chaturanga_dandasana': [1, 2, 3]
-    },
-    'Urdhva Mukha Svanasana': {
-        f'{sounds_path}/urdhva_mukha_svanasana': [1, 2, 3]
-    },
-    'Adho Mukha Svanasana': {
-        f'{sounds_path}/adho_mukha_svanasana': [1, 2, 3, 4],
-    },
-    # 'consejos': {
-    #     f'{sounds_path}/consejos': []
-    # }
-}
 # Umbrales del State Machine
 class UMBRALES():
     THREE_POINT_STRAIGHT =              [195, 155]
@@ -179,3 +148,32 @@ t_rodillai: str =   'rodilla_izda'
 t_rodillad: str =   'rodilla_dcha'
 t_tobilloi: str =   'tobillo_izdo'
 t_tobillod: str =   'tobillo_dcho'
+
+# AUDIOS - Falta implementar
+sounds_path = "streamlit_sources/page3/yoga_sounds"
+sounds_dict = {
+    'Tadasana': {
+        f'{sounds_path}/tadasana': [1, 2, 3]
+    },
+    'Urdhva Hastasana': {
+        f'{sounds_path}/urdhva_hastasana': [1, 2, 3]
+    },
+    'Uttanasana': {
+        f'{sounds_path}/utanasana': [1, 2, 3]
+    }, 
+    'Ardha Uttanasana': {
+        f'{sounds_path}/ardha_utanasana': [1, 2, 3]
+    },
+    'Chaturanga Dandasana': {
+        f'{sounds_path}/chaturanga_dandasana': [1, 2, 3]
+    },
+    'Urdhva Mukha Svanasana': {
+        f'{sounds_path}/urdhva_mukha_svanasana': [1, 2, 3]
+    },
+    'Adho Mukha Svanasana': {
+        f'{sounds_path}/adho_mukha_svanasana': [1, 2, 3, 4],
+    },
+    # 'consejos': {
+    #     f'{sounds_path}/consejos': []
+    # }
+}
