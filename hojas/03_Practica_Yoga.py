@@ -146,10 +146,3 @@ with down_col2:
     else:
         keypoint_queue.empty()
         st.session_state.grabando = False
-
-    # down_col2_webcam(
-    #     webrtc_ctx,
-    #     user_pose,
-    #     up_col3_progress_bar,
-    #     up_col4_status,
-    # )
