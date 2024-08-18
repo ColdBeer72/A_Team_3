@@ -73,40 +73,6 @@ def sublista(diccionario=TRANSICIONES, clave_superior="Saludo al sol"):
   else:
     return []
 
-def class_2_dict(clase: type) -> dict:
-    new_dict = {}
-    for clave, valor in vars(clase).items():
-        if not clave.startswith('__'):
-            new_dict[clave] = valor
-    return new_dict
-
-# Updatear estado del semaforo
-def update_semaforo(state, sitio):
-    if state:
-        sitio.image(SEM_GREEN, use_column_width="auto")
-    else:
-        sitio.image(SEM_RED, use_column_width="auto")
-
-def update_keypoints(keypoint_queue, user_pose):
-    while True:
-        try:
-            keypoints = keypoint_queue.get(timeout=1)
-            if keypoints is None:
-                break
-            user_pose.update_keypoints(keypoints)
-        except queue.Empty:
-            continue
-
-def get_current_body_dict():
-    return VideoProcessor.get_body_dict()
-
-def counterto100(funcion, progress_text, frame):
-    frame *= 2
-    funcion.progress(frame, text=progress_text)
-    if frame == 100:
-        time.sleep(0.5)
-        funcion.empty()
-
 # Factoria de VideoProcessor
 def video_processor_factory(model):
     model_input = model
