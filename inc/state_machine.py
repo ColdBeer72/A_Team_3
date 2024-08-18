@@ -1,6 +1,7 @@
 import math
 from inc.config import *
 
+# MANEJAR LOS KEYPOINTS
 class KeypointsHandler:
     def __init__(self):
         self.keypoints = {
@@ -35,8 +36,7 @@ class KeypointsHandler:
     def get_keypoint(self, name: str) -> list:
         return self.keypoints.get(name)
 
-
-
+# FUNCIONES AUXILIARES DETECCION DE POSES
 class Pose_Calculator:
     @staticmethod
     def calcular_angulo(punto1: list, punto2: list, punto3: list) -> float:
@@ -70,11 +70,6 @@ class Pose_Calculator:
         if angulo is None:
             return False
         return (threshold[0] >= angulo >= threshold[1])
-
-    @staticmethod
-    # Determinar si 3 puntos(X o Y) estan alineados horizontal/verticalmente
-    def casi_horizontal_casi_vertical(p1: int, p2: int, p3: int, threshold: int) -> bool:
-        return (abs(p1 - p2) <= threshold and abs(p2 - p3) <= threshold)
 
     @staticmethod
     def pies_dentro_hombros(hombro_dcho: list, hombro_izdo: list, tobillo_dcho: list, tobillo_izdo: list) -> bool:
@@ -150,29 +145,21 @@ class Pose_Calculator:
         margen_sup = ry
         return ((margen_izdo <= mx <= margen_dcho) and (margen_sup <= my))
 
+# State Machine Posturas
 class UserPose:
-
-    eye_level = CAM_HEIGHT // 100
-
     def __init__(self):
-        self.actual_state = ''
+        self.actual_pose = ''
         self.actual_sequence = ''
-        self.user_state = False
         self.kps = KeypointsHandler()
-        self.cam = False
         self.suelo = None
         self.enpie = False
         self.tumbado_boca_arriba = False
         self.tumbado_bocabajo = False
         self.pino = False
 
-    # Establecer posicion "semaforo"
-    def update_state(self, state):
-        self.user_state = state
-
     # Establecer postura
     def set_pose(self, pose):
-        self.actual_state = pose
+        self.actual_pose = pose
 
     # Establecer secuencia
     def set_sequence(self, sequence):
@@ -182,21 +169,8 @@ class UserPose:
     def update_keypoints(self, keypoints):
         self.kps.update_kps(keypoints)
 
-    # Determinar si user esta mirando a cam
-    def looking_2_camera(self) -> bool:
-        self.cam = False
-        # Definir partes clave para postura
-        key_body_parts = [t_ojod, t_ojoi]
-        # Key Body Parts con sus KPs
-        puntos_clave = [self.kps.get_keypoint(parte) for parte in key_body_parts]
-        if all(puntos_clave):
-            # Desempaquetar los puntos clave
-            ojo_dcho, ojo_izdo = puntos_clave
-            if ojo_izdo and ojo_dcho and abs(ojo_izdo[1] - ojo_dcho[1]) < self.eye_level:
-                self.cam = True
-        return self.cam
-
     # Setear el suelo
+    ## Para futuras Posturas, quizas se utiliza
     def update_floor_for_pose(self, pose_kps: list) -> None:
         if pose_kps:
             self.suelo = pose_kps[1]
@@ -224,12 +198,8 @@ class UserPose:
                 self.pino = True
 
     # Menu de posturas
-    def postura(self):
-    ### DEFINIR utilizando la función 'sublista' de basic.py
-    ### posturas = sublista(TRANSICIONES, "Saludo al sol")
-    ### Habrá que obtener en la entrada de la función la SECUENCIA
-    ### sobre la que trabajamos
-        postura = self.actual_state
+    def postura(self) -> bool:
+        postura = self.actual_pose
         pose_dict = {
             'Urdhva Hastasana': self.urdhva_hastasana,
             'Uttanasana': self.uttanasana,
@@ -242,7 +212,7 @@ class UserPose:
             }
         return pose_dict[postura]()
 
-    # Pose TEST
+    # Pose TEST > Nariz por encima de las orejas
     def test(self) -> bool:
         pose_ok = False
         # Definir partes clave para postura
@@ -381,7 +351,10 @@ class UserPose:
         puntos_clave = [self.kps.get_keypoint(parte) for parte in key_body_parts]
         if all(puntos_clave):
             # Desempaquetar los puntos clave
-            muneca_dcha, muneca_izda, codo_dcho, codo_izdo, hombro_dcho, hombro_izdo, tobillo_izdo, nariz, cadera_izda, rodilla_izda, ojo_izdo = puntos_clave
+            (
+                muneca_dcha, muneca_izda, codo_dcho, codo_izdo, hombro_dcho,
+                hombro_izdo, tobillo_izdo, nariz, cadera_izda, rodilla_izda, ojo_izdo
+            ) = puntos_clave
             # Check de States
             brazos_rectos =  Pose_Calculator.three_points_straight(muneca_dcha, codo_dcho, hombro_dcho)\
                         and Pose_Calculator.three_points_straight(muneca_izda, codo_izdo, hombro_izdo)
@@ -407,7 +380,3 @@ class UserPose:
             cadera_arriba_y_manos_suelo = cadera_izda[1] < tobillo_izdo[1] < muneca_izda[1]
             espalda_recta =  Pose_Calculator.three_points_straight(cadera_izda, hombro_izdo, muneca_izda, UMBRALES.ESPALDA_RECTA_ADHO_MUKHA_SVANA)
         return cadera_arriba_y_manos_suelo and espalda_recta
-
-    def transicionar_a_nueva_postura(self, new_pose):
-        if new_pose in TRANSICIONES[self.actual_sequence][self.actual_state]:
-            self.actual_state = new_pose
