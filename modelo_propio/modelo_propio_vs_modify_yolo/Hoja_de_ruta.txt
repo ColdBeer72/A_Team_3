@@ -1,0 +1,15 @@
+CREAR MODELO PROPIO(con capas convolucionales descargadas)(Los numeros no están asociados a los numeros/títulos de los scripts):
+1.- WEB SCRAPPING O ENCONTRAR DATASETS CON POSES QUE INCLUYAN KEYPOINTS DESEADOS ✔ (24.000 imagenes ya etiquetadas como -> joint id (0 - r ankle, 1 - r knee, 2 - r hip, 3 - l hip, 4 - l knee, 5 - l ankle, 6 - pelvis, 7 - thorax, 8 - upper neck, 9 - head top, 10 - r wrist, 11 - r elbow, 12 - r shoulder, 13 - l shoulder, 14 - l elbow, 15 - l wrist))
+2.1.- Filtrar esas 24000 imagenes por yolo viendo cuales de estas nos devuelven solo una persona ✔ (12.000 Imagenes restantes)
+2.2.- Si hay mas de mil etiquetar por las que encuentren mas keypoints en yolo o sino manualmente hasta quedarnos con 1000 ✔ (Filtrando por imagenes en las que almenos salga u pie y dividiendo el resultado resultan 1.032 imagenes)
+2.3.- Investigar el formato de los labels del archivo mat, pasarlo a JSON ✔ (Estructura ahora es legible, pero tiene algunas fotos sin labels y el conecepto de labels que aparecen pero no son visibles)
+2.4.- Sacar un json del anterior con solo los labels de las fotos del filtrado final ✔
+2.4.1.- Buscar en el .mat la confirmacion a los labels vacios del json ✔ (confirmado en el archivo readmat.ipynb)
+2.4.2.- Borrar todas las imagenes que no tengan anotaciones y sus referencias, despues ejecutar de nuevo los filtros ✔ (eliminadas imagenes sin labels desde human_pose_images_filtrado_1_persona/images)
+2.4.2.1.- Comprobar la creacion de un nuevo labels.json con imagenes finales, las cuales deberian tener todas labels ✔ (El codigo ha errado en seis imagenes que no tenian labels, las he borrado manualmente)
+2.4.3.- Dibujar en varias fotos los labels asociados en labels.json para ver que no hay desorden en la asociación ✔ (El orden es correcto, pero aparecieron fotos con mas de una persona, indagando salieron 21 en total, borradas las fotos como sus referencias manualmente)
+2.5.- Adaptar nuestros datos, a la funcion de "https://keras.io/examples/vision/keypoint_detection/" ✔
+3.- Hacer Pipeline enfocado en aumentado de datos con tipos de aumentado que no trastoquen los labels (Brillo, Contraste, etc) esto sera un paso unido al entrenamiento de modelo ✔
+3.1.- RETOCAR CODIGO PARA MEJORAR PREDICT EN LA MEDIDA DE LO POSIBLE
+4.- Cuando el codigo anterior este ok, podemos dar un paso atras, etiquetar manualmente los keypoints restantes (pulgar, meñique, talon, punta y ombligo)
+5......
